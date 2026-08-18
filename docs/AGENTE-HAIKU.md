@@ -21,6 +21,17 @@ Il ciclo è limitato a cinque passaggi per evitare loop e costi incontrollati.
 Nessun codice proposto dal modello viene eseguito: può scegliere soltanto tool e
 parametri dichiarati.
 
+## Skill aziendali selettive
+
+Prima della chiamata a Haiku, un selettore deterministico locale può attivare al
+massimo due skill pertinenti. Le skill aggiungono regole operative brevi per
+preventivi, marginalità, disponibilità e consegne, crediti e incassi, KPI
+commerciali o procedure Wiki. Non viene effettuata una chiamata LLM aggiuntiva e
+una domanda generica non carica nessuna skill.
+
+La chat mostra le skill attivate sia nella traccia sia accanto alla risposta. Il
+catalogo e i limiti sono descritti in [Skill aziendali](SKILL-AZIENDALI.md).
+
 ## Navigazione intelligente della Wiki
 
 La Wiki non viene inserita interamente nel prompt. Haiku lavora in due fasi:

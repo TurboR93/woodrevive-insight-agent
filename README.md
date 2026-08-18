@@ -38,6 +38,8 @@ confrontare RAG e navigazione strutturata per qualità, fonti, latenza e costo.
   4.5 e vero ciclo di tool use;
 - navigazione Wiki multi-pass: indice, tag, sinonimi, sezioni, link e lettura
   autonoma delle pagine scelte da Haiku;
+- 6 skill aziendali selettive per preventivi, marginalità, disponibilità,
+  crediti, KPI e procedure; massimo 2 per richiesta senza chiamate LLM extra;
 - microservizio FastAPI/pandas collegato con sette operazioni ammesse;
 - chat progressiva con attività degli strumenti in tempo reale, Markdown
   formattato, fonti espandibili e interruzione della richiesta;
@@ -99,6 +101,7 @@ docs/                        architettura, piano e decisioni
 - [Agente reale con Claude Haiku](docs/AGENTE-HAIKU.md)
 - [Compatibilità con la copia Manager](docs/COMPATIBILITA-MANAGER.md)
 - [Memoria chat e utenti](docs/MEMORIA-E-UTENTI.md)
+- [Skill aziendali](docs/SKILL-AZIENDALI.md)
 
 ## Avvio dell'agente completo
 

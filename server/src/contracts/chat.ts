@@ -35,10 +35,16 @@ export interface SourceReference {
 
 export interface AgentActivity {
   id: string;
-  kind: "routing" | "wiki" | "rag" | "pandas" | "quote" | "response";
+  kind: "routing" | "skill" | "wiki" | "rag" | "pandas" | "quote" | "response";
   title: string;
   detail: string;
   status: "running" | "complete" | "error";
+}
+
+export interface BusinessSkillReference {
+  id: string;
+  label: string;
+  description: string;
 }
 
 export interface AnalysisMetric {
@@ -113,6 +119,7 @@ export interface ChatResponse {
   activities: AgentActivity[];
   artifacts: AnalysisArtifact[];
   quotes: QuoteArtifact[];
+  skills: BusinessSkillReference[];
   model?: string;
   usage?: {
     inputTokens: number;

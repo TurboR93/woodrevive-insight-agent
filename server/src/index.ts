@@ -3,6 +3,7 @@ import type { AgentActivity, ChatRequest, ChatResponse } from "./contracts/chat.
 import { runAgent } from "./agent/orchestrator.js";
 import { AnthropicError, AnthropicProvider } from "./providers/llm.js";
 import { buildManagerDemoEnvelope } from "./domain/manager-envelope.js";
+import { BUSINESS_SKILL_COUNT } from "./skills/business-skills.js";
 
 const port = Number(process.env.ORCHESTRATOR_PORT ?? process.env.PORT ?? 8787);
 
@@ -68,7 +69,7 @@ const server = createServer(async (request, response) => {
       status: configured ? "ok" : "configuration_required",
       provider: "anthropic",
       model: process.env.ANTHROPIC_MODEL || "claude-haiku-4-5-20251001",
-      tools: { wiki: true, ragCorpus: true, pandas: analytics, quotes: true, managerDemoBridge: true },
+      tools: { wiki: true, ragCorpus: true, pandas: analytics, quotes: true, managerDemoBridge: true, businessSkills: BUSINESS_SKILL_COUNT },
     });
   }
 

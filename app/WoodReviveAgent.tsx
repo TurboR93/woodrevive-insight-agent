@@ -8,11 +8,12 @@ type ActivityStatus = "running" | "complete" | "error";
 type AgentSource = { kind: "wiki" | "rag" | "dataset"; label: string; locator: string };
 type AgentActivity = {
   id: string;
-  kind: "routing" | "wiki" | "rag" | "pandas" | "quote" | "response";
+  kind: "routing" | "skill" | "wiki" | "rag" | "pandas" | "quote" | "response";
   title: string;
   detail: string;
   status: ActivityStatus;
 };
+type BusinessSkillReference = { id: string; label: string; description: string };
 type AnalysisArtifact = {
   operation: string;
   summary?: string;
@@ -57,6 +58,7 @@ type Message = {
   activities?: AgentActivity[];
   artifacts?: AnalysisArtifact[];
   quotes?: QuoteArtifact[];
+  skills?: BusinessSkillReference[];
   usage?: { inputTokens: number; outputTokens: number };
 };
 type DemoActor = { id: string; displayName: string; source: "demo-local" };
@@ -82,6 +84,7 @@ type AgentResponse = {
   activities: AgentActivity[];
   artifacts: AnalysisArtifact[];
   quotes: QuoteArtifact[];
+  skills: BusinessSkillReference[];
   usage?: { inputTokens: number; outputTokens: number };
 };
 
@@ -218,7 +221,7 @@ function RichText({ text }: { text: string }) {
 }
 
 function activityIcon(kind: AgentActivity["kind"]) {
-  return { routing: "⌁", wiki: "▤", rag: "◎", pandas: "▥", quote: "€", response: "✦" }[kind];
+  return { routing: "⌁", skill: "◆", wiki: "▤", rag: "◎", pandas: "▥", quote: "€", response: "✦" }[kind];
 }
 
 function ActivityPanel({ activities, live = false }: { activities: AgentActivity[]; live?: boolean }) {
@@ -414,7 +417,7 @@ export function WoodReviveAgent() {
       const baseUrl = process.env.NEXT_PUBLIC_ORCHESTRATOR_URL || "http://127.0.0.1:8787/api/chat";
       const response = await fetch(baseUrl.replace(/\/api\/chat$/, "/api/chat/stream"), { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ message: cleanQuestion, mode, history, conversationId, actor: DEMO_ACTOR }), signal: controller.signal });
       const payload = await readStream(response, updateActivity);
-      setMessages((current) => [...current, { id: nextId + 1, role: "assistant", text: payload.answer, createdAt: new Date().toISOString(), actorId: "agent-haiku", tool: `${payload.model?.includes("haiku") ? "Claude Haiku" : "Claude"} · ${payload.tool}`, sources: payload.sources, warnings: payload.warnings, activities: payload.activities, artifacts: payload.artifacts, quotes: payload.quotes, usage: payload.usage }]);
+      setMessages((current) => [...current, { id: nextId + 1, role: "assistant", text: payload.answer, createdAt: new Date().toISOString(), actorId: "agent-haiku", tool: `${payload.model?.includes("haiku") ? "Claude Haiku" : "Claude"} · ${payload.tool}`, sources: payload.sources, warnings: payload.warnings, activities: payload.activities, artifacts: payload.artifacts, quotes: payload.quotes, skills: payload.skills, usage: payload.usage }]);
     } catch (error) {
       const interrupted = error instanceof DOMException && error.name === "AbortError";
       setMessages((current) => [...current, { id: nextId + 1, role: "assistant", text: interrupted ? "Elaborazione interrotta. Puoi riformulare la domanda quando vuoi." : (error instanceof Error ? error.message : "Impossibile contattare l’agente."), createdAt: new Date().toISOString(), actorId: "agent-haiku", tool: interrupted ? "Richiesta interrotta" : "Connessione non disponibile", warnings: interrupted ? [] : ["Controlla che l’orchestratore e il servizio pandas siano avviati."] }]);
@@ -440,6 +443,7 @@ export function WoodReviveAgent() {
         <div className="date-divider"><span>OGGI</span></div>
         {messages.map((message) => <article className={`message-row ${message.role}`} key={message.id}>{message.role === "assistant" && <div className="assistant-icon" aria-hidden="true">✦</div>}<div className="message-wrap">
           {message.tool && <p className="tool-label">{message.tool}</p>}
+          {message.skills && message.skills.length > 0 && <div className="skill-pills" aria-label="Skill aziendali attive">{message.skills.map((skill) => <span key={skill.id} title={skill.description}>◆ {skill.label}</span>)}</div>}
           <div className="message-bubble"><RichText text={message.text} /></div>
           {message.quotes?.map((quote) => <QuoteCard quote={quote} key={quote.id} />)}
           {message.artifacts?.map((artifact, artifactIndex) => <AnalysisCard artifact={artifact} key={`${artifact.operation}-${artifactIndex}`} />)}

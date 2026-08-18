@@ -129,6 +129,8 @@ h1 { margin: 0; font: 500 29px/1.1 Georgia, "Times New Roman", serif; letter-spa
 .message-wrap { max-width: min(790px, 88%); min-width: 0; }
 .message-row.user .message-wrap { max-width: min(620px, 76%); }
 .tool-label { margin: 0 0 6px 3px; color: var(--moss); font-size: 10px; font-weight: 700; letter-spacing: .04em; }
+.skill-pills { display: flex; flex-wrap: wrap; gap: 5px; margin: 0 0 8px 3px; }
+.skill-pills span { padding: 4px 7px; border: 1px solid #cad7c9; border-radius: 999px; background: #edf3ea; color: var(--forest); font-size: 8px; font-weight: 700; letter-spacing: .025em; }
 .message-bubble {
   padding: 21px 23px; border: 1px solid var(--line); border-radius: 4px 17px 17px 17px;
   background: var(--surface); box-shadow: var(--shadow); font-size: 14px; line-height: 1.68;

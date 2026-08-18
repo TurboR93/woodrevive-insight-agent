@@ -19,6 +19,7 @@ import {
 import { analyzeData, DATA_OPERATIONS, type DataOperationName } from "../tools/analytics.js";
 import { readWiki, searchRagCorpus, searchWiki, type ToolEvidence } from "../tools/knowledge.js";
 import { createQuoteDraft, searchQuoteCatalog } from "../domain/demo-quotes.js";
+import { businessSkillsPrompt, publicBusinessSkills, selectBusinessSkills } from "../skills/business-skills.js";
 
 const tools: AnthropicTool[] = [
   {
@@ -315,6 +316,8 @@ export async function runAgent(
   reportActivity?: ActivityReporter,
 ): Promise<ChatResponse> {
   const messageLog = buildConversation(request);
+  const activeSkills = selectBusinessSkills(request.message);
+  const skillInstruction = businessSkillsPrompt(activeSkills);
   const requiresCompare = request.mode === "compare"
     || /confronta(?:re)?\s+(?:la\s+)?(?:risposta\s+)?rag.*wiki|wiki.*rag/i.test(request.message);
   const modeInstruction = requiresCompare
@@ -338,10 +341,15 @@ export async function runAgent(
     title: "Interpretazione della richiesta",
     detail: "Haiku sta scegliendo il percorso e gli strumenti più adatti.",
   });
+  if (activeSkills.length) await report({
+    id: "business-skills", kind: "skill", status: "complete",
+    title: activeSkills.length === 1 ? "Skill aziendale attivata" : "Skill aziendali attivate",
+    detail: activeSkills.map((skill) => skill.label).join(" + "),
+  });
 
   for (let step = 0; step < 5; step += 1) {
     const response = await provider.createMessage({
-      system: `${SYSTEM_PROMPT}\n${modeInstruction}`,
+      system: `${SYSTEM_PROMPT}\n${modeInstruction}\n${skillInstruction}`,
       messages: messageLog,
       tools,
       toolChoice: step === 0 ? toolChoiceFor(request) : { type: "auto" },
@@ -415,7 +423,7 @@ export async function runAgent(
       detail: "Organizzo evidenze, numeri e indicazioni operative.",
     });
     const final = await provider.createMessage({
-      system: SYSTEM_PROMPT,
+      system: `${SYSTEM_PROMPT}\n${skillInstruction}`,
       messages: messageLog,
       tools,
       toolChoice: { type: "none" },
@@ -460,6 +468,7 @@ export async function runAgent(
     quotes: allExecutions
       .map((execution) => execution.evidence.quote)
       .filter((quote): quote is QuoteArtifact => Boolean(quote)),
+    skills: publicBusinessSkills(activeSkills),
     model: provider.model,
     usage: {
       inputTokens,

@@ -33,6 +33,8 @@ retrieval sul corpus RAG, Wiki strutturata e analisi CSV con pandas.
   alimentata dal medesimo dataset sintetico tramite bridge locale;
 - memoria chat persistente nel browser con cronologia multi-conversazione,
   ripristino al ritorno dal gestionale e audit dell'utente demo;
+- 6 skill aziendali con selezione locale, massimo 2 istruzioni specialistiche
+  per richiesta e nessuna chiamata LLM aggiuntiva;
 
 ## Cosa è ancora dimostrativo
 
@@ -65,6 +67,7 @@ retrieval sul corpus RAG, Wiki strutturata e analisi CSV con pandas.
 | Bridge dataset → Manager v8 | superato |
 | Preventivo agente → dettaglio Manager | coperto da test automatico |
 | Persistenza chat dopo navigazione | localStorage versionato |
+| Selettore skill e budget prompt | coperti da 4 test automatici |
 
 ## Prossimo incremento consigliato
 
