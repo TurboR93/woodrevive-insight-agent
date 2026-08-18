@@ -1,0 +1,22 @@
+node_modules
+dist
+dist-ssr
+*.local
+.DS_Store
+.env
+.env.*
+!.env.example
+*.log
+npm-debug.log*
+.vite
+coverage
+
+# Dati reali del vecchio gestionale (Danea Easyfatt): mai nel repo
+*.bef
+estrazione-easyfatt/
+public/dati-reali.json
+public/dati-reali.meta.json
+
+# Secret locali del gate (Cloudflare Pages): mai nel repo
+.dev.vars
+.wrangler

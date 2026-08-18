@@ -27,10 +27,15 @@ Orchestratore Node.js
   |-- Wiki engine -----> indice + pagine Markdown
   |       `-----------> knowledge/wiki
   |
-  `-- Data tool -------> servizio Python/FastAPI
-                          |-- pandas
-                          |-- CSV in sola lettura
-                          `-- grafici PNG/JSON
+  |-- Data tool -------> servizio Python/FastAPI
+  |                       |-- pandas
+  |                       |-- CSV in sola lettura
+  |                       `-- grafici JSON
+  |
+  |-- Quote tools ------> catalogo CSV + bozze locali
+  |
+  `-- Demo bridge -----> copia WoodRevive Manager
+                          `-- stesso modello dati sintetico
 ```
 
 ## Decisione dell'orchestratore
@@ -104,3 +109,28 @@ cinque passaggi prima della sintesi.
 La Wiki usa due tool distinti: ricerca nell'indice e lettura delle pagine per
 slug. Questo permette al modello di orientarsi attraverso tag, sinonimi,
 sezioni e collegamenti senza ricevere l'intero manuale nel prompt.
+
+## Azioni e copia del gestionale
+
+La creazione preventivo usa un contratto deterministico: il modello seleziona
+cliente, articoli e quantità, mentre il backend esegue convalida e calcoli. Il
+bridge `GET /api/demo/manager-data` proietta i 23 CSV e le bozze create nella
+struttura versione 8 letta dal gestionale. La copia Manager importa questa busta
+all'avvio e non accede a esportazioni del gestionale originale.
+
+Il passaggio agente → gestionale usa l'ID stabile del preventivo nel percorso
+`/preventivi/:id`. Il percorso inverso riporta alla chat. Questo rende il demo
+bidirezionale a livello di navigazione e usa un'unica fonte dati, senza creare
+una seconda anagrafica divergente.
+
+## Memoria conversazionale
+
+Il client conserva una memoria locale versionata con più conversazioni, ID
+stabile, autore demo, messaggi, fonti, attività, grafici e preventivi. In questo
+modo una navigazione completa verso la copia Manager non cancella la chat. ID
+conversazione e attore vengono inviati al backend e registrati nell'audit delle
+nuove bozze.
+
+Questa memoria non è autenticazione e non è il futuro archivio autorevole. Con
+il sistema utenti, il backend persisterà conversazioni, messaggi, esecuzioni tool
+e azioni; `localStorage` resterà soltanto cache/offline e memoria dell'interfaccia.

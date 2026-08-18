@@ -78,7 +78,7 @@ export class AnthropicProvider {
         ...(input.tools ? { tools: input.tools } : {}),
         ...(input.toolChoice ? { tool_choice: input.toolChoice } : {}),
       }),
-      signal: AbortSignal.timeout(45_000),
+      signal: AbortSignal.timeout(Number(process.env.ANTHROPIC_TIMEOUT_MS || 90_000)),
     });
 
     const payload = await response.json() as AnthropicMessage | {

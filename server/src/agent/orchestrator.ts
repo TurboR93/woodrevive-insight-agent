@@ -1,6 +1,7 @@
 import type {
   AgentActivity,
   AnalysisArtifact,
+  QuoteArtifact,
   ChatRequest,
   ChatResponse,
   DataOperation,
@@ -17,6 +18,7 @@ import {
 } from "../providers/llm.js";
 import { analyzeData, DATA_OPERATIONS, type DataOperationName } from "../tools/analytics.js";
 import { readWiki, searchRagCorpus, searchWiki, type ToolEvidence } from "../tools/knowledge.js";
+import { createQuoteDraft, searchQuoteCatalog } from "../domain/demo-quotes.js";
 
 const tools: AnthropicTool[] = [
   {
@@ -74,6 +76,52 @@ const tools: AnthropicTool[] = [
       additionalProperties: false,
     },
   },
+  {
+    name: "quote_catalog_search",
+    description: "Cerca clienti e articoli nel catalogo demo prima di preparare un preventivo. Usalo per risolvere nomi, codici, prezzi, unità, IVA, sconto cliente e disponibilità. Non inventare mai gli ID.",
+    strict: true,
+    input_schema: {
+      type: "object",
+      properties: {
+        customer_query: { type: "string", description: "Nome, codice, città o ID del cliente; stringa vuota se non indicato." },
+        article_query: { type: "string", description: "Nome, codice, categoria, essenza o patina dell’articolo; stringa vuota se non indicato." },
+      },
+      required: ["customer_query", "article_query"],
+      additionalProperties: false,
+    },
+  },
+  {
+    name: "quote_create_draft",
+    description: "Crea e salva una bozza di preventivo esclusivamente demo con calcoli deterministici compatibili con WoodRevive Manager. Chiamalo solo se l’utente chiede esplicitamente di creare/generare il preventivo e cliente, articoli e quantità sono chiari dopo quote_catalog_search.",
+    strict: true,
+    input_schema: {
+      type: "object",
+      properties: {
+        customer_id: { type: "string", description: "ID esatto del cliente restituito dal catalogo." },
+        subject: { type: "string", description: "Oggetto breve e riconoscibile del preventivo." },
+        lines: {
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              article_id: { type: "string", description: "ID esatto dell’articolo." },
+              quantity_milli: { type: "integer", description: "Quantità in millesimi: 12,5 m² = 12500." },
+              discount_percent: { type: "number", description: "Sconto riga percentuale, zero se non richiesto." },
+            },
+            required: ["article_id", "quantity_milli", "discount_percent"],
+            additionalProperties: false,
+          },
+        },
+        general_discount_percent: { type: "number", description: "Sconto generale percentuale; usa quello cliente se appropriato." },
+        validity_days: { type: "integer", description: "Validità in giorni, normalmente 30." },
+        conditions: { type: "string", description: "Condizioni di pagamento." },
+        delivery_time: { type: "string", description: "Tempi di consegna." },
+        notes: { type: "string", description: "Note commerciali, stringa vuota se assenti." },
+      },
+      required: ["customer_id", "subject", "lines", "general_discount_percent", "validity_days", "conditions", "delivery_time", "notes"],
+      additionalProperties: false,
+    },
+  },
 ];
 
 const SYSTEM_PROMPT = `Sei WoodRevive Insight, agente operativo Sales & Operations.
@@ -84,7 +132,10 @@ Non inventare policy, valori o fatti. Se le evidenze non bastano, dichiaralo.
 Mantieni rigorosamente distinti: giacenza fisica = carichi - scarichi; impegnato = quantità promessa; disponibilità commerciale = giacenza - impegnato.
 Tutti i dati sono sintetici: ricordalo quando presenti risultati numerici.
 Nella risposta finale sii chiaro e operativo. Per i numeri indica periodo, formula/metodo e unità; converti i centesimi in euro leggibili.
-Non citare conoscenze generiche del modello come se fossero documentazione WoodRevive.`;
+Non citare conoscenze generiche del modello come se fossero documentazione WoodRevive.
+Per creare un preventivo demo usa prima quote_catalog_search. Se mancano cliente, articolo o quantità, chiedili chiaramente senza chiamare quote_create_draft. Se sono presenti e l'utente ha chiesto esplicitamente di creare o generare il preventivo, usa quote_create_draft. Prezzi, IVA, disponibilità e calcoli arrivano soltanto dai tool; non inventarli.
+Le bozze sono dimostrative ma rispettano ID, snapshot, centesimi, millesimi e arrotondamenti compatibili con WoodRevive Manager.
+Non affermare mai che il sistema invia preventivi, email o messaggi al cliente: crea soltanto una bozza locale consultabile nella copia Manager.`;
 
 type ActivityReporter = (activity: AgentActivity) => void | Promise<void>;
 
@@ -105,6 +156,16 @@ function activityFor(call: AnthropicToolUseBlock, status: AgentActivity["status"
     id: call.id, kind: "rag", status,
     title: "Ricerca nel corpus RAG",
     detail: status === "running" ? "Recupero i passaggi più affini alla domanda." : "Passaggi documentali recuperati dal corpus.",
+  };
+  if (call.name === "quote_catalog_search") return {
+    id: call.id, kind: "quote", status,
+    title: "Ricerca commerciale",
+    detail: status === "running" ? "Cerco cliente, articoli, listino e disponibilità demo." : "Cliente e articoli risolti sul catalogo condiviso.",
+  };
+  if (call.name === "quote_create_draft") return {
+    id: call.id, kind: "quote", status,
+    title: "Creazione del preventivo",
+    detail: status === "running" ? "Calcolo righe, sconti, IVA, margine e totale." : "Bozza salvata e resa disponibile nel gestionale demo.",
   };
   return {
     id: call.id, kind: "pandas", status,
@@ -144,7 +205,7 @@ function safeString(value: unknown, fallback: string): string {
   return typeof value === "string" && value.trim() ? value : fallback;
 }
 
-async function executeTool(call: AnthropicToolUseBlock, question: string): Promise<{
+async function executeTool(call: AnthropicToolUseBlock, question: string, context: Pick<ChatRequest, "conversationId" | "actor">): Promise<{
   evidence: ToolEvidence;
   isError: boolean;
 }> {
@@ -167,6 +228,53 @@ async function executeTool(call: AnthropicToolUseBlock, question: string): Promi
           minimum_days: typeof call.input.minimum_days === "number" ? call.input.minimum_days : undefined,
           as_of: typeof call.input.as_of === "string" ? call.input.as_of : undefined,
         }),
+        isError: false,
+      };
+    }
+    if (call.name === "quote_catalog_search") {
+      return {
+        evidence: {
+          content: JSON.stringify(await searchQuoteCatalog({
+            customer_query: safeString(call.input.customer_query, ""),
+            article_query: safeString(call.input.article_query, ""),
+          }), null, 2),
+          sources: [
+            { kind: "dataset", label: "Clienti demo", locator: "datasets/demo/clienti.csv" },
+            { kind: "dataset", label: "Articoli demo", locator: "datasets/demo/articoli.csv" },
+          ],
+          warnings: [],
+        },
+        isError: false,
+      };
+    }
+    if (call.name === "quote_create_draft") {
+      const lines = Array.isArray(call.input.lines) ? call.input.lines.map((line) => ({
+        article_id: safeString((line as Record<string, unknown>).article_id, ""),
+        quantity_milli: Number((line as Record<string, unknown>).quantity_milli),
+        discount_percent: Number((line as Record<string, unknown>).discount_percent || 0),
+      })) : [];
+      const created = await createQuoteDraft({
+        customer_id: safeString(call.input.customer_id, ""),
+        subject: safeString(call.input.subject, "Fornitura demo"),
+        lines,
+        general_discount_percent: Number(call.input.general_discount_percent || 0),
+        validity_days: Number(call.input.validity_days || 30),
+        conditions: safeString(call.input.conditions, "30% alla conferma, saldo prima della consegna"),
+        delivery_time: safeString(call.input.delivery_time, "15–25 giorni dalla conferma"),
+        notes: typeof call.input.notes === "string" ? call.input.notes : "",
+      }, context);
+      return {
+        evidence: {
+          content: JSON.stringify({
+            created: true, quote: created.quote,
+            instruction: "Conferma la creazione e riassumi numero, cliente, righe, totale, margine, controlli e link al gestionale demo.",
+          }, null, 2),
+          sources: [
+            { kind: "dataset", label: "Preventivi demo condivisi", locator: "runtime/demo-quote-drafts.json" },
+          ],
+          warnings: created.warnings,
+          quote: created.quote,
+        },
         isError: false,
       };
     }
@@ -268,9 +376,21 @@ export async function runAgent(
       break;
     }
 
+    const catalogWasSearched = allCalls.some((call, index) =>
+      call.name === "quote_catalog_search" && !allExecutions[index]?.isError,
+    );
     const executions = await Promise.all(calls.map(async (call) => {
       await report(activityFor(call, "running"));
-      const execution = await executeTool(call, request.message);
+      const execution = call.name === "quote_create_draft" && !catalogWasSearched
+        ? {
+            evidence: {
+              content: "Prima di creare la bozza devi usare quote_catalog_search e scegliere gli ID esatti restituiti dal catalogo.",
+              sources: [],
+              warnings: ["Creazione sospesa: catalogo cliente/articoli non ancora consultato."],
+            },
+            isError: true,
+          }
+        : await executeTool(call, request.message, request);
       await report(activityFor(call, execution.isError ? "error" : "complete"));
       return execution;
     }));
@@ -316,9 +436,10 @@ export async function runAgent(
   const names = allCalls.map((call) => call.name);
   const dataCall = allCalls.find((call) => call.name === "analyze_data");
   const hasData = names.includes("analyze_data");
+  const hasQuote = names.includes("quote_create_draft");
   const hasDocuments = names.some((name) => name === "wiki_search" || name === "wiki_read" || name === "rag_search");
   const plan: ToolPlan = {
-    intent: hasData && hasDocuments ? "hybrid" : hasData ? "data" : "documents",
+    intent: hasQuote ? "action" : hasData && hasDocuments ? "hybrid" : hasData ? "data" : "documents",
     documentStrategy: documentStrategy(names),
     question: request.message,
     dataOperation: dataOperation(typeof dataCall?.input.operation === "string" ? dataCall.input.operation : undefined),
@@ -329,13 +450,16 @@ export async function runAgent(
   return {
     answer,
     plan,
-    tool: [...new Set(names.map((name) => name.startsWith("wiki_") ? "wiki" : name === "rag_search" ? "rag" : "pandas"))].join(" + "),
+    tool: [...new Set(names.map((name) => name.startsWith("wiki_") ? "wiki" : name === "rag_search" ? "rag" : name.startsWith("quote_") ? "preventivi" : "pandas"))].join(" + "),
     sources: uniqueSources(allExecutions.flatMap((execution) => execution.evidence.sources)),
     warnings: [...new Set(allExecutions.flatMap((execution) => execution.evidence.warnings))],
     activities,
     artifacts: allExecutions
       .map((execution) => execution.evidence.artifact)
       .filter((artifact): artifact is AnalysisArtifact => Boolean(artifact)),
+    quotes: allExecutions
+      .map((execution) => execution.evidence.quote)
+      .filter((quote): quote is QuoteArtifact => Boolean(quote)),
     model: provider.model,
     usage: {
       inputTokens,

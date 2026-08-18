@@ -9,7 +9,7 @@ e non modifica i progetti WoodRevive esistenti.
 
 ## Obiettivo
 
-L'agente riconosce quattro tipi di richiesta:
+L'agente riconosce anche le azioni operative e distingue cinque tipi di richiesta:
 
 1. **documentale RAG** — retrieval sul corpus canonico, predisposto per la
    successiva indicizzazione semantica in ChromaDB;
@@ -17,6 +17,8 @@ L'agente riconosce quattro tipi di richiesta:
    senza embeddings o vector database;
 3. **numerica** — delega a un servizio Python che usa pandas sui CSV demo;
 4. **ibrida** — combina regole/documentazione e numeri nella stessa risposta.
+5. **azione** — cerca cliente e articoli nel catalogo demo e crea una bozza di
+   preventivo compatibile con il gestionale.
 
 La Wiki non è soltanto un fallback. È un percorso parallelo che permette di
 confrontare RAG e navigazione strutturata per qualità, fonti, latenza e costo.
@@ -39,8 +41,14 @@ confrontare RAG e navigazione strutturata per qualità, fonti, latenza e costo.
 - microservizio FastAPI/pandas collegato con sette operazioni ammesse;
 - chat progressiva con attività degli strumenti in tempo reale, Markdown
   formattato, fonti espandibili e interruzione della richiesta;
+- memoria locale versionata con cronologia di più conversazioni, ripristino dopo
+  il passaggio al gestionale e identità demo associata alle azioni;
 - risultati pandas multimodali con KPI, grafici responsivi, tabelle esplorabili
   e metodo di calcolo;
+- creazione conversazionale di preventivi demo con righe, IVA, sconti, margine,
+  disponibilità e avvisi di approvazione;
+- copia isolata di WoodRevive Manager in `apps/woodrevive-manager`, collegata
+  allo stesso archivio demo dell'agente e raggiungibile dalla chat;
 - servizio Python/pandas con riepilogo vendite, margine per categoria e analisi
   dei lotti a lenta rotazione;
 - build, lint, test di rendering, controllo TypeScript e funzioni pandas
@@ -60,13 +68,15 @@ Contiene esclusivamente dati dimostrativi sintetici. Non contiene esportazioni,
 anagrafiche, credenziali o documenti provenienti dal gestionale reale.
 
 I file grafici sotto `public/brand/` sono copie locali del marchio WoodRevive
-usate nell'interfaccia; i progetti aziendali esistenti non sono dipendenze e non
-sono stati modificati.
+usate nell'interfaccia. La repository include inoltre una copia isolata del
+front-end gestionale, ripulita da backup, esportazioni e configurazioni locali.
+Il progetto WoodRevive Manager originale non viene eseguito né modificato.
 
 ## Struttura
 
 ```text
 app/                         interfaccia React
+apps/woodrevive-manager/     copia demo isolata del gestionale
 server/                      orchestratore Node.js
 analytics-service/           servizio Python e pandas
 knowledge/wiki/              knowledge base strutturata
@@ -87,6 +97,8 @@ docs/                        architettura, piano e decisioni
 - [Scenari di prova](docs/SCENARI-DEMO.md)
 - [Stato del progetto](docs/STATO-PROGETTO.md)
 - [Agente reale con Claude Haiku](docs/AGENTE-HAIKU.md)
+- [Compatibilità con la copia Manager](docs/COMPATIBILITA-MANAGER.md)
+- [Memoria chat e utenti](docs/MEMORIA-E-UTENTI.md)
 
 ## Avvio dell'agente completo
 
@@ -106,8 +118,10 @@ Per lavorare soltanto sull'interfaccia resta disponibile `npm run dev`.
 
 ```bash
 npm run build
+npm run manager:build
 npm run lint
 npm test
+npm run manager:test
 ./node_modules/.bin/tsc -p server/tsconfig.json --noEmit
 node scripts/generate_demo_data.mjs --check
 node scripts/build_rag_corpus.mjs --check

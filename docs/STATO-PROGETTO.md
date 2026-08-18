@@ -27,6 +27,12 @@ retrieval sul corpus RAG, Wiki strutturata e analisi CSV con pandas.
 - 13 pagine Wiki, 25 casi operativi e corpus RAG completo generato dalle stesse
   fonti;
 - schema dati, lineage, regole KPI e limiti documentati.
+- creazione di bozze preventivo tramite Haiku con calcoli deterministici;
+- scheda preventivo interattiva in chat e apertura diretta del dettaglio;
+- copia isolata del gestionale in questa repository, servita su porta 5174 e
+  alimentata dal medesimo dataset sintetico tramite bridge locale;
+- memoria chat persistente nel browser con cronologia multi-conversazione,
+  ripristino al ritorno dal gestionale e audit dell'utente demo;
 
 ## Cosa è ancora dimostrativo
 
@@ -35,6 +41,8 @@ retrieval sul corpus RAG, Wiki strutturata e analisi CSV con pandas.
   non sono ancora esportabili come file PNG o PDF;
 - la modalità di confronto usa già corpus RAG e Wiki, ma il lato RAG non è
   ancora vettoriale.
+- l'identità attiva è ancora un utente demo locale; login, ruoli e memoria
+  sincronizzata fra dispositivi richiedono il backend utenti descritto nel piano.
 
 ## Verifiche completate
 
@@ -52,6 +60,11 @@ retrieval sul corpus RAG, Wiki strutturata e analisi CSV con pandas.
 | Navigazione Wiki ricerca → lettura | superata |
 | Domanda ibrida Wiki + pandas | superata |
 | Ricerca credenziali e dati reali | nessun contenuto sensibile trovato |
+| Build copia Manager | superata |
+| Test copia Manager | 146 su 146 superati |
+| Bridge dataset → Manager v8 | superato |
+| Preventivo agente → dettaglio Manager | coperto da test automatico |
+| Persistenza chat dopo navigazione | localStorage versionato |
 
 ## Prossimo incremento consigliato
 

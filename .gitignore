@@ -46,3 +46,6 @@ yarn-error.log*
 /.wrangler/
 /outputs/
 /work/
+/runtime/
+/apps/woodrevive-manager/node_modules/
+/apps/woodrevive-manager/dist/

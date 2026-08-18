@@ -1,5 +1,5 @@
 export type ChatMode = "auto" | "rag" | "wiki" | "data" | "compare";
-export type Intent = "documents" | "data" | "hybrid";
+export type Intent = "documents" | "data" | "hybrid" | "action";
 export type DocumentStrategy = "rag" | "wiki" | "compare" | "none";
 export type DataOperation = "trend" | "ranking" | "aggregation" | "anomaly" | "none";
 
@@ -7,6 +7,11 @@ export interface ChatRequest {
   message: string;
   mode?: ChatMode;
   conversationId?: string;
+  actor?: {
+    id: string;
+    displayName: string;
+    source: "demo-local";
+  };
   history?: Array<{
     role: "user" | "assistant";
     text: string;
@@ -30,7 +35,7 @@ export interface SourceReference {
 
 export interface AgentActivity {
   id: string;
-  kind: "routing" | "wiki" | "rag" | "pandas" | "response";
+  kind: "routing" | "wiki" | "rag" | "pandas" | "quote" | "response";
   title: string;
   detail: string;
   status: "running" | "complete" | "error";
@@ -64,6 +69,41 @@ export interface AnalysisArtifact {
   method?: string;
 }
 
+export interface QuoteLineArtifact {
+  id: string;
+  articleId: string;
+  code: string;
+  description: string;
+  quantityMilli: number;
+  unit: string;
+  unitPriceCents: number;
+  discountPercent: number;
+  taxableCents: number;
+  vatRate: number;
+  availableMilli: number;
+}
+
+export interface QuoteArtifact {
+  id: string;
+  number: string;
+  status: "bozza";
+  date: string;
+  expiryDate: string;
+  customerId: string;
+  customerName: string;
+  subject: string;
+  lines: QuoteLineArtifact[];
+  generalDiscountPercent: number;
+  taxableCents: number;
+  vatCents: number;
+  totalCents: number;
+  marginCents: number;
+  approvalRequired: boolean;
+  conditions: string;
+  deliveryTime: string;
+  managerPath: string;
+}
+
 export interface ChatResponse {
   answer: string;
   plan: ToolPlan;
@@ -72,6 +112,7 @@ export interface ChatResponse {
   warnings: string[];
   activities: AgentActivity[];
   artifacts: AnalysisArtifact[];
+  quotes: QuoteArtifact[];
   model?: string;
   usage?: {
     inputTokens: number;

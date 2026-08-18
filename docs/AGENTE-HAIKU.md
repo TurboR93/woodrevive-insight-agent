@@ -14,7 +14,8 @@ salvata nei log o inclusa nella repository.
 4. risultati e riferimenti tornano a Haiku come `tool_result`;
 5. Haiku può usare altri strumenti oppure produrre la risposta finale;
 6. il backend invia in tempo reale eventi sintetici su routing e strumenti;
-7. l'interfaccia mostra risposta formattata, fonti, avvisi e risultati visuali.
+7. l'interfaccia mostra risposta formattata, fonti, avvisi, risultati visuali ed
+   eventuali preventivi strutturati.
 
 Il ciclo è limitato a cinque passaggi per evitare loop e costi incontrollati.
 Nessun codice proposto dal modello viene eseguito: può scegliere soltanto tool e
@@ -38,6 +39,19 @@ l'indice senza leggere almeno una pagina.
 riepilogo vendite, margine per categoria, stock lento, esposizione clienti,
 volumi transazionali, concentrazione fornitori ed evasione ordini. Il modello
 non può eseguire Python arbitrario né scegliere percorsi file.
+
+## Strumenti preventivo
+
+Haiku dispone di due strumenti separati. `quote_catalog_search` cerca clienti e
+articoli nei CSV condivisi e restituisce ID, unità di misura, listino, IVA e
+disponibilità. `quote_create_draft` accetta esclusivamente quegli ID e crea una
+bozza: calcola imponibile, sconti, IVA, totale e margine usando centesimi e
+quantità in millesimi.
+
+La bozza non viene inviata al cliente e non diventa ordine. Se mancano dati
+essenziali, l'agente chiede un chiarimento; sconti oltre l'8% o quantità sopra la
+disponibilità vengono segnalati. Il risultato viene salvato nell'archivio demo
+locale ignorato da Git e appare nella copia Manager al successivo caricamento.
 
 ## Esperienza conversazionale
 
@@ -69,8 +83,9 @@ python3 -m venv .venv
 npm run dev:agent
 ```
 
-L'ultimo comando avvia interfaccia su `localhost:3000`, orchestratore su `8787`
-e pandas su `8001`. Arrestando il comando vengono chiusi tutti e tre.
+L'ultimo comando avvia interfaccia su `localhost:3000`, copia Manager su
+`localhost:5174`, orchestratore su `8787` e pandas su `8001`. Arrestando il
+comando vengono chiusi tutti e quattro.
 
 ## Limiti e costi
 

@@ -1,0 +1,240 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==========================================================================
+   PALETTE WOOD REVIVE — unico posto del progetto dove esistono valori colore.
+   Formato: canali RGB separati da spazio, così Tailwind può applicare
+   l'opacità (bg-brand/10, text-ink/60). Vedi tailwind.config.js.
+
+   I colori marcati REALE sono estratti dal CSS di produzione di woodrevive.it
+   (variabili Avada --awb-colorN). Gli altri sono derivati per coprire i ruoli
+   che il sito vetrina non ha (bordi, stati, hover accessibili).
+   ========================================================================== */
+:root {
+  /* --- superfici ------------------------------------------------------- */
+  --wr-wash: 250 246 238; /* derivato — fondo pagina, sabbia lavata */
+  --wr-surface: 255 255 255; /* REALE #ffffff (awb-color1) */
+  --wr-tint: 234 216 175; /* REALE #ead8af (awb-color2) */
+  --wr-clay: 201 174 151; /* REALE #c9ae97 (awb-color5) */
+  --wr-line: 227 216 200; /* derivato — bordi e separatori */
+
+  /* --- brand ------------------------------------------------------------ */
+  --wr-brand: 183 125 51; /* REALE #b77d33 (awb-color4) — primary/link del sito */
+  --wr-brand-strong: 143 94 32; /* derivato — hover e testo su fondo chiaro (AA) */
+  --wr-brand-soft: 209 168 81; /* REALE #d1a851 (awb-color3) — oro, accenti */
+
+  /* --- testo ------------------------------------------------------------ */
+  --wr-ink: 84 72 66; /* REALE #544842 (awb-color8) — corpo e titoli */
+  --wr-ink-soft: 124 90 76; /* REALE #7c5a4c (awb-color7) — secondario */
+  --wr-ink-mute: 150 127 105; /* REALE #967f69 (awb-color6) — label, placeholder */
+
+  /* --- stati ------------------------------------------------------------ */
+  --wr-ok: 61 122 84; /* derivato — verde bosco */
+  --wr-warn: 176 124 20; /* derivato — ambra */
+  --wr-danger: 168 58 44; /* derivato — terracotta */
+  --wr-info: 74 106 122; /* derivato — petrolio */
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-wash font-sans text-ink antialiased;
+    /* Rete di sicurezza per la regola dei 390px: nessuna schermata deve
+       produrre scroll orizzontale del body. `clip` — non `hidden` — perché
+       non crea un contenitore di scorrimento e quindi non rompe le testate
+       `position: sticky` del layout. Resta una rete: se una tabella sfora,
+       va sistemata la tabella (vedi la modalità card di DataTable). */
+    overflow-x: clip;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-display font-normal tracking-tight;
+  }
+
+  /* I numeri devono incolonnarsi: gli importi e le quantità stanno sempre
+     in tabelle. Se una cifra "balla", la colonna sta usando font-display. */
+  table,
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-brand ring-offset-2 ring-offset-wash;
+  }
+
+  ::selection {
+    @apply bg-tint text-ink;
+  }
+}
+
+@layer components {
+  .card {
+    @apply rounded-card border border-line bg-surface shadow-card;
+  }
+
+  .label {
+    @apply block text-xs font-semibold uppercase tracking-wide text-ink-mute;
+  }
+
+  /* ── Bersagli touch ────────────────────────────────────────────────────
+     Campi e comandi misurano almeno 44px sotto `md:`, dove si lavora col
+     pollice in magazzino, e tornano compatti da `md:` in su, dove serve la
+     densità dell'ufficio. Si alza QUI e non a colpi di classe locale: tutte
+     le pagine passano da `.input` e da `.btn`. */
+  .input {
+    @apply min-h-[2.75rem] w-full rounded-lg border border-line bg-surface px-3 py-2 text-sm
+           text-ink placeholder:text-ink-mute focus:border-brand focus:outline-none
+           focus:ring-2 focus:ring-brand/30 disabled:bg-wash disabled:text-ink-mute
+           md:min-h-0;
+  }
+
+  .btn {
+    @apply inline-flex min-h-[2.75rem] items-center justify-center gap-2 rounded-lg px-4 py-2
+           text-sm font-semibold transition-colors ease-wood disabled:cursor-not-allowed
+           disabled:opacity-50 md:min-h-0;
+  }
+
+  /**
+   * Comando fatto di sola icona (cestino, chiudi, apri). Senza questa classe
+   * resta un bersaglio da 28px: impossibile da centrare col pollice.
+   * Sotto `md:` è un quadrato di 44px, sopra torna compatto.
+   */
+  .btn-icona {
+    @apply btn min-w-[2.75rem] px-2 md:min-w-0;
+  }
+
+  .btn-primary {
+    @apply btn bg-brand-strong text-white hover:bg-ink;
+  }
+
+  .btn-secondary {
+    @apply btn border border-line bg-surface text-ink hover:bg-tint/40;
+  }
+
+  .btn-ghost {
+    @apply btn text-ink-soft hover:bg-tint/40 hover:text-ink;
+  }
+
+  .btn-danger {
+    @apply btn bg-danger text-white hover:brightness-90;
+  }
+
+  /**
+   * Fondo della schermata sui telefoni: sotto la barra fissa delle azioni e
+   * sotto il pulsante flottante c'è l'indicatore di sistema. Senza questo
+   * margine il comando principale finisce mezzo coperto.
+   * La usano BarraAzioni e AzioniRapide.
+   */
+  .zona-sicura-fondo {
+    padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+  }
+
+  /**
+   * Pulsante flottante delle azioni rapide, in basso a destra sui telefoni.
+   * Sopra il contenuto ma SOTTO le modali (z-30 contro z-50), così non ci
+   * finisce mai davanti.
+   */
+  .pulsante-flottante {
+    @apply fixed right-4 z-30 md:hidden;
+    bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+
+  /**
+   * Un elemento appiccicato SOPRA la barra fissa delle azioni (il riepilogo
+   * «in uscita» del DDT). L'altezza della barra non è un numero fisso: è
+   * `pt-3` + un bersaglio da 44px + `zona-sicura-fondo`, e su un telefono con
+   * l'indicatore di sistema quest'ultima vale 34px invece di 12. Scritta a
+   * mano come `bottom-[4.75rem]` la misura tornava solo sui telefoni senza
+   * notch: altrove la barra copriva il riepilogo.
+   */
+  .sopra-barra-azioni {
+    bottom: calc(4rem + max(0.75rem, env(safe-area-inset-bottom)));
+  }
+}
+
+/* Dove la schermata ha già la sua barra fissa di azioni, il pulsante
+   flottante sparisce: due comandi sovrapposti nello stesso angolo sono un
+   comando sbagliato premuto. */
+body.con-barra-azioni .pulsante-flottante {
+  display: none;
+}
+
+/* Sotto md: la barra fissa delle azioni copre il fondo della pagina: lo spazio
+   va restituito al contenuto, o l'ultima riga resta sotto i bottoni.
+   La classe la mette e la toglie `BarraAzioni`.
+
+   La misura è quella della barra — `pt-3` + bersaglio da 44px +
+   `zona-sicura-fondo` — più un dito di respiro, e segue la safe area invece di
+   ignorarla: su un telefono con l'indicatore di sistema una costante fissa
+   lasciava l'ultima riga mezza coperta. */
+@media (max-width: 767px) {
+  body.con-barra-azioni main {
+    padding-bottom: calc(5rem + max(0.75rem, env(safe-area-inset-bottom)));
+  }
+}
+
+/* ==========================================================================
+   Stampa. Serve alla scheda della partita: il pulsante «Stampa scheda» chiama
+   `window.print()` sulla pagina, quindi senza queste regole finirebbero sul
+   foglio anche la sidebar, la topbar e i bottoni.
+   Non è un documento impaginato come i PDF di preventivo e DDT — è la pagina
+   ripulita. Se la scheda di provenienza deve accompagnare la merce, va scritta
+   come generatore in `documents/`.
+   ========================================================================== */
+@media print {
+  /* elementi di navigazione e comandi: fuori dal foglio.
+     `.no-stampa` è la marcatura esplicita per tutto ciò che è cornice e non
+     contenuto: topbar, barra fissa delle azioni, pulsante flottante. */
+  aside,
+  header button,
+  .no-stampa,
+  .btn,
+  .btn-icona,
+  .btn-primary,
+  .btn-secondary,
+  .btn-ghost,
+  .btn-danger {
+    display: none !important;
+  }
+
+  main {
+    padding-left: 0 !important;
+  }
+
+  body {
+    background: white;
+  }
+
+  .card {
+    border-color: rgb(var(--wr-line));
+    box-shadow: none;
+    break-inside: avoid;
+  }
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  @page {
+    size: A4;
+    margin: 16mm;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

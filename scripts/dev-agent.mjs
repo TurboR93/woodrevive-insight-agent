@@ -56,6 +56,8 @@ const python = await firstExecutable([
 ].filter(Boolean));
 
 const vinextCli = resolve(root, "node_modules/vinext/dist/cli.js");
+const managerRoot = resolve(root, "apps/woodrevive-manager");
+const managerViteCli = resolve(managerRoot, "node_modules/vite/bin/vite.js");
 
 const processes = [
   spawn(process.execPath, ["--import", "tsx", "server/src/index.ts"], { cwd: root, env: process.env, stdio: "inherit" }),
@@ -65,6 +67,9 @@ const processes = [
   // Usa lo stesso runtime Node con cui è stato avviato questo coordinatore.
   // Evita che lo shebang di `node_modules/.bin/vinext` selezioni un Node più vecchio.
   spawn(process.execPath, [vinextCli, "dev"], { cwd: root, env: process.env, stdio: "inherit" }),
+  spawn(process.execPath, [managerViteCli, "--host", "127.0.0.1", "--port", "5174"], {
+    cwd: managerRoot, env: process.env, stdio: "inherit",
+  }),
 ];
 
 let closing = false;
@@ -90,4 +95,4 @@ for (const child of processes) {
   });
 }
 
-console.log(`WoodRevive Insight avviato con Claude Haiku e Python: ${python}`);
+console.log(`WoodRevive Insight + copia Manager avviati con Claude Haiku e Python: ${python}`);

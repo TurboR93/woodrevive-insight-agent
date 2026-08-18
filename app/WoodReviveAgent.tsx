@@ -8,7 +8,7 @@ type ActivityStatus = "running" | "complete" | "error";
 type AgentSource = { kind: "wiki" | "rag" | "dataset"; label: string; locator: string };
 type AgentActivity = {
   id: string;
-  kind: "routing" | "wiki" | "rag" | "pandas" | "response";
+  kind: "routing" | "wiki" | "rag" | "pandas" | "quote" | "response";
   title: string;
   detail: string;
   status: ActivityStatus;
@@ -21,16 +21,57 @@ type AnalysisArtifact = {
   chart?: { type: string; x: string; y: string; series?: string; top?: number };
   method?: string;
 };
+type QuoteArtifact = {
+  id: string;
+  number: string;
+  status: "bozza";
+  date: string;
+  expiryDate: string;
+  customerId: string;
+  customerName: string;
+  subject: string;
+  lines: Array<{
+    id: string; articleId: string; code: string; description: string; quantityMilli: number;
+    unit: string; unitPriceCents: number; discountPercent: number; taxableCents: number;
+    vatRate: number; availableMilli: number;
+  }>;
+  generalDiscountPercent: number;
+  taxableCents: number;
+  vatCents: number;
+  totalCents: number;
+  marginCents: number;
+  approvalRequired: boolean;
+  conditions: string;
+  deliveryTime: string;
+  managerPath: string;
+};
 type Message = {
   id: number;
   role: "user" | "assistant";
   text: string;
+  createdAt?: string;
+  actorId?: string;
   tool?: string;
   sources?: AgentSource[];
   warnings?: string[];
   activities?: AgentActivity[];
   artifacts?: AnalysisArtifact[];
+  quotes?: QuoteArtifact[];
   usage?: { inputTokens: number; outputTokens: number };
+};
+type DemoActor = { id: string; displayName: string; source: "demo-local" };
+type StoredConversation = {
+  id: string;
+  title: string;
+  actor: DemoActor;
+  createdAt: string;
+  updatedAt: string;
+  messages: Message[];
+};
+type ChatMemory = {
+  version: 1;
+  activeConversationId: string;
+  conversations: StoredConversation[];
 };
 type AgentResponse = {
   answer: string;
@@ -40,6 +81,7 @@ type AgentResponse = {
   warnings: string[];
   activities: AgentActivity[];
   artifacts: AnalysisArtifact[];
+  quotes: QuoteArtifact[];
   usage?: { inputTokens: number; outputTokens: number };
 };
 
@@ -50,6 +92,7 @@ const MODES: { id: Mode; label: string; note: string }[] = [
   { id: "data", label: "Dati", note: "Analisi visuale dei CSV con pandas" },
 ];
 const SUGGESTIONS = [
+  "Crea un preventivo per Atelier Arco: 20 m² di Tavola abete prima patina",
   "Mostrami il margine per categoria",
   "Quali clienti hanno importi aperti?",
   "Come gestiamo una consegna frazionata?",
@@ -60,8 +103,31 @@ const INITIAL_MESSAGES: Message[] = [{
   text: "Buongiorno. Posso **navigare la Wiki**, analizzare vendite e magazzino oppure combinare le due cose. Durante il lavoro ti mostrerò strumenti, fonti e risultati visuali.",
   tool: "Assistente pronto",
 }];
+const CHAT_MEMORY_KEY = "woodrevive.insight.chat-memory.v1";
+const DEMO_ACTOR: DemoActor = { id: "demo-user-local", displayName: "Utente demo", source: "demo-local" };
+const MAX_CONVERSATIONS = 12;
+const MAX_MESSAGES_PER_CONVERSATION = 80;
 const numberFormatter = new Intl.NumberFormat("it-IT", { maximumFractionDigits: 2 });
 const euroFormatter = new Intl.NumberFormat("it-IT", { style: "currency", currency: "EUR" });
+
+function newConversationId(): string {
+  return `conversation-${crypto.randomUUID()}`;
+}
+
+function conversationTitle(messages: Message[]): string {
+  const firstQuestion = messages.find((message) => message.role === "user")?.text.trim();
+  if (!firstQuestion) return "Nuova conversazione";
+  return firstQuestion.length > 52 ? `${firstQuestion.slice(0, 49)}…` : firstQuestion;
+}
+
+function isStoredConversation(value: unknown): value is StoredConversation {
+  if (!value || typeof value !== "object") return false;
+  const conversation = value as Partial<StoredConversation>;
+  return typeof conversation.id === "string"
+    && typeof conversation.title === "string"
+    && Array.isArray(conversation.messages)
+    && Boolean(conversation.actor?.id);
+}
 
 function inlineMarkdown(text: string, keyPrefix: string): ReactNode[] {
   const pattern = /(\*\*[^*]+\*\*|\*[^*]+\*|`[^`]+`|\[[^\]]+\]\([^)]+\))/g;
@@ -152,7 +218,7 @@ function RichText({ text }: { text: string }) {
 }
 
 function activityIcon(kind: AgentActivity["kind"]) {
-  return { routing: "⌁", wiki: "▤", rag: "◎", pandas: "▥", response: "✦" }[kind];
+  return { routing: "⌁", wiki: "▤", rag: "◎", pandas: "▥", quote: "€", response: "✦" }[kind];
 }
 
 function ActivityPanel({ activities, live = false }: { activities: AgentActivity[]; live?: boolean }) {
@@ -208,6 +274,18 @@ function AnalysisCard({ artifact }: { artifact: AnalysisArtifact }) {
   </section>;
 }
 
+function QuoteCard({ quote }: { quote: QuoteArtifact }) {
+  const marginPercent = quote.taxableCents ? quote.marginCents / quote.taxableCents * 100 : 0;
+  return <section className="quote-card">
+    <header><div className="quote-icon">€</div><div><p>PREVENTIVO DEMO · BOZZA</p><h3>{quote.number}</h3><span>{quote.customerName}</span></div><div className={`quote-check ${quote.approvalRequired ? "review" : "ok"}`}>{quote.approvalRequired ? "Da verificare" : "Controlli superati"}</div></header>
+    <div className="quote-subject"><span>Oggetto</span><strong>{quote.subject}</strong></div>
+    <div className="quote-lines">{quote.lines.map((line) => <div className="quote-line" key={line.id}><div><strong>{line.description}</strong><small>{line.code} · {numberFormatter.format(line.quantityMilli / 1000)} {line.unit}{line.discountPercent ? ` · sconto ${numberFormatter.format(line.discountPercent)}%` : ""}</small></div><strong>{euroFormatter.format(line.taxableCents / 100)}</strong></div>)}</div>
+    <div className="quote-totals"><div><span>Imponibile</span><strong>{euroFormatter.format(quote.taxableCents / 100)}</strong></div><div><span>IVA</span><strong>{euroFormatter.format(quote.vatCents / 100)}</strong></div><div className="grand-total"><span>Totale</span><strong>{euroFormatter.format(quote.totalCents / 100)}</strong></div><div><span>Margine stimato</span><strong>{euroFormatter.format(quote.marginCents / 100)} · {numberFormatter.format(marginPercent)}%</strong></div></div>
+    <div className="quote-meta"><span>Valido fino al {new Date(`${quote.expiryDate}T12:00:00`).toLocaleDateString("it-IT")}</span><span>{quote.deliveryTime}</span></div>
+    <a className="manager-open-button" href={`http://localhost:5174${quote.managerPath}`}>Apri nel gestionale demo <span>↗</span></a>
+  </section>;
+}
+
 function SourcePanel({ sources }: { sources: AgentSource[] }) {
   if (!sources.length) return null;
   return <details className="source-panel"><summary><span>Fonti consultate</span><small>{sources.length}</small></summary><div className="source-list">{sources.map((source) => <div className="source-item" key={`${source.kind}-${source.locator}`}><span className={`source-kind ${source.kind}`}>{source.kind === "dataset" ? "CSV" : source.kind.toUpperCase()}</span><span><strong>{source.label}</strong><small>{source.locator}</small></span></div>)}</div></details>;
@@ -243,6 +321,11 @@ async function readStream(response: Response, onActivity: (activity: AgentActivi
 export function WoodReviveAgent() {
   const [mode, setMode] = useState<Mode>("auto");
   const [messages, setMessages] = useState<Message[]>(INITIAL_MESSAGES);
+  const [conversationId, setConversationId] = useState("");
+  const [conversations, setConversations] = useState<StoredConversation[]>([]);
+  const [memoryReady, setMemoryReady] = useState(false);
+  const [historyOpen, setHistoryOpen] = useState(false);
+  const [memoryWarning, setMemoryWarning] = useState<string | null>(null);
   const [draft, setDraft] = useState("");
   const [isSending, setIsSending] = useState(false);
   const [liveActivities, setLiveActivities] = useState<AgentActivity[]>([]);
@@ -251,7 +334,66 @@ export function WoodReviveAgent() {
   const conversationEnd = useRef<HTMLDivElement | null>(null);
   const activeMode = useMemo(() => MODES.find((item) => item.id === mode)!, [mode]);
 
+  useEffect(() => {
+    try {
+      const parsed = JSON.parse(localStorage.getItem(CHAT_MEMORY_KEY) || "null") as Partial<ChatMemory> | null;
+      const saved = parsed?.version === 1 && Array.isArray(parsed.conversations)
+        ? parsed.conversations.filter(isStoredConversation)
+        : [];
+      const active = saved.find((conversation) => conversation.id === parsed?.activeConversationId) || saved[0];
+      if (active) {
+        setConversationId(active.id);
+        setMessages(active.messages.length ? active.messages : INITIAL_MESSAGES);
+      } else setConversationId(newConversationId());
+      setConversations(saved);
+    } catch {
+      setConversationId(newConversationId());
+      setMemoryWarning("La memoria locale non era leggibile: ho avviato una nuova conversazione.");
+    } finally {
+      setMemoryReady(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!memoryReady || !conversationId) return;
+    const now = new Date().toISOString();
+    setConversations((current) => {
+      const previous = current.find((conversation) => conversation.id === conversationId);
+      const snapshot: StoredConversation = {
+        id: conversationId,
+        title: conversationTitle(messages),
+        actor: DEMO_ACTOR,
+        createdAt: previous?.createdAt || now,
+        updatedAt: now,
+        messages: messages.slice(-MAX_MESSAGES_PER_CONVERSATION),
+      };
+      const next = [snapshot, ...current.filter((conversation) => conversation.id !== conversationId)]
+        .sort((left, right) => right.updatedAt.localeCompare(left.updatedAt))
+        .slice(0, MAX_CONVERSATIONS);
+      try {
+        const memory: ChatMemory = { version: 1, activeConversationId: conversationId, conversations: next };
+        localStorage.setItem(CHAT_MEMORY_KEY, JSON.stringify(memory));
+      } catch {
+        // La chat resta utilizzabile anche se il browser rifiuta la persistenza.
+      }
+      return next;
+    });
+  }, [conversationId, memoryReady, messages]);
+
   useEffect(() => { conversationEnd.current?.scrollIntoView({ behavior: "smooth", block: "end" }); }, [messages, isSending, liveActivities]);
+  function startNewConversation() {
+    if (isSending) abortRef.current?.abort();
+    setConversationId(newConversationId());
+    setMessages(INITIAL_MESSAGES);
+    setDraft("");
+    setHistoryOpen(false);
+  }
+  function openConversation(conversation: StoredConversation) {
+    if (isSending) return;
+    setConversationId(conversation.id);
+    setMessages(conversation.messages.length ? conversation.messages : INITIAL_MESSAGES);
+    setHistoryOpen(false);
+  }
   function updateActivity(activity: AgentActivity) {
     setLiveActivities((current) => {
       const index = current.findIndex((item) => item.id === activity.id);
@@ -261,21 +403,21 @@ export function WoodReviveAgent() {
   }
   async function send(question: string) {
     const cleanQuestion = question.trim();
-    if (!cleanQuestion || isSending) return;
+    if (!cleanQuestion || isSending || !memoryReady || !conversationId) return;
     const history = messages.map((message) => ({ role: message.role, text: message.text }));
     const nextId = (messages.at(-1)?.id ?? 0) + 1;
     const controller = new AbortController();
     abortRef.current = controller;
-    setMessages((current) => [...current, { id: nextId, role: "user", text: cleanQuestion }]);
+    setMessages((current) => [...current, { id: nextId, role: "user", text: cleanQuestion, createdAt: new Date().toISOString(), actorId: DEMO_ACTOR.id }]);
     setDraft(""); setLiveActivities([]); setIsSending(true);
     try {
       const baseUrl = process.env.NEXT_PUBLIC_ORCHESTRATOR_URL || "http://127.0.0.1:8787/api/chat";
-      const response = await fetch(baseUrl.replace(/\/api\/chat$/, "/api/chat/stream"), { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ message: cleanQuestion, mode, history }), signal: controller.signal });
+      const response = await fetch(baseUrl.replace(/\/api\/chat$/, "/api/chat/stream"), { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ message: cleanQuestion, mode, history, conversationId, actor: DEMO_ACTOR }), signal: controller.signal });
       const payload = await readStream(response, updateActivity);
-      setMessages((current) => [...current, { id: nextId + 1, role: "assistant", text: payload.answer, tool: `${payload.model?.includes("haiku") ? "Claude Haiku" : "Claude"} · ${payload.tool}`, sources: payload.sources, warnings: payload.warnings, activities: payload.activities, artifacts: payload.artifacts, usage: payload.usage }]);
+      setMessages((current) => [...current, { id: nextId + 1, role: "assistant", text: payload.answer, createdAt: new Date().toISOString(), actorId: "agent-haiku", tool: `${payload.model?.includes("haiku") ? "Claude Haiku" : "Claude"} · ${payload.tool}`, sources: payload.sources, warnings: payload.warnings, activities: payload.activities, artifacts: payload.artifacts, quotes: payload.quotes, usage: payload.usage }]);
     } catch (error) {
       const interrupted = error instanceof DOMException && error.name === "AbortError";
-      setMessages((current) => [...current, { id: nextId + 1, role: "assistant", text: interrupted ? "Elaborazione interrotta. Puoi riformulare la domanda quando vuoi." : (error instanceof Error ? error.message : "Impossibile contattare l’agente."), tool: interrupted ? "Richiesta interrotta" : "Connessione non disponibile", warnings: interrupted ? [] : ["Controlla che l’orchestratore e il servizio pandas siano avviati."] }]);
+      setMessages((current) => [...current, { id: nextId + 1, role: "assistant", text: interrupted ? "Elaborazione interrotta. Puoi riformulare la domanda quando vuoi." : (error instanceof Error ? error.message : "Impossibile contattare l’agente."), createdAt: new Date().toISOString(), actorId: "agent-haiku", tool: interrupted ? "Richiesta interrotta" : "Connessione non disponibile", warnings: interrupted ? [] : ["Controlla che l’orchestratore e il servizio pandas siano avviati."] }]);
     } finally { abortRef.current = null; setIsSending(false); setLiveActivities([]); }
   }
   function submit(event: FormEvent<HTMLFormElement>) { event.preventDefault(); void send(draft); }
@@ -284,19 +426,22 @@ export function WoodReviveAgent() {
   return <main className="agent-shell">
     <aside className="sidebar">
       <div className="brand-block"><Image className="brand-logo" src="/brand/logo-neg@2x.png" alt="Wood Revive — Ridiamo vita al legno antico" width={801} height={135} priority /><p className="brand-product">Insight agent</p></div>
-      <nav className="primary-nav" aria-label="Navigazione principale"><button className="nav-item active" type="button"><span>✦</span> Assistente</button><button className="nav-item" type="button"><span>▤</span> Knowledge base</button><button className="nav-item" type="button"><span>⌁</span> Analisi salvate</button></nav>
+      <nav className="primary-nav" aria-label="Navigazione principale"><button className="nav-item active" type="button"><span>✦</span> Assistente</button><a className="nav-item manager-switch" href="http://localhost:5174/"><span>▦</span> Gestionale demo <b>↗</b></a><button className="nav-item" type="button"><span>▤</span> Knowledge base</button><button className="nav-item" type="button"><span>⌁</span> Analisi salvate</button></nav>
       <div className="sidebar-spacer" />
       <section className="system-card" aria-label="Stato dei servizi"><p className="eyebrow">SISTEMA</p><div><span className="status-dot" /> Claude Haiku attivo</div><div><span className="status-dot" /> Wiki connessa</div><div><span className="status-dot" /> Pandas connesso</div><div><span className="status-dot planned" /> ChromaDB prossimo</div></section>
       <div className="privacy-note"><span aria-hidden="true">⌾</span><p><strong>Ambiente dimostrativo</strong><br />Solo dati anonimi</p></div>
     </aside>
     <section className="workspace">
-      <header className="workspace-header"><div><p className="eyebrow">SALES &amp; OPERATIONS</p><h1>Assistente operativo</h1></div><div className="header-meta"><span className="live-pill"><span className="status-dot" /> Agente reale · Haiku</span><div className="avatar" aria-label="WoodRevive"><Image src="/brand/favicon-192.png" alt="" width={192} height={192} /></div></div></header>
-      <div className="mode-panel"><div><p className="mode-title">Modalità di risposta</p><p className="mode-note">{activeMode.note}</p></div><div className="mode-switch" role="group" aria-label="Modalità di risposta">{MODES.map((item) => <button className={mode === item.id ? "selected" : ""} key={item.id} onClick={() => setMode(item.id)} type="button">{item.label}</button>)}</div></div>
+      <header className="workspace-header"><div><p className="eyebrow">SALES &amp; OPERATIONS</p><h1>Assistente operativo</h1></div><div className="header-meta"><button className="header-memory-link" onClick={() => setHistoryOpen((open) => !open)} type="button">◷ Cronologia <small>{conversations.length}</small></button><a className="header-manager-link" href="http://localhost:5174/">▦ Gestionale</a><span className="live-pill"><span className="status-dot" /> Agente reale · Haiku</span><div className="avatar" aria-label="WoodRevive"><Image src="/brand/favicon-192.png" alt="" width={192} height={192} /></div></div></header>
+      {historyOpen && <section className="history-panel" aria-label="Cronologia conversazioni"><header><div><p className="eyebrow">MEMORIA LOCALE</p><h2>Cronologia chat</h2><p>{DEMO_ACTOR.displayName} · salvata in questo browser</p></div><button onClick={startNewConversation} type="button">＋ Nuova chat</button></header><div className="history-list">{conversations.map((conversation) => <button className={conversation.id === conversationId ? "active" : ""} disabled={isSending} key={conversation.id} onClick={() => openConversation(conversation)} type="button"><span><strong>{conversation.title}</strong><small>{conversation.messages.filter((message) => message.role === "user").length} richieste · {new Date(conversation.updatedAt).toLocaleString("it-IT", { dateStyle: "short", timeStyle: "short" })}</small></span><b>{conversation.id === conversationId ? "Aperta" : "Apri"}</b></button>)}</div>{!conversations.length && <p className="history-empty">La prima conversazione verrà salvata automaticamente.</p>}</section>}
+      <div className="mode-panel"><div><p className="mode-title">Modalità di risposta</p><p className="mode-note">{activeMode.note}</p></div><div className="mode-memory"><span><i className="status-dot" /> Memoria locale attiva</span><button onClick={startNewConversation} type="button">＋ Nuova</button></div><div className="mode-switch" role="group" aria-label="Modalità di risposta">{MODES.map((item) => <button className={mode === item.id ? "selected" : ""} key={item.id} onClick={() => setMode(item.id)} type="button">{item.label}</button>)}</div></div>
+      {memoryWarning && <p className="memory-warning">ⓘ {memoryWarning}</p>}
       <section className="conversation" aria-live="polite">
         <div className="date-divider"><span>OGGI</span></div>
         {messages.map((message) => <article className={`message-row ${message.role}`} key={message.id}>{message.role === "assistant" && <div className="assistant-icon" aria-hidden="true">✦</div>}<div className="message-wrap">
           {message.tool && <p className="tool-label">{message.tool}</p>}
           <div className="message-bubble"><RichText text={message.text} /></div>
+          {message.quotes?.map((quote) => <QuoteCard quote={quote} key={quote.id} />)}
           {message.artifacts?.map((artifact, artifactIndex) => <AnalysisCard artifact={artifact} key={`${artifact.operation}-${artifactIndex}`} />)}
           {message.activities && message.activities.length > 0 && <ActivityPanel activities={message.activities} />}
           {message.sources && <SourcePanel sources={message.sources} />}
@@ -307,9 +452,9 @@ export function WoodReviveAgent() {
         <div ref={conversationEnd} />
       </section>
       <footer className="composer-area">
-        <div className="suggestions" aria-label="Domande suggerite">{SUGGESTIONS.map((suggestion) => <button disabled={isSending} key={suggestion} onClick={() => void send(suggestion)} type="button">{suggestion}</button>)}</div>
-        <form className="composer" onSubmit={submit}><label className="sr-only" htmlFor="question">Scrivi una domanda</label><textarea id="question" onChange={(event) => setDraft(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter" && !event.shiftKey) { event.preventDefault(); void send(draft); } }} placeholder="Chiedi alla Wiki o analizza i dati…" rows={2} value={draft} />{isSending ? <button className="stop-button" onClick={() => abortRef.current?.abort()} type="button" aria-label="Interrompi elaborazione">■</button> : <button className="send-button" disabled={!draft.trim()} type="submit" aria-label="Invia domanda">↑</button>}</form>
-        <p className="composer-hint"><span className="status-dot" /> Risposte fondate su Wiki e dati demo · attività mostrata in tempo reale</p>
+        <div className="suggestions" aria-label="Domande suggerite">{SUGGESTIONS.map((suggestion) => <button disabled={isSending || !memoryReady} key={suggestion} onClick={() => void send(suggestion)} type="button">{suggestion}</button>)}</div>
+        <form className="composer" onSubmit={submit}><label className="sr-only" htmlFor="question">Scrivi una domanda</label><textarea disabled={!memoryReady} id="question" onChange={(event) => setDraft(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter" && !event.shiftKey) { event.preventDefault(); void send(draft); } }} placeholder="Chiedi alla Wiki o analizza i dati…" rows={2} value={draft} />{isSending ? <button className="stop-button" onClick={() => abortRef.current?.abort()} type="button" aria-label="Interrompi elaborazione">■</button> : <button className="send-button" disabled={!draft.trim() || !memoryReady} type="submit" aria-label="Invia domanda">↑</button>}</form>
+        <p className="composer-hint"><span className="status-dot" /> Chat salvata per {DEMO_ACTOR.displayName} · dati demo · attività in tempo reale</p>
       </footer>
     </section>
   </main>;
