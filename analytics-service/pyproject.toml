@@ -1,0 +1,19 @@
+[project]
+name = "woodrevive-analytics"
+version = "0.1.0"
+description = "Servizio pandas per i dataset dimostrativi WoodRevive"
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi>=0.115,<1",
+  "matplotlib>=3.9,<4",
+  "pandas>=2.2,<3",
+  "pydantic>=2.9,<3",
+  "uvicorn>=0.32,<1"
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8,<9"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]

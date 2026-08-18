@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "pages": [
+    {
+      "slug": "dominio-legno-antico",
+      "title": "Dominio del legno antico",
+      "path": "dominio-legno-antico.md",
+      "tags": ["legno", "essenza", "patina", "lotto", "provenienza"],
+      "synonyms": ["partita", "prima patina", "materiale di recupero"]
+    },
+    {
+      "slug": "ciclo-commerciale",
+      "title": "Ciclo commerciale",
+      "path": "ciclo-commerciale.md",
+      "tags": ["preventivo", "ordine", "ddt", "incasso", "procedura"],
+      "synonyms": ["vendita", "consegna", "pagamento"]
+    },
+    {
+      "slug": "margini-e-prezzi",
+      "title": "Margini e prezzi",
+      "path": "margini-e-prezzi.md",
+      "tags": ["margine", "ricarico", "prezzo", "costo", "listino"],
+      "synonyms": ["marginalità", "redditività", "sconto"]
+    }
+  ]
+}

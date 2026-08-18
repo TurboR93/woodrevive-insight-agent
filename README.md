@@ -1,0 +1,90 @@
+# WoodRevive Insight
+
+Agente AI ibrido e multi-tool per l'area **Sales & Operations** di WoodRevive.
+Da un'unica conversazione risponde a domande sulla documentazione aziendale e
+analizza dati commerciali anonimi in formato CSV.
+
+Il progetto è autonomo e vive interamente in questa cartella. Non importa codice
+e non modifica i progetti WoodRevive esistenti.
+
+## Obiettivo
+
+L'agente riconosce quattro tipi di richiesta:
+
+1. **documentale RAG** — ricerca semantica in ChromaDB;
+2. **documentale Wiki** — pagine strutturate, indice, tag e ricerca lessicale,
+   senza embeddings o vector database;
+3. **numerica** — delega a un servizio Python che usa pandas sui CSV demo;
+4. **ibrida** — combina regole/documentazione e numeri nella stessa risposta.
+
+La Wiki non è soltanto un fallback. È un percorso parallelo che permette di
+confrontare RAG e navigazione strutturata per qualità, fonti, latenza e costo.
+
+## Stato attuale
+
+- interfaccia React responsive con branding ufficiale WoodRevive e modalità
+  Automatico, RAG, Wiki e Dati;
+- architettura e contratti API definiti;
+- prime pagine Wiki e corpus RAG;
+- tre dataset CSV sintetici e anonimi: vendite, magazzino e incassi;
+- orchestratore Node.js con endpoint di stato e router euristico provvisorio;
+- servizio Python/pandas con riepilogo vendite, margine per categoria e analisi
+  dei lotti a lenta rotazione;
+- build, lint, test di rendering, controllo TypeScript e funzioni pandas
+  verificati;
+- provider LLM volutamente non selezionato.
+
+La conversazione nell'interfaccia è per ora una demo locale: rende visibili le
+decisioni dell'agente, ma non chiama ancora ChromaDB o pandas.
+
+## Repository e dati
+
+La repository prevista è pubblica e si chiama **`woodrevive-insight-agent`**.
+Contiene esclusivamente dati dimostrativi sintetici. Non contiene esportazioni,
+anagrafiche, credenziali o documenti provenienti dal gestionale reale.
+
+I file grafici sotto `public/brand/` sono copie locali del marchio WoodRevive
+usate nell'interfaccia; i progetti aziendali esistenti non sono dipendenze e non
+sono stati modificati.
+
+## Struttura
+
+```text
+app/                         interfaccia React
+server/                      orchestratore Node.js
+analytics-service/           servizio Python e pandas
+knowledge/wiki/              knowledge base strutturata
+knowledge/rag-source/        corpus destinato a ChromaDB
+datasets/demo/               CSV sintetici e anonimi
+docs/                        architettura, piano e decisioni
+```
+
+## Documenti principali
+
+- [Architettura](docs/ARCHITETTURA.md)
+- [Piano di sviluppo](docs/PIANO.md)
+- [Decisioni](docs/DECISIONI.md)
+- [Dataset e KPI](docs/DATI-E-KPI.md)
+- [Scenari di prova](docs/SCENARI-DEMO.md)
+- [Stato del progetto](docs/STATO-PROGETTO.md)
+
+## Avvio della sola interfaccia
+
+Richiede Node.js 22.13 o successivo.
+
+```bash
+npm install
+npm run dev
+```
+
+La configurazione completa dei tre servizi verrà aggiunta nella fase di
+integrazione, dopo la scelta del provider LLM.
+
+## Verifiche disponibili
+
+```bash
+npm run build
+npm run lint
+npm test
+./node_modules/.bin/tsc -p server/tsconfig.json --noEmit
+```

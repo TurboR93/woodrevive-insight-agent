@@ -1,0 +1,13 @@
+data,ordine_id,cliente_id,canale,articolo_id,categoria,essenza,quantita_milli,unita_misura,ricavo_cents,costo_cents
+2026-01-18,ORD-DEMO-001,CLI-DEMO-01,architetto,ART-DEMO-01,pavimento,rovere,32000,mq,704000,435200
+2026-02-03,ORD-DEMO-002,CLI-DEMO-02,impresa,ART-DEMO-02,tavola,abete,85000,mq,935000,603500
+2026-02-22,ORD-DEMO-003,CLI-DEMO-03,privato,ART-DEMO-03,rivestimento,larice,28000,mq,448000,266000
+2026-03-11,ORD-DEMO-004,CLI-DEMO-04,rivenditore,ART-DEMO-04,perlinato,abete,120000,mq,1080000,756000
+2026-03-26,ORD-DEMO-005,CLI-DEMO-01,architetto,ART-DEMO-05,pannello,rovere,24000,mq,576000,345600
+2026-04-09,ORD-DEMO-006,CLI-DEMO-05,hotel,ART-DEMO-01,pavimento,rovere,76000,mq,1672000,1033600
+2026-04-28,ORD-DEMO-007,CLI-DEMO-06,privato,ART-DEMO-06,lamella,abete,18000,mq,234000,140400
+2026-05-14,ORD-DEMO-008,CLI-DEMO-02,impresa,ART-DEMO-03,rivestimento,larice,64000,mq,1024000,608000
+2026-05-30,ORD-DEMO-009,CLI-DEMO-07,showroom,ART-DEMO-07,travatura,castagno,21000,ml,819000,532350
+2026-06-16,ORD-DEMO-010,CLI-DEMO-04,rivenditore,ART-DEMO-02,tavola,abete,95000,mq,1045000,674500
+2026-07-04,ORD-DEMO-011,CLI-DEMO-08,architetto,ART-DEMO-08,mobile,olmo,2000,pz,460000,253000
+2026-07-27,ORD-DEMO-012,CLI-DEMO-05,hotel,ART-DEMO-05,pannello,rovere,47000,mq,1128000,676800

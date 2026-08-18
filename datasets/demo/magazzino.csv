@@ -1,0 +1,9 @@
+articolo_id,lotto_id,categoria,essenza,patina,giacenza_milli,impegnato_milli,unita_misura,costo_medio_cents,prezzo_listino_cents,data_carico,ubicazione
+ART-DEMO-01,LOT-DEMO-01,pavimento,rovere,prima_patina,44000,12000,mq,13600,22000,2026-01-08,A-01
+ART-DEMO-02,LOT-DEMO-02,tavola,abete,grigio,180000,35000,mq,7100,11000,2025-10-19,A-03
+ART-DEMO-03,LOT-DEMO-03,rivestimento,larice,bruciato_dal_sole,52000,8000,mq,9500,16000,2025-07-12,B-02
+ART-DEMO-04,LOT-DEMO-04,perlinato,abete,seconda_patina,240000,20000,mq,6300,9000,2026-02-14,A-05
+ART-DEMO-05,LOT-DEMO-05,pannello,rovere,naturale,69000,15000,mq,14400,24000,2026-03-05,B-04
+ART-DEMO-06,LOT-DEMO-06,lamella,abete,spazzolato,90000,0,mq,7800,13000,2024-11-21,C-01
+ART-DEMO-07,LOT-DEMO-07,travatura,castagno,prima_patina,36000,6000,ml,25350,39000,2025-12-02,C-03
+ART-DEMO-08,LOT-DEMO-08,mobile,olmo,naturale,5000,1000,pz,126500,230000,2026-04-18,S-01
