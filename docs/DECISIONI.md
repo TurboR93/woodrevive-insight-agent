@@ -44,7 +44,8 @@ caricato o modificato a runtime.
 
 ## D-009 — Repository pubblica
 
-**Decisione:** il progetto viene pubblicato come `woodrevive-insight-agent`.
+**Decisione:** il progetto è pubblicato come
+`TurboR93/woodrevive-insight-agent` su GitHub.
 La repository può essere pubblica perché contiene esclusivamente contenuti e
 dati dimostrativi anonimi. File `.env`, output locali, build e dipendenze sono
 esclusi dal versionamento.

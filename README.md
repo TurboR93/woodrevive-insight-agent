@@ -39,7 +39,7 @@ decisioni dell'agente, ma non chiama ancora ChromaDB o pandas.
 
 ## Repository e dati
 
-La repository prevista è pubblica e si chiama **`woodrevive-insight-agent`**.
+La repository è pubblica: [TurboR93/woodrevive-insight-agent](https://github.com/TurboR93/woodrevive-insight-agent).
 Contiene esclusivamente dati dimostrativi sintetici. Non contiene esportazioni,
 anagrafiche, credenziali o documenti provenienti dal gestionale reale.
 

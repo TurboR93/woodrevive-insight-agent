@@ -51,5 +51,8 @@ pandas all'orchestratore. La scelta di LLM ed embedding arriva subito dopo.
 
 - nome repository: `woodrevive-insight-agent`;
 - visibilità: pubblica;
+- URL: `https://github.com/TurboR93/woodrevive-insight-agent`;
+- branch predefinito: `main`;
+- stato: pubblicata il 2026-08-18;
 - contenuti: codice, documentazione, branding locale e soli dati demo;
 - dati reali WoodRevive: esclusi.
