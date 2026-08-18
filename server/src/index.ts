@@ -1,5 +1,5 @@
 import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
-import type { ChatRequest, ChatResponse } from "./contracts/chat.js";
+import type { AgentActivity, ChatRequest, ChatResponse } from "./contracts/chat.js";
 import { runAgent } from "./agent/orchestrator.js";
 import { AnthropicError, AnthropicProvider } from "./providers/llm.js";
 
@@ -18,6 +18,20 @@ async function readJson(request: IncomingMessage): Promise<unknown> {
   const chunks: Buffer[] = [];
   for await (const chunk of request) chunks.push(Buffer.from(chunk));
   return JSON.parse(Buffer.concat(chunks).toString("utf8"));
+}
+
+function startEventStream(response: ServerResponse) {
+  response.writeHead(200, {
+    "content-type": "text/event-stream; charset=utf-8",
+    "cache-control": "no-cache, no-transform",
+    "connection": "keep-alive",
+    "access-control-allow-origin": "http://localhost:3000",
+  });
+  response.flushHeaders();
+}
+
+function sendEvent(response: ServerResponse, event: "activity" | "result" | "error", data: unknown) {
+  response.write(`event: ${event}\ndata: ${JSON.stringify(data)}\n\n`);
 }
 
 function isChatRequest(value: unknown): value is ChatRequest {
@@ -68,6 +82,37 @@ const server = createServer(async (request, response) => {
         return json(response, 502, { error: `Claude Haiku non disponibile: ${error.message}` });
       }
       return json(response, 500, { error: error instanceof Error ? error.message : "Errore interno dell'agente." });
+    }
+  }
+
+  if (request.method === "POST" && request.url === "/api/chat/stream") {
+    let streamStarted = false;
+    try {
+      const body = await readJson(request);
+      if (!isChatRequest(body) || !body.message.trim()) {
+        return json(response, 400, { error: "Il campo message è obbligatorio." });
+      }
+
+      const apiKey = process.env.ANTHROPIC_API_KEY;
+      if (!apiKey) return json(response, 503, { error: "ANTHROPIC_API_KEY non configurata nel server." });
+      startEventStream(response);
+      streamStarted = true;
+      const provider = new AnthropicProvider(apiKey);
+      const result = await runAgent(body, provider, (activity: AgentActivity) => {
+        sendEvent(response, "activity", activity);
+      });
+      sendEvent(response, "result", result);
+      response.end();
+      return;
+    } catch (error) {
+      console.error("Streaming chat error:", error instanceof Error ? error.message : "unknown");
+      const message = error instanceof Error ? error.message : "Errore interno dell’agente.";
+      if (streamStarted) {
+        sendEvent(response, "error", { error: message });
+        response.end();
+        return;
+      }
+      return json(response, error instanceof SyntaxError ? 400 : 500, { error: message });
     }
   }
 

@@ -13,7 +13,8 @@ salvata nei log o inclusa nella repository.
 3. Node esegue localmente Wiki, corpus RAG o servizio pandas;
 4. risultati e riferimenti tornano a Haiku come `tool_result`;
 5. Haiku può usare altri strumenti oppure produrre la risposta finale;
-6. l'interfaccia mostra modello, strumenti, fonti ed eventuali avvisi.
+6. il backend invia in tempo reale eventi sintetici su routing e strumenti;
+7. l'interfaccia mostra risposta formattata, fonti, avvisi e risultati visuali.
 
 Il ciclo è limitato a cinque passaggi per evitare loop e costi incontrollati.
 Nessun codice proposto dal modello viene eseguito: può scegliere soltanto tool e
@@ -37,6 +38,19 @@ l'indice senza leggere almeno una pagina.
 riepilogo vendite, margine per categoria, stock lento, esposizione clienti,
 volumi transazionali, concentrazione fornitori ed evasione ordini. Il modello
 non può eseguire Python arbitrario né scegliere percorsi file.
+
+## Esperienza conversazionale
+
+L'endpoint `/api/chat/stream` usa Server-Sent Events su una richiesta `POST`.
+Durante l'elaborazione comunica l'avvio e il completamento di routing, ricerca
+Wiki, lettura pagine, retrieval RAG, calcoli pandas e composizione. Sono eventi
+operativi sintetici: non contengono il ragionamento privato del modello.
+
+Il client interpreta il Markdown senza inserire HTML prodotto dal modello e
+presenta titoli, elenchi, enfasi e tabelle in modo accessibile. I risultati
+pandas conservano inoltre il payload strutturato del microservizio per mostrare
+KPI, grafici HTML/CSS, tabelle espandibili e metodo di calcolo. La richiesta può
+essere interrotta dall'utente mentre è in corso.
 
 ## RAG
 

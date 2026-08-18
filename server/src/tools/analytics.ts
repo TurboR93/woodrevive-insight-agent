@@ -1,4 +1,4 @@
-import type { SourceReference } from "../contracts/chat.js";
+import type { AnalysisArtifact, SourceReference } from "../contracts/chat.js";
 import type { ToolEvidence } from "./knowledge.js";
 
 export const DATA_OPERATIONS = [
@@ -53,5 +53,13 @@ export async function analyzeData(input: {
     content: JSON.stringify(result, null, 2),
     sources,
     warnings: ["Analisi calcolata su dati sintetici e anonimi."],
+    artifact: {
+      operation: input.operation,
+      summary: typeof result.summary === "string" ? result.summary : undefined,
+      metrics: Array.isArray(result.metrics) ? result.metrics as AnalysisArtifact["metrics"] : undefined,
+      table: result.table && typeof result.table === "object" ? result.table as AnalysisArtifact["table"] : undefined,
+      chart: result.chart && typeof result.chart === "object" ? result.chart as AnalysisArtifact["chart"] : undefined,
+      method: typeof result.method === "string" ? result.method : undefined,
+    },
   };
 }

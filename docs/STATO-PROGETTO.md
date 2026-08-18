@@ -12,7 +12,10 @@ retrieval sul corpus RAG, Wiki strutturata e analisi CSV con pandas.
 
 - interfaccia React responsive con logo e favicon WoodRevive;
 - selettore Automatico, RAG, Wiki e Dati;
-- conversazione reale con indicazione di modello, strumento e fonti;
+- conversazione reale con streaming delle attività, indicazione di modello,
+  strumenti, fonti e pulsante di interruzione;
+- rendering sicuro di Markdown e risultati pandas con KPI, grafici responsivi,
+  tabelle espandibili e metodo di calcolo;
 - orchestratore Node.js con Claude Haiku 4.5 e ciclo di tool use multi-pass;
 - contratto strutturato per routing e risposte;
 - router euristico conservato come riferimento deterministico;
@@ -28,8 +31,8 @@ retrieval sul corpus RAG, Wiki strutturata e analisi CSV con pandas.
 ## Cosa è ancora dimostrativo
 
 - ChromaDB, embedding e pipeline di ingestione non sono ancora configurati;
-- il servizio pandas non genera ancora file grafici, ma restituisce specifiche
-  grafico, tabelle, metriche e metodo;
+- i grafici sono visualizzazioni web interattive derivate dai risultati pandas;
+  non sono ancora esportabili come file PNG o PDF;
 - la modalità di confronto usa già corpus RAG e Wiki, ma il lato RAG non è
   ancora vettoriale.
 

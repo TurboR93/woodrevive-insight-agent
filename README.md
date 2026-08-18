@@ -37,6 +37,10 @@ confrontare RAG e navigazione strutturata per qualità, fonti, latenza e costo.
 - navigazione Wiki multi-pass: indice, tag, sinonimi, sezioni, link e lettura
   autonoma delle pagine scelte da Haiku;
 - microservizio FastAPI/pandas collegato con sette operazioni ammesse;
+- chat progressiva con attività degli strumenti in tempo reale, Markdown
+  formattato, fonti espandibili e interruzione della richiesta;
+- risultati pandas multimodali con KPI, grafici responsivi, tabelle esplorabili
+  e metodo di calcolo;
 - servizio Python/pandas con riepilogo vendite, margine per categoria e analisi
   dei lotti a lenta rotazione;
 - build, lint, test di rendering, controllo TypeScript e funzioni pandas
@@ -44,7 +48,9 @@ confrontare RAG e navigazione strutturata per qualità, fonti, latenza e costo.
 - retrieval RAG locale operativo sul corpus canonico; ChromaDB vettoriale resta
   il prossimo incremento.
 
-La conversazione nell'interfaccia chiama l'orchestratore reale. La chiave API
+La conversazione nell'interfaccia chiama l'orchestratore reale via event stream.
+La traccia mostra azioni e strumenti, senza esporre ragionamenti interni del
+modello. La chiave API
 resta esclusivamente nel backend locale e `.env.local` è ignorato da Git.
 
 ## Repository e dati

@@ -28,12 +28,50 @@ export interface SourceReference {
   locator: string;
 }
 
+export interface AgentActivity {
+  id: string;
+  kind: "routing" | "wiki" | "rag" | "pandas" | "response";
+  title: string;
+  detail: string;
+  status: "running" | "complete" | "error";
+}
+
+export interface AnalysisMetric {
+  label: string;
+  value: number;
+  unit: "cents" | "%" | "count" | string;
+}
+
+export interface AnalysisTable {
+  columns: string[];
+  rows: Array<Record<string, string | number | null>>;
+}
+
+export interface AnalysisChart {
+  type: "bar" | "stacked_bar" | string;
+  x: string;
+  y: string;
+  series?: string;
+  top?: number;
+}
+
+export interface AnalysisArtifact {
+  operation: string;
+  summary?: string;
+  metrics?: AnalysisMetric[];
+  table?: AnalysisTable;
+  chart?: AnalysisChart;
+  method?: string;
+}
+
 export interface ChatResponse {
   answer: string;
   plan: ToolPlan;
   tool: string;
   sources: SourceReference[];
   warnings: string[];
+  activities: AgentActivity[];
+  artifacts: AnalysisArtifact[];
   model?: string;
   usage?: {
     inputTokens: number;

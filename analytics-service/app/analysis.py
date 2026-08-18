@@ -39,6 +39,7 @@ def margin_by_category() -> dict:
             "columns": grouped.columns.tolist(),
             "rows": grouped.to_dict(orient="records"),
         },
+        "chart": {"type": "bar", "x": "categoria", "y": "margine_cents"},
         "method": "Raggruppamento per categoria e differenza tra ricavo e costo.",
         "warnings": ["Dataset sintetico e anonimo."],
     }

@@ -1,4 +1,6 @@
 import type {
+  AgentActivity,
+  AnalysisArtifact,
   ChatRequest,
   ChatResponse,
   DataOperation,
@@ -83,6 +85,33 @@ Mantieni rigorosamente distinti: giacenza fisica = carichi - scarichi; impegnato
 Tutti i dati sono sintetici: ricordalo quando presenti risultati numerici.
 Nella risposta finale sii chiaro e operativo. Per i numeri indica periodo, formula/metodo e unità; converti i centesimi in euro leggibili.
 Non citare conoscenze generiche del modello come se fossero documentazione WoodRevive.`;
+
+type ActivityReporter = (activity: AgentActivity) => void | Promise<void>;
+
+function activityFor(call: AnthropicToolUseBlock, status: AgentActivity["status"]): AgentActivity {
+  const operation = typeof call.input.operation === "string" ? call.input.operation : "analisi richiesta";
+  const slugs = Array.isArray(call.input.slugs) ? call.input.slugs.filter((slug) => typeof slug === "string").join(", ") : "";
+  if (call.name === "wiki_search") return {
+    id: call.id, kind: "wiki", status,
+    title: "Esplorazione della Wiki",
+    detail: status === "running" ? "Cerco pagine, tag e collegamenti pertinenti." : "Indice Wiki consultato e candidati selezionati.",
+  };
+  if (call.name === "wiki_read") return {
+    id: call.id, kind: "wiki", status,
+    title: "Lettura delle pagine",
+    detail: status === "running" ? `Apro le sezioni utili${slugs ? `: ${slugs}` : ""}.` : "Sezioni rilevanti acquisite dalla Wiki.",
+  };
+  if (call.name === "rag_search") return {
+    id: call.id, kind: "rag", status,
+    title: "Ricerca nel corpus RAG",
+    detail: status === "running" ? "Recupero i passaggi più affini alla domanda." : "Passaggi documentali recuperati dal corpus.",
+  };
+  return {
+    id: call.id, kind: "pandas", status,
+    title: "Analisi dei dati",
+    detail: status === "running" ? `Pandas sta eseguendo: ${operation}.` : `Calcolo ${operation} completato sui CSV demo.`,
+  };
+}
 
 function toolChoiceFor(request: ChatRequest) {
   if (request.mode === "wiki") return { type: "tool" as const, name: "wiki_search" };
@@ -172,7 +201,11 @@ function uniqueSources(sources: SourceReference[]): SourceReference[] {
   return [...new Map(sources.map((source) => [`${source.kind}:${source.locator}`, source])).values()];
 }
 
-export async function runAgent(request: ChatRequest, provider: AnthropicProvider): Promise<ChatResponse> {
+export async function runAgent(
+  request: ChatRequest,
+  provider: AnthropicProvider,
+  reportActivity?: ActivityReporter,
+): Promise<ChatResponse> {
   const messageLog = buildConversation(request);
   const requiresCompare = request.mode === "compare"
     || /confronta(?:re)?\s+(?:la\s+)?(?:risposta\s+)?rag.*wiki|wiki.*rag/i.test(request.message);
@@ -181,9 +214,22 @@ export async function runAgent(request: ChatRequest, provider: AnthropicProvider
     : `Modalità richiesta: ${request.mode || "auto"}.`;
   const allCalls: AnthropicToolUseBlock[] = [];
   const allExecutions: Array<{ evidence: ToolEvidence; isError: boolean }> = [];
+  const activities: AgentActivity[] = [];
+  const report = async (activity: AgentActivity) => {
+    const index = activities.findIndex((item) => item.id === activity.id);
+    if (index >= 0) activities[index] = activity;
+    else activities.push(activity);
+    await reportActivity?.(activity);
+  };
   let inputTokens = 0;
   let outputTokens = 0;
   let answer = "";
+
+  await report({
+    id: "routing", kind: "routing", status: "running",
+    title: "Interpretazione della richiesta",
+    detail: "Haiku sta scegliendo il percorso e gli strumenti più adatti.",
+  });
 
   for (let step = 0; step < 5; step += 1) {
     const response = await provider.createMessage({
@@ -196,6 +242,13 @@ export async function runAgent(request: ChatRequest, provider: AnthropicProvider
     inputTokens += response.usage.input_tokens;
     outputTokens += response.usage.output_tokens;
     const calls = response.content.filter(asToolUse);
+    if (step === 0) await report({
+      id: "routing", kind: "routing", status: "complete",
+      title: "Percorso definito",
+      detail: calls.length
+        ? `Haiku ha selezionato ${[...new Set(calls.map((call) => call.name))].join(", ")}.`
+        : "Haiku ha verificato il contesto disponibile.",
+    });
     if (!calls.length) {
       const text = response.content.filter((block) => block.type === "text").map((block) => block.text).join("\n").trim();
       const names = allCalls.map((call) => call.name);
@@ -215,7 +268,12 @@ export async function runAgent(request: ChatRequest, provider: AnthropicProvider
       break;
     }
 
-    const executions = await Promise.all(calls.map((call) => executeTool(call, request.message)));
+    const executions = await Promise.all(calls.map(async (call) => {
+      await report(activityFor(call, "running"));
+      const execution = await executeTool(call, request.message);
+      await report(activityFor(call, execution.isError ? "error" : "complete"));
+      return execution;
+    }));
     allCalls.push(...calls);
     allExecutions.push(...executions);
     messageLog.push({ role: "assistant", content: response.content });
@@ -231,6 +289,11 @@ export async function runAgent(request: ChatRequest, provider: AnthropicProvider
   }
 
   if (!answer) {
+    await report({
+      id: "response", kind: "response", status: "running",
+      title: "Composizione della risposta",
+      detail: "Organizzo evidenze, numeri e indicazioni operative.",
+    });
     const final = await provider.createMessage({
       system: SYSTEM_PROMPT,
       messages: messageLog,
@@ -243,6 +306,12 @@ export async function runAgent(request: ChatRequest, provider: AnthropicProvider
     answer = final.content.filter((block) => block.type === "text").map((block) => block.text).join("\n").trim();
   }
   if (!answer) throw new Error("Claude non ha restituito una risposta testuale.");
+
+  await report({
+    id: "response", kind: "response", status: "complete",
+    title: "Risposta pronta",
+    detail: "Contenuti composti usando soltanto le evidenze raccolte.",
+  });
 
   const names = allCalls.map((call) => call.name);
   const dataCall = allCalls.find((call) => call.name === "analyze_data");
@@ -263,6 +332,10 @@ export async function runAgent(request: ChatRequest, provider: AnthropicProvider
     tool: [...new Set(names.map((name) => name.startsWith("wiki_") ? "wiki" : name === "rag_search" ? "rag" : "pandas"))].join(" + "),
     sources: uniqueSources(allExecutions.flatMap((execution) => execution.evidence.sources)),
     warnings: [...new Set(allExecutions.flatMap((execution) => execution.evidence.warnings))],
+    activities,
+    artifacts: allExecutions
+      .map((execution) => execution.evidence.artifact)
+      .filter((artifact): artifact is AnalysisArtifact => Boolean(artifact)),
     model: provider.model,
     usage: {
       inputTokens,
