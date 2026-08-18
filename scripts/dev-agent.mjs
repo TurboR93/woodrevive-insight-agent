@@ -5,6 +5,35 @@ import { resolve } from "node:path";
 import { spawn } from "node:child_process";
 
 const root = resolve(import.meta.dirname, "..");
+const bundledNode = resolve(
+  homedir(),
+  ".cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+);
+
+const currentNodeMajor = Number(process.versions.node.split(".")[0]);
+if (currentNodeMajor < 22 && !process.env.WOODREVIVE_NODE_RELAUNCHED) {
+  try {
+    await access(bundledNode, constants.X_OK);
+    console.log(`Node ${process.versions.node} rilevato: riavvio automatico con il runtime compatibile.`);
+    const relaunched = spawn(
+      bundledNode,
+      [...process.execArgv, ...process.argv.slice(1)],
+      {
+        cwd: root,
+        env: { ...process.env, WOODREVIVE_NODE_RELAUNCHED: "1" },
+        stdio: "inherit",
+      },
+    );
+    const exit = await new Promise((resolveExit) => {
+      relaunched.once("error", () => resolveExit(1));
+      relaunched.once("exit", (code, signal) => resolveExit(signal ? 1 : (code ?? 1)));
+    });
+    process.exit(exit);
+  } catch {
+    console.error("WoodRevive Insight richiede Node.js 22 o successivo.");
+    process.exit(1);
+  }
+}
 
 async function firstExecutable(candidates) {
   for (const candidate of candidates) {
