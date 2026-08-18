@@ -5,18 +5,19 @@ Aggiornato al 2026-08-18.
 ## Sintesi
 
 La fase di fondazione di **WoodRevive Insight** è completata. Esiste una base
-locale verificata per un agente ibrido Sales & Operations con tre strumenti:
-RAG su ChromaDB, Wiki strutturata e analisi CSV con pandas.
+locale verificata per un agente ibrido Sales & Operations con Claude Haiku,
+retrieval sul corpus RAG, Wiki strutturata e analisi CSV con pandas.
 
 ## Cosa funziona
 
 - interfaccia React responsive con logo e favicon WoodRevive;
 - selettore Automatico, RAG, Wiki e Dati;
-- conversazione dimostrativa con indicazione dello strumento e delle fonti;
-- orchestratore Node.js avviabile con endpoint `/health`;
+- conversazione reale con indicazione di modello, strumento e fonti;
+- orchestratore Node.js con Claude Haiku 4.5 e ciclo di tool use multi-pass;
 - contratto strutturato per routing e risposte;
-- router euristico usato come fallback temporaneo;
-- funzioni pandas per riepilogo vendite, margini e giacenze lente;
+- router euristico conservato come riferimento deterministico;
+- navigazione Wiki intelligente con ricerca indice e lettura pagine;
+- sette funzioni pandas collegate all'orchestratore tramite FastAPI;
 - 23 CSV sintetici e relazionali con 24 clienti aziendali, 10 fornitori,
   24 articoli, 16 lotti e 190 eventi;
 - generatore deterministico, manifest e controlli di coerenza;
@@ -26,12 +27,11 @@ RAG su ChromaDB, Wiki strutturata e analisi CSV con pandas.
 
 ## Cosa è ancora dimostrativo
 
-- la chat non chiama ancora l'orchestratore Node.js;
-- il router non usa ancora un LLM;
-- la ricerca Wiki non è ancora implementata;
 - ChromaDB, embedding e pipeline di ingestione non sono ancora configurati;
-- il servizio pandas non genera ancora grafici e non è collegato alla chat;
-- la modalità di confronto RAG/Wiki è definita ma non ancora eseguita.
+- il servizio pandas non genera ancora file grafici, ma restituisce specifiche
+  grafico, tabelle, metriche e metodo;
+- la modalità di confronto usa già corpus RAG e Wiki, ma il lato RAG non è
+  ancora vettoriale.
 
 ## Verifiche completate
 
@@ -45,13 +45,15 @@ RAG su ChromaDB, Wiki strutturata e analisi CSV con pandas.
 | Riproducibilità dei 23 CSV | superata |
 | Coerenza relazionale e totali | 11 controlli su 11 superati |
 | Parità corpus RAG/Wiki | 13 pagine su 13 allineate |
+| Chiamata reale Claude Haiku | superata |
+| Navigazione Wiki ricerca → lettura | superata |
+| Domanda ibrida Wiki + pandas | superata |
 | Ricerca credenziali e dati reali | nessun contenuto sensibile trovato |
 
 ## Prossimo incremento consigliato
 
-Implementare la ricerca lessicale della **Wiki operativa** e collegare le nuove
-operazioni pandas all'orchestratore. La base informativa e il dataset sono ora
-abbastanza ricchi per costruire il set di valutazione RAG/Wiki/dati.
+Costruire il set di valutazione RAG/Wiki/dati e aggiungere ChromaDB con un
+modello di embedding, mantenendo identico il corpus già sincronizzato.
 
 ## Pubblicazione
 

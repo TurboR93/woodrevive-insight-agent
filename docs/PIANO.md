@@ -47,13 +47,14 @@
 
 **Uscita:** percorso RAG interrogabile sullo stesso dominio della Wiki.
 
-## Fase 4 — Orchestrazione LLM
+## Fase 4 — Orchestrazione LLM (prima versione operativa)
 
-- scegliere provider e modello;
-- implementare output strutturato del router;
-- gestire richieste documentali, numeriche e ibride;
-- aggiungere memoria conversazionale limitata;
-- introdurre fallback, timeout e gestione errori.
+- [x] scegliere Anthropic e Claude Haiku 4.5;
+- [x] implementare tool use strutturato e ciclo agentico limitato;
+- [x] gestire richieste documentali, numeriche e ibride;
+- [x] aggiungere memoria conversazionale limitata agli ultimi turni;
+- [x] introdurre timeout, limiti e gestione errori;
+- [ ] aggiungere retry selettivo e telemetria costi/latenza.
 
 **Uscita:** modalità Automatica realmente decisionale.
 

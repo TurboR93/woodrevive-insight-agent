@@ -7,6 +7,10 @@ export interface ChatRequest {
   message: string;
   mode?: ChatMode;
   conversationId?: string;
+  history?: Array<{
+    role: "user" | "assistant";
+    text: string;
+  }>;
 }
 
 export interface ToolPlan {
@@ -30,4 +34,9 @@ export interface ChatResponse {
   tool: string;
   sources: SourceReference[];
   warnings: string[];
+  model?: string;
+  usage?: {
+    inputTokens: number;
+    outputTokens: number;
+  };
 }

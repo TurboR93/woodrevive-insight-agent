@@ -109,6 +109,12 @@ h1 { margin: 0; font: 500 29px/1.1 Georgia, "Times New Roman", serif; letter-spa
 .message-row.user .message-bubble { border-color: var(--forest); border-radius: 15px 4px 15px 15px; background: var(--forest); color: white; box-shadow: none; }
 .source-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
 .source-row span { padding: 5px 8px; border: 1px solid #d9ddd4; border-radius: 7px; background: rgba(255,255,255,.54); color: var(--muted); font-size: 9px; }
+.message-warning { margin: 7px 3px 0; color: #8b6e46; font-size: 9px; line-height: 1.45; }
+.message-bubble.thinking { display: flex; gap: 5px; width: 62px; min-height: 47px; align-items: center; }
+.message-bubble.thinking span { width: 6px; height: 6px; border-radius: 50%; background: var(--moss); animation: thinking-pulse 1.2s infinite ease-in-out; }
+.message-bubble.thinking span:nth-child(2) { animation-delay: .16s; }
+.message-bubble.thinking span:nth-child(3) { animation-delay: .32s; }
+@keyframes thinking-pulse { 0%, 70%, 100% { opacity: .25; transform: translateY(0); } 35% { opacity: 1; transform: translateY(-3px); } }
 
 .composer-area { padding: 0 46px 28px; }
 .suggestions { display: flex; justify-content: center; flex-wrap: wrap; gap: 7px; width: min(920px, 100%); margin: 0 auto 10px; }
@@ -117,6 +123,7 @@ h1 { margin: 0; font: 500 29px/1.1 Georgia, "Times New Roman", serif; letter-spa
   color: var(--muted); font-size: 10px; cursor: pointer;
 }
 .suggestions button:hover { border-color: #a8b7a8; color: var(--forest); }
+.suggestions button:disabled { opacity: .45; cursor: default; }
 .composer {
   display: flex; align-items: flex-end; gap: 12px; width: min(920px, 100%); margin: 0 auto;
   padding: 12px 12px 12px 17px; border: 1px solid #cfd2c9; border-radius: 16px;

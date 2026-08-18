@@ -1,8 +1,9 @@
 import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
 import type { ChatRequest, ChatResponse } from "./contracts/chat.js";
-import { createHeuristicPlan } from "./router/heuristic-planner.js";
+import { runAgent } from "./agent/orchestrator.js";
+import { AnthropicError, AnthropicProvider } from "./providers/llm.js";
 
-const port = Number(process.env.PORT ?? 8787);
+const port = Number(process.env.ORCHESTRATOR_PORT ?? process.env.PORT ?? 8787);
 
 function json(response: ServerResponse, status: number, body: unknown) {
   response.writeHead(status, {
@@ -21,13 +22,31 @@ async function readJson(request: IncomingMessage): Promise<unknown> {
 
 function isChatRequest(value: unknown): value is ChatRequest {
   if (!value || typeof value !== "object") return false;
-  return typeof (value as { message?: unknown }).message === "string";
+  const candidate = value as { message?: unknown; mode?: unknown; history?: unknown };
+  if (typeof candidate.message !== "string" || candidate.message.length > 8_000) return false;
+  if (candidate.mode !== undefined && !["auto", "rag", "wiki", "data", "compare"].includes(String(candidate.mode))) return false;
+  return candidate.history === undefined || Array.isArray(candidate.history);
 }
 
 const server = createServer(async (request, response) => {
   if (request.method === "OPTIONS") return json(response, 204, {});
   if (request.method === "GET" && request.url === "/health") {
-    return json(response, 200, { status: "ok", provider: "heuristic-mock" });
+    const configured = Boolean(process.env.ANTHROPIC_API_KEY);
+    let analytics = false;
+    try {
+      const result = await fetch(`${process.env.ANALYTICS_URL || "http://127.0.0.1:8001"}/health`, {
+        signal: AbortSignal.timeout(1_500),
+      });
+      analytics = result.ok;
+    } catch {
+      analytics = false;
+    }
+    return json(response, configured ? 200 : 503, {
+      status: configured ? "ok" : "configuration_required",
+      provider: "anthropic",
+      model: process.env.ANTHROPIC_MODEL || "claude-haiku-4-5-20251001",
+      tools: { wiki: true, ragCorpus: true, pandas: analytics },
+    });
   }
 
   if (request.method === "POST" && request.url === "/api/chat") {
@@ -37,17 +56,18 @@ const server = createServer(async (request, response) => {
         return json(response, 400, { error: "Il campo message è obbligatorio." });
       }
 
-      const plan = createHeuristicPlan(body);
-      const result: ChatResponse = {
-        answer: "Piano creato. I connettori Wiki, RAG e pandas saranno collegati nelle prossime fasi.",
-        plan,
-        tool: plan.intent === "data" ? "pandas" : plan.documentStrategy,
-        sources: [],
-        warnings: ["Risposta del provider mock: nessuna fonte è stata ancora interrogata."],
-      };
+      const apiKey = process.env.ANTHROPIC_API_KEY;
+      if (!apiKey) return json(response, 503, { error: "ANTHROPIC_API_KEY non configurata nel server." });
+      const provider = new AnthropicProvider(apiKey);
+      const result: ChatResponse = await runAgent(body, provider);
       return json(response, 200, result);
-    } catch {
-      return json(response, 400, { error: "Corpo JSON non valido." });
+    } catch (error) {
+      console.error("Chat error:", error instanceof Error ? error.message : "unknown");
+      if (error instanceof SyntaxError) return json(response, 400, { error: "Corpo JSON non valido." });
+      if (error instanceof AnthropicError) {
+        return json(response, 502, { error: `Claude Haiku non disponibile: ${error.message}` });
+      }
+      return json(response, 500, { error: error instanceof Error ? error.message : "Errore interno dell'agente." });
     }
   }
 

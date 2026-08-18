@@ -11,7 +11,8 @@ e non modifica i progetti WoodRevive esistenti.
 
 L'agente riconosce quattro tipi di richiesta:
 
-1. **documentale RAG** — ricerca semantica in ChromaDB;
+1. **documentale RAG** — retrieval sul corpus canonico, predisposto per la
+   successiva indicizzazione semantica in ChromaDB;
 2. **documentale Wiki** — pagine strutturate, indice, tag e ricerca lessicale,
    senza embeddings o vector database;
 3. **numerica** — delega a un servizio Python che usa pandas sui CSV demo;
@@ -31,15 +32,20 @@ confrontare RAG e navigazione strutturata per qualità, fonti, latenza e costo.
   pagamenti e scadenze;
 - 23 CSV con chiavi collegate, più viste compatibili per vendite, magazzino e
   incassi;
-- orchestratore Node.js con endpoint di stato e router euristico provvisorio;
+- orchestratore Node.js collegato alla Messages API Anthropic con Claude Haiku
+  4.5 e vero ciclo di tool use;
+- navigazione Wiki multi-pass: indice, tag, sinonimi, sezioni, link e lettura
+  autonoma delle pagine scelte da Haiku;
+- microservizio FastAPI/pandas collegato con sette operazioni ammesse;
 - servizio Python/pandas con riepilogo vendite, margine per categoria e analisi
   dei lotti a lenta rotazione;
 - build, lint, test di rendering, controllo TypeScript e funzioni pandas
   verificati;
-- provider LLM volutamente non selezionato.
+- retrieval RAG locale operativo sul corpus canonico; ChromaDB vettoriale resta
+  il prossimo incremento.
 
-La conversazione nell'interfaccia è per ora una demo locale: rende visibili le
-decisioni dell'agente, ma non chiama ancora ChromaDB o pandas.
+La conversazione nell'interfaccia chiama l'orchestratore reale. La chiave API
+resta esclusivamente nel backend locale e `.env.local` è ignorato da Git.
 
 ## Repository e dati
 
@@ -74,18 +80,21 @@ docs/                        architettura, piano e decisioni
 - [Schema dati demo](docs/SCHEMA-DATI-DEMO.md)
 - [Scenari di prova](docs/SCENARI-DEMO.md)
 - [Stato del progetto](docs/STATO-PROGETTO.md)
+- [Agente reale con Claude Haiku](docs/AGENTE-HAIKU.md)
 
-## Avvio della sola interfaccia
+## Avvio dell'agente completo
 
 Richiede Node.js 22.13 o successivo.
 
+Creare `.env.local` con `ANTHROPIC_API_KEY`, preparare l'ambiente Python come
+descritto in [Agente reale con Claude Haiku](docs/AGENTE-HAIKU.md), quindi:
+
 ```bash
 npm install
-npm run dev
+npm run dev:agent
 ```
 
-La configurazione completa dei tre servizi verrà aggiunta nella fase di
-integrazione, dopo la scelta del provider LLM.
+Per lavorare soltanto sull'interfaccia resta disponibile `npm run dev`.
 
 ## Verifiche disponibili
 

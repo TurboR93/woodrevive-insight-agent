@@ -74,3 +74,15 @@ metodo di recupero, non una differenza artificiale di contenuti.
 **Decisione:** dati, manifest e corpus sono generati deterministicamente. Il
 controllo `--check` fallisce se un file versionato non coincide con la sua
 rigenerazione o se una relazione fondamentale non è coerente.
+
+## D-014 — Provider reale e modello
+
+**Decisione:** la prima integrazione reale usa Anthropic Claude Haiku 4.5,
+snapshot `claude-haiku-4-5-20251001`, per velocità e controllo dei costi. Il
+modello è configurabile tramite `ANTHROPIC_MODEL`; la chiave rimane server-side.
+
+## D-015 — Navigazione agentica della Wiki
+
+**Decisione:** Haiku non riceve tutte le pagine né un solo risultato lessicale.
+Prima esplora un indice arricchito, poi apre per slug le pagine rilevanti e può
+ripetere il percorso. Una risposta Wiki richiede almeno una lettura pagina.

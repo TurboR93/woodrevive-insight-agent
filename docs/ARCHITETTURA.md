@@ -93,8 +93,14 @@ Esempio: «Quali articoli hanno un margine sotto la soglia consigliata e cosa
 prevede la policy?» Il router esegue sia Data tool sia Wiki/RAG; il backend
 unisce le evidenze citando separatamente formula numerica e regola documentale.
 
-## Provider LLM
+## Provider LLM e ciclo strumenti
 
-Il provider non è ancora deciso. Node.js espone un'interfaccia `LlmProvider`
-con output strutturato. La futura implementazione potrà usare un servizio cloud
-o un modello locale senza cambiare router, strumenti o interfaccia.
+Il provider attivo è Anthropic con `claude-haiku-4-5-20251001`. Node invia
+soltanto domanda, cronologia limitata e definizioni dei tool. Haiku restituisce
+blocchi `tool_use`; l'orchestratore esegue localmente gli strumenti e rimanda i
+risultati come `tool_result`. Il modello può proseguire la navigazione fino a
+cinque passaggi prima della sintesi.
+
+La Wiki usa due tool distinti: ricerca nell'indice e lettura delle pagine per
+slug. Questo permette al modello di orientarsi attraverso tag, sinonimi,
+sezioni e collegamenti senza ricevere l'intero manuale nel prompt.
