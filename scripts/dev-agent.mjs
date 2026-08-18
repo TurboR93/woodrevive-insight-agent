@@ -26,12 +26,16 @@ const python = await firstExecutable([
   "python3",
 ].filter(Boolean));
 
+const vinextCli = resolve(root, "node_modules/vinext/dist/cli.js");
+
 const processes = [
   spawn(process.execPath, ["--import", "tsx", "server/src/index.ts"], { cwd: root, env: process.env, stdio: "inherit" }),
   spawn(python, ["-m", "uvicorn", "app.main:app", "--app-dir", "analytics-service", "--host", "127.0.0.1", "--port", "8001"], {
     cwd: root, env: process.env, stdio: "inherit",
   }),
-  spawn(resolve(root, "node_modules/.bin/vinext"), ["dev"], { cwd: root, env: process.env, stdio: "inherit" }),
+  // Usa lo stesso runtime Node con cui è stato avviato questo coordinatore.
+  // Evita che lo shebang di `node_modules/.bin/vinext` selezioni un Node più vecchio.
+  spawn(process.execPath, [vinextCli, "dev"], { cwd: root, env: process.env, stdio: "inherit" }),
 ];
 
 let closing = false;
