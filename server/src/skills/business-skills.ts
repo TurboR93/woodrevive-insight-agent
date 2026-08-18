@@ -12,11 +12,11 @@ export type ActiveBusinessSkill = Pick<BusinessSkill, "id" | "label" | "descript
 const skills: BusinessSkill[] = [
   {
     id: "quote-draft",
-    label: "Preventivo controllato",
-    description: "Crea bozze coerenti con catalogo, listino e Manager.",
+    label: "Preventivi e offerte",
+    description: "Consulta lo storico e crea bozze coerenti con catalogo, listino e Manager.",
     priority: 100,
     patterns: [/preventiv/i, /offert[ae]/i, /quotazion/i],
-    guidance: "Per un preventivo: risolvi prima cliente e articoli con quote_catalog_search; crea la bozza solo su richiesta esplicita e con quantità certa. Non inventare ID, prezzi, sconti, IVA o disponibilità. Riporta totale, margine, controlli e specifica che non avviene alcun invio al cliente.",
+    guidance: "Per consultare preventivi esistenti, recenti o per stato usa quote_recent_list e mai Wiki/RAG. Per crearne uno risolvi prima cliente e articoli con quote_catalog_search; crea la bozza solo su richiesta esplicita e con quantità certa. Non inventare ID, prezzi, sconti, IVA o disponibilità.",
   },
   {
     id: "margin-review",
@@ -59,6 +59,13 @@ const skills: BusinessSkill[] = [
     guidance: "Per procedure e definizioni usa wiki_search e poi wiki_read. Rispondi soltanto con ciò che le pagine lette supportano, cita la fonte e separa regola, eccezioni e passi operativi. Se la Wiki non copre un dettaglio, dichiaralo.",
   },
 ];
+
+export function isRecentQuoteLookup(question: string): boolean {
+  const mentionsQuotes = /preventiv|offert[ae]/i.test(question);
+  const lookup = /recent|ultim|nuov|elenc|abbiamo|creat|bozz|mostr|quali|esistent|inviat|accettat|rifiutat|scadut|convertit|storico|ci sono/i.test(question);
+  const creation = /(?:crea|genera|prepara|fai)\w*\s+(?:un\s+)?preventiv/i.test(question);
+  return mentionsQuotes && lookup && !creation;
+}
 
 function score(skill: BusinessSkill, question: string): number {
   const matches = skill.patterns.filter((pattern) => pattern.test(question)).length;

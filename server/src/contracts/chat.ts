@@ -110,6 +110,25 @@ export interface QuoteArtifact {
   managerPath: string;
 }
 
+export interface RecentQuoteSummary {
+  id: string;
+  number: string;
+  date: string;
+  customerName: string;
+  subject: string;
+  status: string;
+  totalCents: number;
+  managerPath: string;
+  createdBy?: string;
+}
+
+export interface RecentQuotesArtifact {
+  referenceDate: string;
+  totalMatching: number;
+  statusFilter: string;
+  items: RecentQuoteSummary[];
+}
+
 export interface ChatResponse {
   answer: string;
   plan: ToolPlan;
@@ -119,6 +138,7 @@ export interface ChatResponse {
   activities: AgentActivity[];
   artifacts: AnalysisArtifact[];
   quotes: QuoteArtifact[];
+  recentQuotes: RecentQuotesArtifact[];
   skills: BusinessSkillReference[];
   model?: string;
   usage?: {

@@ -2,6 +2,7 @@ import type {
   AgentActivity,
   AnalysisArtifact,
   QuoteArtifact,
+  RecentQuotesArtifact,
   ChatRequest,
   ChatResponse,
   DataOperation,
@@ -18,8 +19,8 @@ import {
 } from "../providers/llm.js";
 import { analyzeData, DATA_OPERATIONS, type DataOperationName } from "../tools/analytics.js";
 import { readWiki, searchRagCorpus, searchWiki, type ToolEvidence } from "../tools/knowledge.js";
-import { createQuoteDraft, searchQuoteCatalog } from "../domain/demo-quotes.js";
-import { businessSkillsPrompt, publicBusinessSkills, selectBusinessSkills } from "../skills/business-skills.js";
+import { createQuoteDraft, listRecentQuotes, searchQuoteCatalog } from "../domain/demo-quotes.js";
+import { businessSkillsPrompt, isRecentQuoteLookup, publicBusinessSkills, selectBusinessSkills } from "../skills/business-skills.js";
 
 const tools: AnthropicTool[] = [
   {
@@ -74,6 +75,20 @@ const tools: AnthropicTool[] = [
         as_of: { type: "string", description: "Data di analisi nel formato YYYY-MM-DD." },
       },
       required: ["operation"],
+      additionalProperties: false,
+    },
+  },
+  {
+    name: "quote_recent_list",
+    description: "Elenca i preventivi demo più recenti, comprese le bozze create dall'agente, con data, cliente, stato, totale e link al dettaglio Manager. Usalo per domande come 'abbiamo preventivi recenti?', 'quali sono gli ultimi preventivi?' o 'mostrami le bozze'. Non usare RAG o Wiki per la cronologia dei preventivi.",
+    strict: true,
+    input_schema: {
+      type: "object",
+      properties: {
+        limit: { type: "integer", description: "Numero di risultati da mostrare, normalmente 8." },
+        status: { type: "string", enum: ["all", "bozza", "inviato", "accettato", "rifiutato", "scaduto", "convertito"], description: "Filtro stato; all se non richiesto." },
+      },
+      required: ["limit", "status"],
       additionalProperties: false,
     },
   },
@@ -135,6 +150,7 @@ Tutti i dati sono sintetici: ricordalo quando presenti risultati numerici.
 Nella risposta finale sii chiaro e operativo. Per i numeri indica periodo, formula/metodo e unità; converti i centesimi in euro leggibili.
 Non citare conoscenze generiche del modello come se fossero documentazione WoodRevive.
 Per creare un preventivo demo usa prima quote_catalog_search. Se mancano cliente, articolo o quantità, chiedili chiaramente senza chiamare quote_create_draft. Se sono presenti e l'utente ha chiesto esplicitamente di creare o generare il preventivo, usa quote_create_draft. Prezzi, IVA, disponibilità e calcoli arrivano soltanto dai tool; non inventarli.
+Per consultare preventivi esistenti, recenti, ultimi o in un certo stato usa quote_recent_list. La cronologia dei preventivi è dato strutturato: non cercarla in RAG o Wiki.
 Le bozze sono dimostrative ma rispettano ID, snapshot, centesimi, millesimi e arrotondamenti compatibili con WoodRevive Manager.
 Non affermare mai che il sistema invia preventivi, email o messaggi al cliente: crea soltanto una bozza locale consultabile nella copia Manager.`;
 
@@ -163,6 +179,11 @@ function activityFor(call: AnthropicToolUseBlock, status: AgentActivity["status"
     title: "Ricerca commerciale",
     detail: status === "running" ? "Cerco cliente, articoli, listino e disponibilità demo." : "Cliente e articoli risolti sul catalogo condiviso.",
   };
+  if (call.name === "quote_recent_list") return {
+    id: call.id, kind: "quote", status,
+    title: "Consultazione preventivi",
+    detail: status === "running" ? "Ordino le bozze e i preventivi più recenti." : "Elenco preventivi recuperato dall’archivio demo condiviso.",
+  };
   if (call.name === "quote_create_draft") return {
     id: call.id, kind: "quote", status,
     title: "Creazione del preventivo",
@@ -176,6 +197,11 @@ function activityFor(call: AnthropicToolUseBlock, status: AgentActivity["status"
 }
 
 function toolChoiceFor(request: ChatRequest) {
+  if (request.mode === "auto" || request.mode === undefined) {
+    if (isRecentQuoteLookup(request.message)) {
+      return { type: "tool" as const, name: "quote_recent_list", disable_parallel_tool_use: true };
+    }
+  }
   if (request.mode === "wiki") return { type: "tool" as const, name: "wiki_search" };
   if (request.mode === "rag") return { type: "tool" as const, name: "rag_search" };
   if (request.mode === "data") return { type: "tool" as const, name: "analyze_data" };
@@ -229,6 +255,27 @@ async function executeTool(call: AnthropicToolUseBlock, question: string, contex
           minimum_days: typeof call.input.minimum_days === "number" ? call.input.minimum_days : undefined,
           as_of: typeof call.input.as_of === "string" ? call.input.as_of : undefined,
         }),
+        isError: false,
+      };
+    }
+    if (call.name === "quote_recent_list") {
+      const recentQuotes = await listRecentQuotes({
+        limit: Number(call.input.limit || 8),
+        status: safeString(call.input.status, "all"),
+      });
+      return {
+        evidence: {
+          content: JSON.stringify({
+            ...recentQuotes,
+            instruction: "Rispondi mostrando i risultati trovati. Non dire che i preventivi non sono disponibili. L’interfaccia presenta già una scheda con link al dettaglio Manager.",
+          }, null, 2),
+          sources: [
+            { kind: "dataset", label: "Storico preventivi demo", locator: "datasets/demo/preventivi.csv" },
+            { kind: "dataset", label: "Bozze create dall’agente", locator: "runtime/demo-quote-drafts.json" },
+          ],
+          warnings: recentQuotes.items.length ? [] : ["Nessun preventivo corrisponde al filtro richiesto."],
+          recentQuotes,
+        },
         isError: false,
       };
     }
@@ -445,9 +492,10 @@ export async function runAgent(
   const dataCall = allCalls.find((call) => call.name === "analyze_data");
   const hasData = names.includes("analyze_data");
   const hasQuote = names.includes("quote_create_draft");
+  const hasQuoteLookup = names.includes("quote_recent_list");
   const hasDocuments = names.some((name) => name === "wiki_search" || name === "wiki_read" || name === "rag_search");
   const plan: ToolPlan = {
-    intent: hasQuote ? "action" : hasData && hasDocuments ? "hybrid" : hasData ? "data" : "documents",
+    intent: hasQuote ? "action" : hasQuoteLookup ? "data" : hasData && hasDocuments ? "hybrid" : hasData ? "data" : "documents",
     documentStrategy: documentStrategy(names),
     question: request.message,
     dataOperation: dataOperation(typeof dataCall?.input.operation === "string" ? dataCall.input.operation : undefined),
@@ -468,6 +516,9 @@ export async function runAgent(
     quotes: allExecutions
       .map((execution) => execution.evidence.quote)
       .filter((quote): quote is QuoteArtifact => Boolean(quote)),
+    recentQuotes: allExecutions
+      .map((execution) => execution.evidence.recentQuotes)
+      .filter((artifact): artifact is RecentQuotesArtifact => Boolean(artifact)),
     skills: publicBusinessSkills(activeSkills),
     model: provider.model,
     usage: {

@@ -1,6 +1,6 @@
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
-import type { AnalysisArtifact, QuoteArtifact, SourceReference } from "../contracts/chat.js";
+import type { AnalysisArtifact, QuoteArtifact, RecentQuotesArtifact, SourceReference } from "../contracts/chat.js";
 
 const projectRoot = resolve(import.meta.dirname, "../../..");
 const wikiRoot = resolve(projectRoot, "knowledge/wiki");
@@ -27,6 +27,7 @@ export interface ToolEvidence {
   warnings: string[];
   artifact?: AnalysisArtifact;
   quote?: QuoteArtifact;
+  recentQuotes?: RecentQuotesArtifact;
 }
 
 function normalize(value: string): string {

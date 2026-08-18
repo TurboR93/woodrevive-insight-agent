@@ -11,7 +11,7 @@ backend prima della chiamata al modello.
 
 | ID | Skill | Quando si attiva | Vincolo principale |
 |---|---|---|---|
-| `quote-draft` | Preventivo controllato | preventivi, offerte, quotazioni | catalogo prima della bozza; nessun invio reale |
+| `quote-draft` | Preventivi e offerte | preventivi, offerte, quotazioni | storico dal tool dedicato; catalogo prima della bozza |
 | `margin-review` | Controllo marginalità | margine, ricarico, redditività, sconti | formula, costo e IVA distinti |
 | `inventory-delivery` | Disponibilità e consegne | stock, lotti, DDT, consegne, evasione | giacenza, impegnato e disponibile separati |
 | `customer-credit` | Crediti e incassi | scadenze, esposizione, residui, pagamenti | aperto e scaduto non sono sinonimi |

@@ -1,6 +1,6 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
-import type { QuoteArtifact, QuoteLineArtifact } from "../contracts/chat.js";
+import type { QuoteArtifact, QuoteLineArtifact, RecentQuotesArtifact, RecentQuoteSummary } from "../contracts/chat.js";
 import { numberValue, nullable, readCsv, type CsvRow } from "./csv.js";
 
 const projectRoot = resolve(import.meta.dirname, "../../..");
@@ -278,4 +278,43 @@ export function quoteToManagerRecord(quote: StoredQuote, customer: CsvRow): Reco
 
 export async function listStoredQuotes(): Promise<StoredQuote[]> {
   return readStoredQuotes();
+}
+
+export async function listRecentQuotes(input: { limit?: number; status?: string } = {}): Promise<RecentQuotesArtifact> {
+  const [historic, stored] = await Promise.all([
+    readCsv(resolve(datasetsRoot, "preventivi.csv")),
+    readStoredQuotes(),
+  ]);
+  const historicItems: RecentQuoteSummary[] = historic.map((quote) => ({
+    id: quote.id,
+    number: quote.numero,
+    date: quote.data,
+    customerName: quote.cliente_ragione_sociale,
+    subject: quote.oggetto,
+    status: quote.ordine_id ? "convertito" : quote.stato,
+    totalCents: numberValue(quote.totale_cents),
+    managerPath: `/preventivi/${quote.id}`,
+  }));
+  const storedItems: RecentQuoteSummary[] = stored.map((quote) => ({
+    id: quote.id,
+    number: quote.number,
+    date: quote.date,
+    customerName: quote.customerName,
+    subject: quote.subject,
+    status: quote.status,
+    totalCents: quote.totalCents,
+    managerPath: quote.managerPath,
+    createdBy: quote.audit?.actorName,
+  }));
+  const status = input.status?.trim().toLowerCase() || "all";
+  const allItems = [...historicItems, ...storedItems]
+    .filter((quote) => status === "all" || quote.status === status)
+    .sort((left, right) => right.date.localeCompare(left.date) || right.number.localeCompare(left.number));
+  const limit = Math.max(1, Math.min(20, Math.round(input.limit || 8)));
+  return {
+    referenceDate: allItems[0]?.date || new Date().toISOString().slice(0, 10),
+    totalMatching: allItems.length,
+    statusFilter: status,
+    items: allItems.slice(0, limit),
+  };
 }

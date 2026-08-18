@@ -53,7 +53,13 @@ non può eseguire Python arbitrario né scegliere percorsi file.
 
 ## Strumenti preventivo
 
-Haiku dispone di due strumenti separati. `quote_catalog_search` cerca clienti e
+Haiku dispone di tre strumenti separati. `quote_recent_list` consulta lo storico
+CSV e le bozze locali, li ordina per data e restituisce stato, totale e link al
+dettaglio della copia Manager. Per richieste come «abbiamo preventivi recenti?»
+l'orchestratore forza questo strumento: la cronologia commerciale non passa da
+Wiki o RAG.
+
+`quote_catalog_search` cerca clienti e
 articoli nei CSV condivisi e restituisce ID, unità di misura, listino, IVA e
 disponibilità. `quote_create_draft` accetta esclusivamente quegli ID e crea una
 bozza: calcola imponibile, sconti, IVA, totale e margine usando centesimi e
@@ -82,6 +88,11 @@ essere interrotta dall'utente mentre è in corso.
 La modalità RAG recupera sezioni dal corpus canonico sincronizzato con la Wiki.
 È operativa come retrieval locale lessicale, ma segnala esplicitamente che
 ChromaDB ed embedding vettoriali non sono ancora configurati.
+
+Il RAG è riservato alla documentazione testuale. Preventivi, ordini, clienti e
+altre entità operative restano dati strutturati: vengono letti dai relativi tool
+anche quando ChromaDB sarà attivo, evitando di trasformare righe gestionali in
+testo non aggiornato.
 
 ## Avvio
 

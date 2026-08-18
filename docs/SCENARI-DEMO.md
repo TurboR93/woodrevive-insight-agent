@@ -25,6 +25,20 @@ principale.
 9. Quali lotti in quarantena hanno ancora quantità positiva?
 10. Quanti eventi di ogni tipo sono avvenuti mese per mese?
 
+## Consultazione e azioni sui preventivi
+
+1. «Abbiamo preventivi recenti?» deve usare `quote_recent_list`, mostrare gli
+   ultimi preventivi in chat e offrire il collegamento a ciascun dettaglio nel
+   gestionale demo.
+2. «Mostrami le bozze dei preventivi» deve applicare il filtro `bozza` sullo
+   stesso archivio strutturato.
+3. «Crea un preventivo per Atelier Arco: 20 m² di Tavola abete prima patina»
+   deve cercare catalogo e cliente prima di salvare una nuova bozza.
+
+L'oracolo del primo scenario richiede che la risposta non dichiari i dati
+indisponibili e non usi Wiki o RAG. L'elenco combina `preventivi.csv` con
+`runtime/demo-quote-drafts.json`, ordinato per data decrescente.
+
 ## Domande ibride
 
 1. Quali articoli hanno margine sotto la soglia indicativa e quale regola devo

@@ -46,6 +46,23 @@ type QuoteArtifact = {
   deliveryTime: string;
   managerPath: string;
 };
+type RecentQuoteSummary = {
+  id: string;
+  number: string;
+  date: string;
+  customerName: string;
+  subject: string;
+  status: string;
+  totalCents: number;
+  managerPath: string;
+  createdBy?: string;
+};
+type RecentQuotesArtifact = {
+  referenceDate: string;
+  totalMatching: number;
+  statusFilter: string;
+  items: RecentQuoteSummary[];
+};
 type Message = {
   id: number;
   role: "user" | "assistant";
@@ -58,6 +75,7 @@ type Message = {
   activities?: AgentActivity[];
   artifacts?: AnalysisArtifact[];
   quotes?: QuoteArtifact[];
+  recentQuotes?: RecentQuotesArtifact[];
   skills?: BusinessSkillReference[];
   usage?: { inputTokens: number; outputTokens: number };
 };
@@ -84,6 +102,7 @@ type AgentResponse = {
   activities: AgentActivity[];
   artifacts: AnalysisArtifact[];
   quotes: QuoteArtifact[];
+  recentQuotes: RecentQuotesArtifact[];
   skills: BusinessSkillReference[];
   usage?: { inputTokens: number; outputTokens: number };
 };
@@ -95,6 +114,7 @@ const MODES: { id: Mode; label: string; note: string }[] = [
   { id: "data", label: "Dati", note: "Analisi visuale dei CSV con pandas" },
 ];
 const SUGGESTIONS = [
+  "Abbiamo preventivi recenti?",
   "Crea un preventivo per Atelier Arco: 20 m² di Tavola abete prima patina",
   "Mostrami il margine per categoria",
   "Quali clienti hanno importi aperti?",
@@ -289,6 +309,30 @@ function QuoteCard({ quote }: { quote: QuoteArtifact }) {
   </section>;
 }
 
+const QUOTE_STATUS_LABELS: Record<string, string> = {
+  bozza: "Bozza",
+  inviato: "Inviato",
+  accettato: "Accettato",
+  rifiutato: "Rifiutato",
+  scaduto: "Scaduto",
+  convertito: "Convertito",
+};
+
+function RecentQuotesCard({ artifact }: { artifact: RecentQuotesArtifact }) {
+  return <section className="recent-quotes-card">
+    <header>
+      <div className="quote-icon">≡</div>
+      <div><p>ARCHIVIO PREVENTIVI DEMO</p><h3>Preventivi recenti</h3><span>{artifact.totalMatching} risultati · più recente al {new Date(`${artifact.referenceDate}T12:00:00`).toLocaleDateString("it-IT")}</span></div>
+    </header>
+    {artifact.items.length ? <div className="recent-quotes-list">{artifact.items.map((quote) => <a className="recent-quote-row" href={`http://localhost:5174${quote.managerPath}`} key={quote.id}>
+      <div className="recent-quote-main"><span className="recent-quote-number">{quote.number}</span><strong>{quote.customerName}</strong><small>{quote.subject}</small></div>
+      <div className="recent-quote-meta"><span className={`recent-quote-status ${quote.status}`}>{QUOTE_STATUS_LABELS[quote.status] || quote.status}</span><strong>{euroFormatter.format(quote.totalCents / 100)}</strong><small>{new Date(`${quote.date}T12:00:00`).toLocaleDateString("it-IT")}{quote.createdBy ? ` · ${quote.createdBy}` : ""}</small></div>
+      <span className="recent-quote-arrow">›</span>
+    </a>)}</div> : <div className="recent-quotes-empty"><strong>Nessun preventivo trovato</strong><span>Apri il gestionale per creare o modificare un preventivo.</span></div>}
+    <a className="manager-open-button" href="http://localhost:5174/preventivi">Apri tutti i preventivi nel gestionale demo <span>↗</span></a>
+  </section>;
+}
+
 function SourcePanel({ sources }: { sources: AgentSource[] }) {
   if (!sources.length) return null;
   return <details className="source-panel"><summary><span>Fonti consultate</span><small>{sources.length}</small></summary><div className="source-list">{sources.map((source) => <div className="source-item" key={`${source.kind}-${source.locator}`}><span className={`source-kind ${source.kind}`}>{source.kind === "dataset" ? "CSV" : source.kind.toUpperCase()}</span><span><strong>{source.label}</strong><small>{source.locator}</small></span></div>)}</div></details>;
@@ -417,7 +461,7 @@ export function WoodReviveAgent() {
       const baseUrl = process.env.NEXT_PUBLIC_ORCHESTRATOR_URL || "http://127.0.0.1:8787/api/chat";
       const response = await fetch(baseUrl.replace(/\/api\/chat$/, "/api/chat/stream"), { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ message: cleanQuestion, mode, history, conversationId, actor: DEMO_ACTOR }), signal: controller.signal });
       const payload = await readStream(response, updateActivity);
-      setMessages((current) => [...current, { id: nextId + 1, role: "assistant", text: payload.answer, createdAt: new Date().toISOString(), actorId: "agent-haiku", tool: `${payload.model?.includes("haiku") ? "Claude Haiku" : "Claude"} · ${payload.tool}`, sources: payload.sources, warnings: payload.warnings, activities: payload.activities, artifacts: payload.artifacts, quotes: payload.quotes, skills: payload.skills, usage: payload.usage }]);
+      setMessages((current) => [...current, { id: nextId + 1, role: "assistant", text: payload.answer, createdAt: new Date().toISOString(), actorId: "agent-haiku", tool: `${payload.model?.includes("haiku") ? "Claude Haiku" : "Claude"} · ${payload.tool}`, sources: payload.sources, warnings: payload.warnings, activities: payload.activities, artifacts: payload.artifacts, quotes: payload.quotes, recentQuotes: payload.recentQuotes, skills: payload.skills, usage: payload.usage }]);
     } catch (error) {
       const interrupted = error instanceof DOMException && error.name === "AbortError";
       setMessages((current) => [...current, { id: nextId + 1, role: "assistant", text: interrupted ? "Elaborazione interrotta. Puoi riformulare la domanda quando vuoi." : (error instanceof Error ? error.message : "Impossibile contattare l’agente."), createdAt: new Date().toISOString(), actorId: "agent-haiku", tool: interrupted ? "Richiesta interrotta" : "Connessione non disponibile", warnings: interrupted ? [] : ["Controlla che l’orchestratore e il servizio pandas siano avviati."] }]);
@@ -446,6 +490,7 @@ export function WoodReviveAgent() {
           {message.skills && message.skills.length > 0 && <div className="skill-pills" aria-label="Skill aziendali attive">{message.skills.map((skill) => <span key={skill.id} title={skill.description}>◆ {skill.label}</span>)}</div>}
           <div className="message-bubble"><RichText text={message.text} /></div>
           {message.quotes?.map((quote) => <QuoteCard quote={quote} key={quote.id} />)}
+          {message.recentQuotes?.map((artifact, artifactIndex) => <RecentQuotesCard artifact={artifact} key={`${artifact.referenceDate}-${artifactIndex}`} />)}
           {message.artifacts?.map((artifact, artifactIndex) => <AnalysisCard artifact={artifact} key={`${artifact.operation}-${artifactIndex}`} />)}
           {message.activities && message.activities.length > 0 && <ActivityPanel activities={message.activities} />}
           {message.sources && <SourcePanel sources={message.sources} />}

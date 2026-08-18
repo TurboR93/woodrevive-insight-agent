@@ -21,8 +21,9 @@ Orchestratore Node.js
   |-- router LLM -> documenti | dati | ibrido
   |-- controllo fonti e risposta finale
   |
-  |-- RAG engine ------> ChromaDB locale
-  |       `-----------> knowledge/rag-source
+  |-- RAG engine ------> retrieval lessicale locale (attuale)
+  |       |-----------> knowledge/rag-source
+  |       `-----------> ChromaDB + embedding (incremento previsto)
   |
   |-- Wiki engine -----> indice + pagine Markdown
   |       `-----------> knowledge/wiki
@@ -32,7 +33,7 @@ Orchestratore Node.js
   |                       |-- CSV in sola lettura
   |                       `-- grafici JSON
   |
-  |-- Quote tools ------> catalogo CSV + bozze locali
+  |-- Quote tools ------> storico CSV + catalogo + bozze locali
   |
   `-- Demo bridge -----> copia WoodRevive Manager
                           `-- stesso modello dati sintetico
@@ -112,6 +113,12 @@ sezioni e collegamenti senza ricevere l'intero manuale nel prompt.
 
 ## Azioni e copia del gestionale
 
+La consultazione dello storico usa `quote_recent_list`: unisce i preventivi CSV
+e le bozze create dall'agente, applica filtro stato e limite, ordina per data e
+restituisce un artefatto strutturato che React rende in chat. Le domande di
+elenco sono indirizzate a questo tool con una regola deterministica, perché lo
+storico gestionale non appartiene alla knowledge base documentale.
+
 La creazione preventivo usa un contratto deterministico: il modello seleziona
 cliente, articoli e quantità, mentre il backend esegue convalida e calcoli. Il
 bridge `GET /api/demo/manager-data` proietta i 23 CSV e le bozze create nella
@@ -126,7 +133,8 @@ una seconda anagrafica divergente.
 ## Memoria conversazionale
 
 Il client conserva una memoria locale versionata con più conversazioni, ID
-stabile, autore demo, messaggi, fonti, attività, grafici e preventivi. In questo
+stabile, autore demo, messaggi, fonti, attività, grafici, preventivi e relativi
+elenchi consultati. In questo
 modo una navigazione completa verso la copia Manager non cancella la chat. ID
 conversazione e attore vengono inviati al backend e registrati nell'audit delle
 nuove bozze.

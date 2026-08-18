@@ -29,6 +29,8 @@ retrieval sul corpus RAG, Wiki strutturata e analisi CSV con pandas.
 - schema dati, lineage, regole KPI e limiti documentati.
 - creazione di bozze preventivo tramite Haiku con calcoli deterministici;
 - scheda preventivo interattiva in chat e apertura diretta del dettaglio;
+- consultazione inline dei preventivi recenti da storico CSV e bozze locali,
+  con routing deterministico e collegamento a ogni dettaglio Manager;
 - copia isolata del gestionale in questa repository, servita su porta 5174 e
   alimentata dal medesimo dataset sintetico tramite bridge locale;
 - memoria chat persistente nel browser con cronologia multi-conversazione,
@@ -67,7 +69,8 @@ retrieval sul corpus RAG, Wiki strutturata e analisi CSV con pandas.
 | Bridge dataset → Manager v8 | superato |
 | Preventivo agente → dettaglio Manager | coperto da test automatico |
 | Persistenza chat dopo navigazione | localStorage versionato |
-| Selettore skill e budget prompt | coperti da 4 test automatici |
+| Selettore skill, routing preventivi e budget prompt | coperti da 5 test automatici |
+| Storico preventivi → scheda chat | coperto da test automatico |
 
 ## Prossimo incremento consigliato
 

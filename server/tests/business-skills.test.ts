@@ -3,6 +3,7 @@ import test from "node:test";
 import {
   BUSINESS_SKILL_COUNT,
   businessSkillsPrompt,
+  isRecentQuoteLookup,
   selectBusinessSkills,
 } from "../src/skills/business-skills.js";
 
@@ -31,4 +32,11 @@ test("le istruzioni selettive restano entro un budget compatto", () => {
 
 test("una richiesta generica non carica skill inutili", () => {
   assert.deepEqual(selectBusinessSkills("Ciao, puoi aiutarmi?"), []);
+});
+
+test("riconosce la consultazione dei preventivi senza confonderla con la creazione", () => {
+  assert.equal(isRecentQuoteLookup("Abbiamo preventivi recenti?"), true);
+  assert.equal(isRecentQuoteLookup("Quali sono gli ultimi preventivi creati?"), true);
+  assert.equal(isRecentQuoteLookup("Mostrami le bozze dei preventivi"), true);
+  assert.equal(isRecentQuoteLookup("Crea un preventivo per Atelier Arco"), false);
 });

@@ -4,7 +4,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
 import { parseCsv } from "../src/domain/csv.js";
-import { createQuoteDraft, searchQuoteCatalog } from "../src/domain/demo-quotes.js";
+import { createQuoteDraft, listRecentQuotes, searchQuoteCatalog } from "../src/domain/demo-quotes.js";
 import { buildManagerDemoEnvelope } from "../src/domain/manager-envelope.js";
 
 test("il parser CSV conserva virgole e virgolette nei campi", () => {
@@ -52,6 +52,12 @@ test("un preventivo agente entra nella copia Manager senza conversioni manuali",
   assert.equal(quote.audit.conversationId, "conversation-test");
   assert.equal(quote.audit.actorId, "demo-user-test");
   assert.equal(quote.managerPath, `/preventivi/${quote.id}`);
+
+  const recent = await listRecentQuotes({ limit: 3, status: "all" });
+  assert.equal(recent.totalMatching, 31);
+  assert.equal(recent.items[0]?.id, quote.id);
+  assert.equal(recent.items[0]?.managerPath, `/preventivi/${quote.id}`);
+  assert.equal(recent.items[0]?.createdBy, "Utente test");
 
   const envelope = await buildManagerDemoEnvelope();
   assert.equal(envelope.versione, 8);

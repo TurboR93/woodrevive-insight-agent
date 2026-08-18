@@ -19,6 +19,8 @@ L'agente riconosce anche le azioni operative e distingue cinque tipi di richiest
 4. **ibrida** — combina regole/documentazione e numeri nella stessa risposta.
 5. **azione** — cerca cliente e articoli nel catalogo demo e crea una bozza di
    preventivo compatibile con il gestionale.
+6. **consultazione operativa** — legge lo storico preventivi strutturato e
+   restituisce in chat gli elementi recenti con collegamenti al gestionale.
 
 La Wiki non è soltanto un fallback. È un percorso parallelo che permette di
 confrontare RAG e navigazione strutturata per qualità, fonti, latenza e costo.
@@ -49,6 +51,8 @@ confrontare RAG e navigazione strutturata per qualità, fonti, latenza e costo.
   e metodo di calcolo;
 - creazione conversazionale di preventivi demo con righe, IVA, sconti, margine,
   disponibilità e avvisi di approvazione;
+- consultazione dei preventivi recenti direttamente in chat, unendo lo storico
+  CSV e le bozze create dall'agente in una scheda con stato, totale e link;
 - copia isolata di WoodRevive Manager in `apps/woodrevive-manager`, collegata
   allo stesso archivio demo dell'agente e raggiungibile dalla chat;
 - servizio Python/pandas con riepilogo vendite, margine per categoria e analisi
