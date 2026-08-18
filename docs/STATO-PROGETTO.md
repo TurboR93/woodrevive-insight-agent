@@ -17,8 +17,12 @@ RAG su ChromaDB, Wiki strutturata e analisi CSV con pandas.
 - contratto strutturato per routing e risposte;
 - router euristico usato come fallback temporaneo;
 - funzioni pandas per riepilogo vendite, margini e giacenze lente;
-- tre CSV sintetici e anonimi;
-- tre pagine Wiki e un primo documento per l'ingestione RAG.
+- 23 CSV sintetici e relazionali con 24 clienti aziendali, 10 fornitori,
+  24 articoli, 16 lotti e 190 eventi;
+- generatore deterministico, manifest e controlli di coerenza;
+- 13 pagine Wiki, 25 casi operativi e corpus RAG completo generato dalle stesse
+  fonti;
+- schema dati, lineage, regole KPI e limiti documentati.
 
 ## Cosa è ancora dimostrativo
 
@@ -38,14 +42,16 @@ RAG su ChromaDB, Wiki strutturata e analisi CSV con pandas.
 | Test del rendering | 2 su 2 superati |
 | TypeScript orchestratore | superato |
 | Funzioni pandas demo | superate |
+| Riproducibilità dei 23 CSV | superata |
+| Coerenza relazionale e totali | 11 controlli su 11 superati |
+| Parità corpus RAG/Wiki | 13 pagine su 13 allineate |
 | Ricerca credenziali e dati reali | nessun contenuto sensibile trovato |
 
 ## Prossimo incremento consigliato
 
-Implementare per prima la **Wiki operativa**, perché non richiede ancora la
-scelta del provider LLM: indicizzazione lessicale, ricerca per titolo/tag,
-selezione delle sezioni e citazioni. In parallelo si può collegare il servizio
-pandas all'orchestratore. La scelta di LLM ed embedding arriva subito dopo.
+Implementare la ricerca lessicale della **Wiki operativa** e collegare le nuove
+operazioni pandas all'orchestratore. La base informativa e il dataset sono ora
+abbastanza ricchi per costruire il set di valutazione RAG/Wiki/dati.
 
 ## Pubblicazione
 

@@ -1,0 +1,17 @@
+id,fattura_acquisto_id,posizione,tipo,articolo_id,codice_articolo,descrizione,lotto_id,lotto_codice,quantita_milli,unita_misura,prezzo_unitario_cents,sconto_percentuale,aliquota_iva,imponibile_cents,essenza_snapshot,patina_snapshot,spessore_mm_snapshot,note
+rfa-001,fa-001,1,merce,art-001,TV-ABE-01,Tavola abete prima patina,lot-001,L25-001,150000,mq,3990,0,22,598500,abete,prima_patina,28,Trasporto esposto in testata.
+rfa-002,fa-002,1,merce,art-002,TV-LAR-01,Tavola larice seconda patina,lot-002,L25-002,172000,mq,5363,0,22,922436,larice,seconda_patina,32,Trasporto esposto in testata.
+rfa-003,fa-003,1,merce,art-003,TV-ROV-01,Tavola rovere prima patina,lot-003,L25-003,194000,mq,9200,0,22,1784800,rovere,prima_patina,35,Trasporto esposto in testata.
+rfa-004,fa-004,1,merce,art-004,TV-CAS-01,Tavola castagno naturale,lot-004,L25-004,216000,mq,7125,0,22,1539000,castagno,naturale,30,Trasporto esposto in testata.
+rfa-005,fa-005,1,merce,art-005,TV-OLM-01,Tavola olmo prima patina,lot-005,L25-005,238000,mq,8385,0,22,1995630,olmo,prima_patina,38,Trasporto esposto in testata.
+rfa-006,fa-006,1,merce,art-006,TV-NOC-01,Tavola noce naturale,lot-006,L25-006,150000,mq,11000,0,22,1650000,noce,naturale,32,Trasporto esposto in testata.
+rfa-007,fa-007,1,merce,art-007,PR-ABE-01,Perlinato abete grigio,lot-007,L25-007,172000,mq,3230,0,22,555560,abete,grigio,20,Trasporto esposto in testata.
+rfa-008,fa-008,1,merce,art-008,PR-LAR-01,Perlinato larice bruciato sole,lot-008,L25-008,194000,mq,4680,0,22,907920,larice,bruciato_sole,22,Trasporto esposto in testata.
+rfa-009,fa-009,1,merce,art-009,PN-ROV-01,Pannello rovere recuperato,lot-009,L25-009,216000,mq,7800,0,22,1684800,rovere,seconda_patina,24,Trasporto esposto in testata.
+rfa-010,fa-010,1,merce,art-010,PN-CAS-01,Pannello castagno spazzolato,lot-010,L25-010,238000,mq,6080,0,22,1447040,castagno,spazzolato,24,Trasporto esposto in testata.
+rfa-011,fa-011,1,merce,art-011,LM-OLM-01,Lamella olmo naturale,lot-011,L25-011,150000,mq,5948,0,22,892200,olmo,naturale,18,Trasporto esposto in testata.
+rfa-012,fa-012,1,merce,art-012,LM-NOC-01,Lamella noce prima patina,lot-012,L25-012,172000,mq,8900,0,22,1530800,noce,prima_patina,18,Trasporto esposto in testata.
+rfa-013,fa-013,1,merce,art-013,TR-ABE-01,Travatura abete recuperata,lot-013,L25-013,194000,ml,2660,0,22,516040,abete,seconda_patina,180,Trasporto esposto in testata.
+rfa-014,fa-014,1,merce,art-014,TR-LAR-01,Travatura larice recuperata,lot-014,L25-014,216000,ml,3803,0,22,821448,larice,prima_patina,200,Trasporto esposto in testata.
+rfa-015,fa-015,1,merce,art-015,TR-ROV-01,Travatura rovere recuperata,lot-015,L25-015,238000,ml,7200,0,22,1713600,rovere,naturale,200,Trasporto esposto in testata.
+rfa-016,fa-016,1,merce,art-016,PV-CAS-01,Pavimento castagno antico,lot-016,L25-016,150000,mq,7885,0,22,1182750,castagno,prima_patina,20,Trasporto esposto in testata.

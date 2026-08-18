@@ -1,0 +1,191 @@
+id,data,tipo,direzione,documento_id,documento_numero,controparte,importo_cents,stato,fonte_csv,descrizione
+trx-0001,2025-01-12,ordine_acquisto,uscita,oa-001,OA-2025-001,Recuperi Alpini Demo S.r.l.,759450,ricevuto,ordini_acquisto.csv,Ordine demo.
+trx-0002,2025-01-18,ordine_acquisto,uscita,oa-002,OA-2025-002,Demolizioni Laguna Demo S.r.l.,1161362,ricevuto,ordini_acquisto.csv,Ordine demo.
+trx-0003,2025-01-24,ordine_acquisto,uscita,oa-003,OA-2025-003,Segheria Valverde Demo S.r.l.,2220156,ricevuto,ordini_acquisto.csv,Ordine demo.
+trx-0111,2025-01-27,fattura_acquisto,uscita,fa-001,FA-DEMO-001,Recuperi Alpini Demo S.r.l.,759450,registrata,fatture_acquisto.csv,Fattura acquisto sintetica.
+trx-0004,2025-01-30,ordine_acquisto,uscita,oa-004,OA-2025-004,Legni Storici Demo S.r.l.,1926990,ricevuto,ordini_acquisto.csv,Ordine demo.
+trx-0112,2025-02-02,fattura_acquisto,uscita,fa-002,FA-DEMO-002,Demolizioni Laguna Demo S.r.l.,1161362,registrata,fatture_acquisto.csv,Fattura acquisto sintetica.
+trx-0005,2025-02-05,ordine_acquisto,uscita,oa-005,OA-2025-005,Materiali di Corte Demo S.r.l.,2463949,ricevuto,ordini_acquisto.csv,Ordine demo.
+trx-0113,2025-02-08,fattura_acquisto,uscita,fa-003,FA-DEMO-003,Segheria Valverde Demo S.r.l.,2220156,registrata,fatture_acquisto.csv,Fattura acquisto sintetica.
+trx-0006,2025-02-11,ordine_acquisto,uscita,oa-006,OA-2025-006,Trasporti Bosco Demo S.r.l.,2048990,ricevuto,ordini_acquisto.csv,Ordine demo.
+trx-0114,2025-02-14,fattura_acquisto,uscita,fa-004,FA-DEMO-004,Legni Storici Demo S.r.l.,1926990,registrata,fatture_acquisto.csv,Fattura acquisto sintetica.
+trx-0007,2025-02-17,ordine_acquisto,uscita,oa-007,OA-2025-007,Ferramenta Restauro Demo S.r.l.,720483,ricevuto,ordini_acquisto.csv,Ordine demo.
+trx-0115,2025-02-20,fattura_acquisto,uscita,fa-005,FA-DEMO-005,Materiali di Corte Demo S.r.l.,2463949,registrata,fatture_acquisto.csv,Fattura acquisto sintetica.
+trx-0008,2025-02-23,ordine_acquisto,uscita,oa-008,OA-2025-008,Recuperi Dolomia Demo S.r.l.,1157072,ricevuto,ordini_acquisto.csv,Ricezione con controllo umidità rafforzato.
+trx-0116,2025-02-26,fattura_acquisto,uscita,fa-006,FA-DEMO-006,Trasporti Bosco Demo S.r.l.,2048990,registrata,fatture_acquisto.csv,Fattura acquisto sintetica.
+trx-0175,2025-02-26,scadenza_pagamento,uscita,fa-001,FA-DEMO-001,Recuperi Alpini Demo S.r.l.,759450,pagata,scadenze.csv,Scadenza fornitore demo.
+trx-0009,2025-03-01,ordine_acquisto,uscita,oa-009,OA-2025-009,Antiche Travi Demo S.r.l.,2084736,ricevuto,ordini_acquisto.csv,Ordine demo.
+trx-0019,2025-03-03,preventivo,entrata,pre-001,PRE-2025-001,Atelier Arco S.r.l.,193248,accettato,preventivi.csv,Subordinato ad approvazione campione.
+trx-0117,2025-03-04,fattura_acquisto,uscita,fa-007,FA-DEMO-007,Ferramenta Restauro Demo S.r.l.,720483,registrata,fatture_acquisto.csv,Fattura acquisto sintetica.
+trx-0176,2025-03-04,scadenza_pagamento,uscita,fa-002,FA-DEMO-002,Demolizioni Laguna Demo S.r.l.,1161362,pagata,scadenze.csv,Scadenza fornitore demo.
+trx-0010,2025-03-07,ordine_acquisto,uscita,oa-010,OA-2025-010,Segheria Circolare Demo S.r.l.,1801379,ricevuto,ordini_acquisto.csv,Ordine demo.
+trx-0020,2025-03-07,preventivo,entrata,pre-002,PRE-2025-002,Cantieri Brenta S.p.A.,304844,accettato,preventivi.csv,Preventivo demo.
+trx-0049,2025-03-08,ordine_vendita,entrata,ord-001,ORD-2025-001,Atelier Arco S.r.l.,193248,evaso,ordini.csv,Ordine demo.
+trx-0118,2025-03-10,fattura_acquisto,uscita,fa-008,FA-DEMO-008,Recuperi Dolomia Demo S.r.l.,1157072,registrata,fatture_acquisto.csv,Fattura acquisto sintetica.
+trx-0177,2025-03-10,scadenza_pagamento,uscita,fa-003,FA-DEMO-003,Segheria Valverde Demo S.r.l.,2220156,pagata,scadenze.csv,Scadenza fornitore demo.
+trx-0021,2025-03-11,preventivo,entrata,pre-003,PRE-2025-003,Dimora Lab S.r.l.,590626,accettato,preventivi.csv,Preventivo demo.
+trx-0050,2025-03-12,ordine_vendita,entrata,ord-002,ORD-2025-002,Cantieri Brenta S.p.A.,304844,evaso,ordini.csv,Ordine demo.
+trx-0011,2025-03-13,ordine_acquisto,uscita,oa-011,OA-2025-011,Recuperi Alpini Demo S.r.l.,1131184,ricevuto,ordini_acquisto.csv,Ordine demo.
+trx-0022,2025-03-15,preventivo,entrata,pre-004,PRE-2025-004,Forma Interni S.r.l.,537068,accettato,preventivi.csv,Preventivo demo.
+trx-0051,2025-03-16,ordine_vendita,entrata,ord-003,ORD-2025-003,Dimora Lab S.r.l.,590626,evaso,ordini.csv,Ordine demo.
+trx-0119,2025-03-16,fattura_acquisto,uscita,fa-009,FA-DEMO-009,Antiche Travi Demo S.r.l.,2084736,registrata,fatture_acquisto.csv,Fattura acquisto sintetica.
+trx-0178,2025-03-16,scadenza_pagamento,uscita,fa-004,FA-DEMO-004,Legni Storici Demo S.r.l.,1926990,pagata,scadenze.csv,Scadenza fornitore demo.
+trx-0127,2025-03-18,incasso,entrata,pag-001,DEMO-ACC-1,Atelier Arco S.r.l.,57974,acconto,pagamenti.csv,Incasso sintetico.
+trx-0012,2025-03-19,ordine_acquisto,uscita,oa-012,OA-2025-012,Demolizioni Laguna Demo S.r.l.,1916986,ricevuto,ordini_acquisto.csv,Ordine demo.
+trx-0023,2025-03-19,preventivo,entrata,pre-005,PRE-2025-005,Officina Abitare S.r.l.,689466,accettato,preventivi.csv,Preventivo demo.
+trx-0052,2025-03-20,ordine_vendita,entrata,ord-004,ORD-2025-004,Forma Interni S.r.l.,537068,evaso,ordini.csv,Ordine demo.
+trx-0120,2025-03-22,fattura_acquisto,uscita,fa-010,FA-DEMO-010,Segheria Circolare Demo S.r.l.,1801379,registrata,fatture_acquisto.csv,Fattura acquisto sintetica.
+trx-0129,2025-03-22,incasso,entrata,pag-003,DEMO-ACC-2,Cantieri Brenta S.p.A.,91453,acconto,pagamenti.csv,Incasso sintetico.
+trx-0179,2025-03-22,scadenza_pagamento,uscita,fa-005,FA-DEMO-005,Materiali di Corte Demo S.r.l.,2463949,pagata,scadenze.csv,Scadenza fornitore demo.
+trx-0024,2025-03-23,preventivo,entrata,pre-006,PRE-2025-006,Studio Cedro Associati,472140,accettato,preventivi.csv,Preventivo demo.
+trx-0053,2025-03-24,ordine_vendita,entrata,ord-005,ORD-2025-005,Officina Abitare S.r.l.,689466,evaso,ordini.csv,Ordine demo.
+trx-0013,2025-03-25,ordine_acquisto,uscita,oa-013,OA-2025-013,Segheria Valverde Demo S.r.l.,658849,ricevuto,ordini_acquisto.csv,Ordine demo.
+trx-0131,2025-03-26,incasso,entrata,pag-005,DEMO-ACC-3,Dimora Lab S.r.l.,177188,acconto,pagamenti.csv,Incasso sintetico.
+trx-0025,2025-03-27,preventivo,entrata,pre-007,PRE-2025-007,Edilnova Restauri S.r.l.,195971,accettato,preventivi.csv,Subordinato ad approvazione campione.
+trx-0054,2025-03-28,ordine_vendita,entrata,ord-006,ORD-2025-006,Studio Cedro Associati,472140,evaso,ordini.csv,Ordine demo.
+trx-0121,2025-03-28,fattura_acquisto,uscita,fa-011,FA-DEMO-011,Recuperi Alpini Demo S.r.l.,1131184,registrata,fatture_acquisto.csv,Fattura acquisto sintetica.
+trx-0180,2025-03-28,scadenza_pagamento,uscita,fa-006,FA-DEMO-006,Trasporti Bosco Demo S.r.l.,2048990,pagata,scadenze.csv,Scadenza fornitore demo.
+trx-0133,2025-03-30,incasso,entrata,pag-007,DEMO-ACC-4,Forma Interni S.r.l.,161120,acconto,pagamenti.csv,Incasso sintetico.
+trx-0014,2025-03-31,ordine_acquisto,uscita,oa-014,OA-2025-014,Legni Storici Demo S.r.l.,1038157,ricevuto,ordini_acquisto.csv,Ordine demo.
+trx-0026,2025-03-31,preventivo,entrata,pre-008,PRE-2025-008,Materia Casa S.r.l.,311539,accettato,preventivi.csv,Preventivo demo.
+trx-0055,2025-04-01,ordine_vendita,entrata,ord-007,ORD-2025-007,Edilnova Restauri S.r.l.,195971,evaso,ordini.csv,Ordine demo.
+trx-0122,2025-04-03,fattura_acquisto,uscita,fa-012,FA-DEMO-012,Demolizioni Laguna Demo S.r.l.,1916986,registrata,fatture_acquisto.csv,Fattura acquisto sintetica.
+trx-0135,2025-04-03,incasso,entrata,pag-009,DEMO-ACC-5,Officina Abitare S.r.l.,206840,acconto,pagamenti.csv,Incasso sintetico.
+trx-0181,2025-04-03,scadenza_pagamento,uscita,fa-007,FA-DEMO-007,Ferramenta Restauro Demo S.r.l.,720483,pagata,scadenze.csv,Scadenza fornitore demo.
+trx-0027,2025-04-04,preventivo,entrata,pre-009,PRE-2025-009,Nordic Habitat S.r.l.,585219,accettato,preventivi.csv,Preventivo demo.
+trx-0056,2025-04-05,ordine_vendita,entrata,ord-008,ORD-2025-008,Materia Casa S.r.l.,311539,evaso,ordini.csv,Ordine demo.
+trx-0015,2025-04-06,ordine_acquisto,uscita,oa-015,OA-2025-015,Materiali di Corte Demo S.r.l.,2133292,ricevuto,ordini_acquisto.csv,Ordine demo.
+trx-0137,2025-04-07,incasso,entrata,pag-011,DEMO-ACC-6,Studio Cedro Associati,141642,acconto,pagamenti.csv,Incasso sintetico.
+trx-0028,2025-04-08,preventivo,entrata,pre-010,PRE-2025-010,Casa Radice S.r.l.,538518,accettato,preventivi.csv,Preventivo demo.
+trx-0073,2025-04-08,ddt,entrata,ddt-001,DDT-2025-001,Atelier Arco S.r.l.,193248,emesso,ddt.csv,DDT demo.
+trx-0057,2025-04-09,ordine_vendita,entrata,ord-009,ORD-2025-009,Nordic Habitat S.r.l.,585219,evaso,ordini.csv,Ordine demo.
+trx-0123,2025-04-09,fattura_acquisto,uscita,fa-013,FA-DEMO-013,Segheria Valverde Demo S.r.l.,658849,registrata,fatture_acquisto.csv,Fattura acquisto sintetica.
+trx-0182,2025-04-09,scadenza_pagamento,uscita,fa-008,FA-DEMO-008,Recuperi Dolomia Demo S.r.l.,1157072,pagata,scadenze.csv,Scadenza fornitore demo.
+trx-0139,2025-04-11,incasso,entrata,pag-013,DEMO-ACC-7,Edilnova Restauri S.r.l.,58791,acconto,pagamenti.csv,Incasso sintetico.
+trx-0016,2025-04-12,ordine_acquisto,uscita,oa-016,OA-2025-016,Trasporti Bosco Demo S.r.l.,1492365,ricevuto,ordini_acquisto.csv,Ordine demo.
+trx-0029,2025-04-12,preventivo,entrata,pre-011,PRE-2025-011,Progetto Quercia S.r.l.,276696,accettato,preventivi.csv,Preventivo demo.
+trx-0074,2025-04-12,ddt,entrata,ddt-002,DDT-2025-002,Cantieri Brenta S.p.A.,304844,emesso,ddt.csv,DDT demo.
+trx-0058,2025-04-13,ordine_vendita,entrata,ord-010,ORD-2025-010,Casa Radice S.r.l.,538518,evaso,ordini.csv,Cliente richiede lotti omogenei per patina.
+trx-0124,2025-04-15,fattura_acquisto,uscita,fa-014,FA-DEMO-014,Legni Storici Demo S.r.l.,1038157,registrata,fatture_acquisto.csv,Fattura acquisto sintetica.
+trx-0141,2025-04-15,incasso,entrata,pag-015,DEMO-ACC-8,Materia Casa S.r.l.,93462,acconto,pagamenti.csv,Incasso sintetico.
+trx-0183,2025-04-15,scadenza_pagamento,uscita,fa-009,FA-DEMO-009,Antiche Travi Demo S.r.l.,2084736,pagata,scadenze.csv,Scadenza fornitore demo.
+trx-0030,2025-04-16,preventivo,entrata,pre-012,PRE-2025-012,Corte Antica Hospitality S.r.l.,487206,accettato,preventivi.csv,Preventivo demo.
+trx-0075,2025-04-16,ddt,entrata,ddt-003,DDT-2025-003,Dimora Lab S.r.l.,590626,emesso,ddt.csv,DDT demo.
+trx-0059,2025-04-17,ordine_vendita,entrata,ord-011,ORD-2025-011,Progetto Quercia S.r.l.,276696,evaso,ordini.csv,Ordine demo.
+trx-0093,2025-04-17,fattura_vendita,entrata,fv-001,FV-2025-001,Atelier Arco S.r.l.,193248,emessa,fatture_vendita.csv,Fattura demo.
+trx-0017,2025-04-18,ordine_acquisto,uscita,oa-017,OA-2025-017,Ferramenta Restauro Demo S.r.l.,1829707,confermato,ordini_acquisto.csv,Ordine demo.
+trx-0143,2025-04-19,incasso,entrata,pag-017,DEMO-ACC-9,Nordic Habitat S.r.l.,175566,acconto,pagamenti.csv,Incasso sintetico.
+trx-0031,2025-04-20,preventivo,entrata,pre-013,PRE-2025-013,Linea Restauro S.r.l.,204448,accettato,preventivi.csv,Subordinato ad approvazione campione.
+trx-0076,2025-04-20,ddt,entrata,ddt-004,DDT-2025-004,Forma Interni S.r.l.,537068,emesso,ddt.csv,DDT demo.
+trx-0060,2025-04-21,ordine_vendita,entrata,ord-012,ORD-2025-012,Corte Antica Hospitality S.r.l.,487206,evaso,ordini.csv,Ordine demo.
+trx-0094,2025-04-21,fattura_vendita,entrata,fv-002,FV-2025-002,Cantieri Brenta S.p.A.,304844,emessa,fatture_vendita.csv,Fattura demo.
+trx-0125,2025-04-21,fattura_acquisto,uscita,fa-015,FA-DEMO-015,Materiali di Corte Demo S.r.l.,2133292,registrata,fatture_acquisto.csv,Fattura acquisto sintetica.
+trx-0184,2025-04-21,scadenza_pagamento,uscita,fa-010,FA-DEMO-010,Segheria Circolare Demo S.r.l.,1801379,pagata,scadenze.csv,Scadenza fornitore demo.
+trx-0145,2025-04-23,incasso,entrata,pag-019,DEMO-ACC-10,Casa Radice S.r.l.,161555,acconto,pagamenti.csv,Incasso sintetico.
+trx-0018,2025-04-24,ordine_acquisto,uscita,oa-018,OA-2025-018,Recuperi Dolomia Demo S.r.l.,2521130,bozza,ordini_acquisto.csv,Ordine demo.
+trx-0032,2025-04-24,preventivo,entrata,pre-014,PRE-2025-014,Spazio Materico S.r.l.,303721,accettato,preventivi.csv,Preventivo demo.
+trx-0077,2025-04-24,ddt,entrata,ddt-005,DDT-2025-005,Officina Abitare S.r.l.,689466,emesso,ddt.csv,DDT demo.
+trx-0061,2025-04-25,ordine_vendita,entrata,ord-013,ORD-2025-013,Linea Restauro S.r.l.,204448,evaso,ordini.csv,Ordine demo.
+trx-0095,2025-04-25,fattura_vendita,entrata,fv-003,FV-2025-003,Dimora Lab S.r.l.,590626,emessa,fatture_vendita.csv,Fattura demo.
+trx-0126,2025-04-27,fattura_acquisto,uscita,fa-016,FA-DEMO-016,Trasporti Bosco Demo S.r.l.,1492365,registrata,fatture_acquisto.csv,Fattura acquisto sintetica.
+trx-0147,2025-04-27,incasso,entrata,pag-021,DEMO-ACC-11,Progetto Quercia S.r.l.,83009,acconto,pagamenti.csv,Incasso sintetico.
+trx-0185,2025-04-27,scadenza_pagamento,uscita,fa-011,FA-DEMO-011,Recuperi Alpini Demo S.r.l.,1131184,pagata,scadenze.csv,Scadenza fornitore demo.
+trx-0033,2025-04-28,preventivo,entrata,pre-015,PRE-2025-015,Rovere Contract S.r.l.,591554,accettato,preventivi.csv,Preventivo demo.
+trx-0078,2025-04-28,ddt,entrata,ddt-006,DDT-2025-006,Studio Cedro Associati,472140,emesso,ddt.csv,DDT demo.
+trx-0062,2025-04-29,ordine_vendita,entrata,ord-014,ORD-2025-014,Spazio Materico S.r.l.,303721,evaso,ordini.csv,Ordine demo.
+trx-0096,2025-04-29,fattura_vendita,entrata,fv-004,FV-2025-004,Forma Interni S.r.l.,537068,emessa,fatture_vendita.csv,Fattura demo.
+trx-0149,2025-05-01,incasso,entrata,pag-023,DEMO-ACC-12,Corte Antica Hospitality S.r.l.,146162,acconto,pagamenti.csv,Incasso sintetico.
+trx-0034,2025-05-02,preventivo,entrata,pre-016,PRE-2025-016,Architettura Viva S.r.l.,368928,accettato,preventivi.csv,Preventivo demo.
+trx-0079,2025-05-02,ddt,entrata,ddt-007,DDT-2025-007,Edilnova Restauri S.r.l.,195971,emesso,ddt.csv,DDT demo.
+trx-0063,2025-05-03,ordine_vendita,entrata,ord-015,ORD-2025-015,Rovere Contract S.r.l.,591554,evaso,ordini.csv,Ordine demo.
+trx-0097,2025-05-03,fattura_vendita,entrata,fv-005,FV-2025-005,Officina Abitare S.r.l.,689466,emessa,fatture_vendita.csv,Fattura demo.
+trx-0186,2025-05-03,scadenza_pagamento,uscita,fa-012,FA-DEMO-012,Demolizioni Laguna Demo S.r.l.,1916986,pagata,scadenze.csv,Scadenza fornitore demo.
+trx-0151,2025-05-05,incasso,entrata,pag-025,DEMO-ACC-13,Linea Restauro S.r.l.,61334,acconto,pagamenti.csv,Incasso sintetico.
+trx-0035,2025-05-06,preventivo,entrata,pre-017,PRE-2025-017,Borgo Nuovo Resort S.r.l.,239520,accettato,preventivi.csv,Preventivo demo.
+trx-0080,2025-05-06,ddt,entrata,ddt-008,DDT-2025-008,Materia Casa S.r.l.,311539,emesso,ddt.csv,DDT demo.
+trx-0064,2025-05-07,ordine_vendita,entrata,ord-016,ORD-2025-016,Architettura Viva S.r.l.,368928,evaso,ordini.csv,Ordine demo.
+trx-0098,2025-05-07,fattura_vendita,entrata,fv-006,FV-2025-006,Studio Cedro Associati,472140,emessa,fatture_vendita.csv,Fattura demo.
+trx-0153,2025-05-09,incasso,entrata,pag-027,DEMO-ACC-14,Spazio Materico S.r.l.,91116,acconto,pagamenti.csv,Incasso sintetico.
+trx-0187,2025-05-09,scadenza_pagamento,uscita,fa-013,FA-DEMO-013,Segheria Valverde Demo S.r.l.,658849,pagata,scadenze.csv,Scadenza fornitore demo.
+trx-0036,2025-05-10,preventivo,entrata,pre-018,PRE-2025-018,Cantiere Blu S.r.l.,363462,accettato,preventivi.csv,Preventivo demo.
+trx-0081,2025-05-10,ddt,entrata,ddt-009,DDT-2025-009,Nordic Habitat S.r.l.,585219,emesso,ddt.csv,DDT demo.
+trx-0065,2025-05-11,ordine_vendita,entrata,ord-017,ORD-2025-017,Borgo Nuovo Resort S.r.l.,239520,evaso,ordini.csv,Ordine demo.
+trx-0099,2025-05-11,fattura_vendita,entrata,fv-007,FV-2025-007,Edilnova Restauri S.r.l.,195971,emessa,fatture_vendita.csv,Fattura demo.
+trx-0155,2025-05-13,incasso,entrata,pag-029,DEMO-ACC-15,Rovere Contract S.r.l.,177466,acconto,pagamenti.csv,Incasso sintetico.
+trx-0037,2025-05-14,preventivo,entrata,pre-019,PRE-2025-019,Interni Levante S.r.l.,674113,accettato,preventivi.csv,Subordinato ad approvazione campione.
+trx-0082,2025-05-14,ddt,entrata,ddt-010,DDT-2025-010,Casa Radice S.r.l.,538518,emesso,ddt.csv,DDT demo.
+trx-0066,2025-05-15,ordine_vendita,entrata,ord-018,ORD-2025-018,Cantiere Blu S.r.l.,363462,evaso,ordini.csv,Ordine demo.
+trx-0100,2025-05-15,fattura_vendita,entrata,fv-008,FV-2025-008,Materia Casa S.r.l.,311539,emessa,fatture_vendita.csv,Fattura demo.
+trx-0188,2025-05-15,scadenza_pagamento,uscita,fa-014,FA-DEMO-014,Legni Storici Demo S.r.l.,1038157,aperta,scadenze.csv,Scadenza fornitore demo.
+trx-0157,2025-05-17,scadenza_incasso,entrata,fv-001,FV-2025-001,Atelier Arco S.r.l.,193248,incassata,scadenze.csv,Scadenza cliente demo.
+trx-0038,2025-05-18,preventivo,entrata,pre-020,PRE-2025-020,Alpine Lodges Italia S.r.l.,591554,accettato,preventivi.csv,Preventivo demo.
+trx-0083,2025-05-18,ddt,entrata,ddt-011,DDT-2025-011,Progetto Quercia S.r.l.,276696,emesso,ddt.csv,DDT demo.
+trx-0067,2025-05-19,ordine_vendita,entrata,ord-019,ORD-2025-019,Interni Levante S.r.l.,674113,confermato,ordini.csv,Ordine demo.
+trx-0101,2025-05-19,fattura_vendita,entrata,fv-009,FV-2025-009,Nordic Habitat S.r.l.,585219,emessa,fatture_vendita.csv,Fattura demo.
+trx-0128,2025-05-20,incasso,entrata,pag-002,DEMO-SAL-1,Atelier Arco S.r.l.,135274,saldo,pagamenti.csv,Saldo sintetico.
+trx-0158,2025-05-21,scadenza_incasso,entrata,fv-002,FV-2025-002,Cantieri Brenta S.p.A.,304844,incassata,scadenze.csv,Scadenza cliente demo.
+trx-0189,2025-05-21,scadenza_pagamento,uscita,fa-015,FA-DEMO-015,Materiali di Corte Demo S.r.l.,2133292,aperta,scadenze.csv,Sospesa in attesa nota su difformità.
+trx-0039,2025-05-22,preventivo,entrata,pre-021,PRE-2025-021,Studio Nodo S.r.l.,371124,accettato,preventivi.csv,Preventivo demo.
+trx-0084,2025-05-22,ddt,entrata,ddt-012,DDT-2025-012,Corte Antica Hospitality S.r.l.,487206,emesso,ddt.csv,DDT demo.
+trx-0068,2025-05-23,ordine_vendita,entrata,ord-020,ORD-2025-020,Alpine Lodges Italia S.r.l.,591554,confermato,ordini.csv,Ordine demo.
+trx-0102,2025-05-23,fattura_vendita,entrata,fv-010,FV-2025-010,Casa Radice S.r.l.,538518,emessa,fatture_vendita.csv,Fattura demo.
+trx-0130,2025-05-24,incasso,entrata,pag-004,DEMO-SAL-2,Cantieri Brenta S.p.A.,213391,saldo,pagamenti.csv,Saldo sintetico.
+trx-0159,2025-05-25,scadenza_incasso,entrata,fv-003,FV-2025-003,Dimora Lab S.r.l.,590626,incassata,scadenze.csv,Scadenza cliente demo.
+trx-0040,2025-05-26,preventivo,entrata,pre-022,PRE-2025-022,Recupero & Design S.r.l.,585191,accettato,preventivi.csv,Preventivo demo.
+trx-0085,2025-05-26,ddt,entrata,ddt-013,DDT-2025-013,Linea Restauro S.r.l.,204448,emesso,ddt.csv,DDT demo.
+trx-0069,2025-05-27,ordine_vendita,entrata,ord-021,ORD-2025-021,Studio Nodo S.r.l.,371124,confermato,ordini.csv,Ordine demo.
+trx-0103,2025-05-27,fattura_vendita,entrata,fv-011,FV-2025-011,Progetto Quercia S.r.l.,276696,emessa,fatture_vendita.csv,Fattura demo.
+trx-0190,2025-05-27,scadenza_pagamento,uscita,fa-016,FA-DEMO-016,Trasporti Bosco Demo S.r.l.,1492365,aperta,scadenze.csv,Scadenza fornitore demo.
+trx-0132,2025-05-28,incasso,entrata,pag-006,DEMO-SAL-3,Dimora Lab S.r.l.,413438,saldo,pagamenti.csv,Saldo sintetico.
+trx-0160,2025-05-29,scadenza_incasso,entrata,fv-004,FV-2025-004,Forma Interni S.r.l.,537068,incassata,scadenze.csv,Scadenza cliente demo.
+trx-0041,2025-05-30,preventivo,entrata,pre-023,PRE-2025-023,Terra Cruda Contract S.r.l.,233654,accettato,preventivi.csv,Preventivo demo.
+trx-0086,2025-05-30,ddt,entrata,ddt-014,DDT-2025-014,Spazio Materico S.r.l.,303721,emesso,ddt.csv,DDT demo.
+trx-0070,2025-05-31,ordine_vendita,entrata,ord-022,ORD-2025-022,Recupero & Design S.r.l.,585191,confermato,ordini.csv,Ordine demo.
+trx-0104,2025-05-31,fattura_vendita,entrata,fv-012,FV-2025-012,Corte Antica Hospitality S.r.l.,487206,emessa,fatture_vendita.csv,Fattura demo.
+trx-0134,2025-06-01,incasso,entrata,pag-008,DEMO-SAL-4,Forma Interni S.r.l.,375948,saldo,pagamenti.csv,Saldo sintetico.
+trx-0161,2025-06-02,scadenza_incasso,entrata,fv-005,FV-2025-005,Officina Abitare S.r.l.,689466,incassata,scadenze.csv,Scadenza cliente demo.
+trx-0042,2025-06-03,preventivo,entrata,pre-024,PRE-2025-024,Habitat Circolare S.r.l.,355576,accettato,preventivi.csv,Preventivo demo.
+trx-0087,2025-06-03,ddt,entrata,ddt-015,DDT-2025-015,Rovere Contract S.r.l.,591554,emesso,ddt.csv,DDT demo.
+trx-0071,2025-06-04,ordine_vendita,entrata,ord-023,ORD-2025-023,Terra Cruda Contract S.r.l.,233654,in_lavorazione,ordini.csv,Ordine demo.
+trx-0105,2025-06-04,fattura_vendita,entrata,fv-013,FV-2025-013,Linea Restauro S.r.l.,204448,emessa,fatture_vendita.csv,Fattura demo.
+trx-0136,2025-06-05,incasso,entrata,pag-010,DEMO-SAL-5,Officina Abitare S.r.l.,482626,saldo,pagamenti.csv,Saldo sintetico.
+trx-0162,2025-06-06,scadenza_incasso,entrata,fv-006,FV-2025-006,Studio Cedro Associati,472140,incassata,scadenze.csv,Scadenza cliente demo.
+trx-0043,2025-06-07,preventivo,entrata,pre-025,PRE-2025-025,Atelier Arco S.r.l.,644589,scaduto,preventivi.csv,Subordinato ad approvazione campione.
+trx-0088,2025-06-07,ddt,entrata,ddt-016,DDT-2025-016,Architettura Viva S.r.l.,368928,emesso,ddt.csv,DDT demo.
+trx-0072,2025-06-08,ordine_vendita,entrata,ord-024,ORD-2025-024,Habitat Circolare S.r.l.,355576,in_lavorazione,ordini.csv,Ordine demo.
+trx-0106,2025-06-08,fattura_vendita,entrata,fv-014,FV-2025-014,Spazio Materico S.r.l.,303721,emessa,fatture_vendita.csv,Fattura demo.
+trx-0138,2025-06-09,incasso,entrata,pag-012,DEMO-SAL-6,Studio Cedro Associati,330498,saldo,pagamenti.csv,Saldo sintetico.
+trx-0163,2025-06-10,scadenza_incasso,entrata,fv-007,FV-2025-007,Edilnova Restauri S.r.l.,195971,incassata,scadenze.csv,Scadenza cliente demo.
+trx-0044,2025-06-11,preventivo,entrata,pre-026,PRE-2025-026,Cantieri Brenta S.p.A.,289872,bozza,preventivi.csv,Preventivo demo.
+trx-0089,2025-06-11,ddt,entrata,ddt-017,DDT-2025-017,Borgo Nuovo Resort S.r.l.,155688,emesso,ddt.csv,DDT demo.
+trx-0107,2025-06-12,fattura_vendita,entrata,fv-015,FV-2025-015,Rovere Contract S.r.l.,591554,emessa,fatture_vendita.csv,Pagamento parziale concordato.
+trx-0140,2025-06-13,incasso,entrata,pag-014,DEMO-SAL-7,Edilnova Restauri S.r.l.,137180,saldo,pagamenti.csv,Saldo sintetico.
+trx-0164,2025-06-14,scadenza_incasso,entrata,fv-008,FV-2025-008,Materia Casa S.r.l.,311539,incassata,scadenze.csv,Scadenza cliente demo.
+trx-0045,2025-06-15,preventivo,entrata,pre-027,PRE-2025-027,Dimora Lab S.r.l.,342949,inviato,preventivi.csv,Preventivo demo.
+trx-0090,2025-06-15,ddt,entrata,ddt-018,DDT-2025-018,Cantiere Blu S.r.l.,236251,emesso,ddt.csv,DDT demo.
+trx-0108,2025-06-16,fattura_vendita,entrata,fv-016,FV-2025-016,Architettura Viva S.r.l.,368928,emessa,fatture_vendita.csv,Fattura demo.
+trx-0142,2025-06-17,incasso,entrata,pag-016,DEMO-SAL-8,Materia Casa S.r.l.,218077,saldo,pagamenti.csv,Saldo sintetico.
+trx-0165,2025-06-18,scadenza_incasso,entrata,fv-009,FV-2025-009,Nordic Habitat S.r.l.,585219,incassata,scadenze.csv,Scadenza cliente demo.
+trx-0046,2025-06-19,preventivo,entrata,pre-028,PRE-2025-028,Forma Interni S.r.l.,580891,accettato,preventivi.csv,Preventivo demo.
+trx-0091,2025-06-19,ddt,entrata,ddt-019,DDT-2025-019,Borgo Nuovo Resort S.r.l.,83832,emesso,ddt.csv,Saldo consegna frazionata.
+trx-0109,2025-06-20,fattura_vendita,entrata,fv-017,FV-2025-017,Borgo Nuovo Resort S.r.l.,239520,emessa,fatture_vendita.csv,Fattura demo.
+trx-0144,2025-06-21,incasso,entrata,pag-018,DEMO-SAL-9,Nordic Habitat S.r.l.,409653,saldo,pagamenti.csv,Saldo sintetico.
+trx-0166,2025-06-22,scadenza_incasso,entrata,fv-010,FV-2025-010,Casa Radice S.r.l.,538518,incassata,scadenze.csv,Scadenza cliente demo.
+trx-0047,2025-06-23,preventivo,entrata,pre-029,PRE-2025-029,Officina Abitare S.r.l.,233347,rifiutato,preventivi.csv,Preventivo demo.
+trx-0092,2025-06-23,ddt,entrata,ddt-020,DDT-2025-020,Cantiere Blu S.r.l.,127212,emesso,ddt.csv,Saldo consegna frazionata.
+trx-0110,2025-06-24,fattura_vendita,entrata,fv-018,FV-2025-018,Cantiere Blu S.r.l.,363462,emessa,fatture_vendita.csv,Fattura demo.
+trx-0146,2025-06-25,incasso,entrata,pag-020,DEMO-SAL-10,Casa Radice S.r.l.,376963,saldo,pagamenti.csv,Saldo sintetico.
+trx-0167,2025-06-26,scadenza_incasso,entrata,fv-011,FV-2025-011,Progetto Quercia S.r.l.,276696,incassata,scadenze.csv,Scadenza cliente demo.
+trx-0048,2025-06-27,preventivo,entrata,pre-030,PRE-2025-030,Studio Cedro Associati,334534,scaduto,preventivi.csv,Preventivo demo.
+trx-0148,2025-06-29,incasso,entrata,pag-022,DEMO-SAL-11,Progetto Quercia S.r.l.,193687,saldo,pagamenti.csv,Saldo sintetico.
+trx-0168,2025-06-30,scadenza_incasso,entrata,fv-012,FV-2025-012,Corte Antica Hospitality S.r.l.,487206,incassata,scadenze.csv,Scadenza cliente demo.
+trx-0150,2025-07-03,incasso,entrata,pag-024,DEMO-SAL-12,Corte Antica Hospitality S.r.l.,341044,saldo,pagamenti.csv,Saldo sintetico.
+trx-0169,2025-07-04,scadenza_incasso,entrata,fv-013,FV-2025-013,Linea Restauro S.r.l.,204448,parziale,scadenze.csv,Scadenza cliente demo.
+trx-0170,2025-07-08,scadenza_incasso,entrata,fv-014,FV-2025-014,Spazio Materico S.r.l.,303721,parziale,scadenze.csv,Scadenza cliente demo.
+trx-0152,2025-07-11,incasso,entrata,pag-026,DEMO-PAR-13,Linea Restauro S.r.l.,20445,acconto,pagamenti.csv,Pagamento parziale sintetico.
+trx-0171,2025-07-12,scadenza_incasso,entrata,fv-015,FV-2025-015,Rovere Contract S.r.l.,591554,parziale,scadenze.csv,Scadenza cliente demo.
+trx-0154,2025-07-15,incasso,entrata,pag-028,DEMO-PAR-14,Spazio Materico S.r.l.,30372,acconto,pagamenti.csv,Pagamento parziale sintetico.
+trx-0172,2025-07-16,scadenza_incasso,entrata,fv-016,FV-2025-016,Architettura Viva S.r.l.,368928,aperta,scadenze.csv,Scadenza cliente demo.
+trx-0156,2025-07-19,incasso,entrata,pag-030,DEMO-PAR-15,Rovere Contract S.r.l.,59156,acconto,pagamenti.csv,Pagamento parziale sintetico.
+trx-0173,2025-07-20,scadenza_incasso,entrata,fv-017,FV-2025-017,Borgo Nuovo Resort S.r.l.,239520,aperta,scadenze.csv,Scadenza cliente demo.
+trx-0174,2025-07-24,scadenza_incasso,entrata,fv-018,FV-2025-018,Cantiere Blu S.r.l.,363462,aperta,scadenze.csv,Scadenza cliente demo.

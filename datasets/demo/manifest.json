@@ -1,0 +1,99 @@
+{
+  "version": 2,
+  "generated_at": "2026-08-18T00:00:00Z",
+  "synthetic": true,
+  "privacy_note": "Tutti i nomi, recapiti, identificativi fiscali, documenti e importi sono sintetici e destinati esclusivamente a test.",
+  "conventions": {
+    "monetary_values": "integer cents",
+    "quantities": "integer thousandths",
+    "dates": "ISO 8601 YYYY-MM-DD",
+    "arrays_in_csv": "semicolon-separated"
+  },
+  "counts": {
+    "clienti.csv": 24,
+    "fornitori.csv": 10,
+    "articoli.csv": 24,
+    "ordini_acquisto.csv": 18,
+    "righe_ordini_acquisto.csv": 18,
+    "lotti.csv": 16,
+    "preventivi.csv": 30,
+    "righe_preventivi.csv": 38,
+    "ordini.csv": 24,
+    "righe_ordini.csv": 24,
+    "ddt.csv": 20,
+    "righe_ddt.csv": 20,
+    "movimenti_magazzino.csv": 38,
+    "fatture_vendita.csv": 18,
+    "righe_fatture_vendita.csv": 18,
+    "fatture_acquisto.csv": 16,
+    "righe_fatture_acquisto.csv": 16,
+    "pagamenti.csv": 30,
+    "scadenze.csv": 34,
+    "transazioni.csv": 190,
+    "vendite.csv": 18,
+    "magazzino.csv": 16,
+    "incassi.csv": 18
+  },
+  "checks": [
+    {
+      "status": "PASS",
+      "label": "clienti aziendali: 24"
+    },
+    {
+      "status": "PASS",
+      "label": "eventi transazionali: 190"
+    },
+    {
+      "status": "PASS",
+      "label": "righe acquisto → articoli"
+    },
+    {
+      "status": "PASS",
+      "label": "righe ordine → ordini/articoli"
+    },
+    {
+      "status": "PASS",
+      "label": "righe DDT → DDT/ordini"
+    },
+    {
+      "status": "PASS",
+      "label": "movimenti → articoli/lotti"
+    },
+    {
+      "status": "PASS",
+      "label": "giacenze articolo non negative"
+    },
+    {
+      "status": "PASS",
+      "label": "giacenze lotto non negative"
+    },
+    {
+      "status": "PASS",
+      "label": "residui ordine coerenti"
+    },
+    {
+      "status": "PASS",
+      "label": "totali fatture vendita coerenti"
+    },
+    {
+      "status": "PASS",
+      "label": "totali acquisti coerenti"
+    }
+  ],
+  "coverage": {
+    "aziende_clienti": 24,
+    "aziende_fornitrici": 10,
+    "eventi_transazionali": 190,
+    "periodo": "2025-01-12/2025-07-24",
+    "documenti": [
+      "ordini acquisto",
+      "preventivi",
+      "ordini vendita",
+      "DDT",
+      "fatture vendita",
+      "fatture acquisto",
+      "pagamenti",
+      "scadenze"
+    ]
+  }
+}

@@ -1,7 +1,19 @@
-ordine_id,cliente_id,data_scadenza,importo_cents,incassato_cents,stato
-ORD-DEMO-006,CLI-DEMO-05,2026-05-09,1672000,1672000,saldato
-ORD-DEMO-007,CLI-DEMO-06,2026-05-28,234000,234000,saldato
-ORD-DEMO-008,CLI-DEMO-02,2026-06-13,1024000,700000,parziale
-ORD-DEMO-009,CLI-DEMO-07,2026-06-30,819000,0,scaduto
-ORD-DEMO-010,CLI-DEMO-04,2026-07-16,1045000,1045000,saldato
-ORD-DEMO-012,CLI-DEMO-05,2026-08-27,1128000,400000,parziale
+ordine_id,cliente_id,cliente,data_scadenza,importo_cents,incassato_cents,residuo_cents,stato
+ord-001,cli-001,Atelier Arco S.r.l.,2025-05-17,193248,193248,0,incassato
+ord-002,cli-002,Cantieri Brenta S.p.A.,2025-05-21,304844,304844,0,incassato
+ord-003,cli-003,Dimora Lab S.r.l.,2025-05-25,590626,590626,0,incassato
+ord-004,cli-004,Forma Interni S.r.l.,2025-05-29,537068,537068,0,incassato
+ord-005,cli-005,Officina Abitare S.r.l.,2025-06-02,689466,689466,0,incassato
+ord-006,cli-006,Studio Cedro Associati,2025-06-06,472140,472140,0,incassato
+ord-007,cli-007,Edilnova Restauri S.r.l.,2025-06-10,195971,195971,0,incassato
+ord-008,cli-008,Materia Casa S.r.l.,2025-06-14,311539,311539,0,incassato
+ord-009,cli-009,Nordic Habitat S.r.l.,2025-06-18,585219,585219,0,incassato
+ord-010,cli-010,Casa Radice S.r.l.,2025-06-22,538518,538518,0,incassato
+ord-011,cli-011,Progetto Quercia S.r.l.,2025-06-26,276696,276696,0,incassato
+ord-012,cli-012,Corte Antica Hospitality S.r.l.,2025-06-30,487206,487206,0,incassato
+ord-013,cli-013,Linea Restauro S.r.l.,2025-07-04,204448,81779,122669,parziale
+ord-014,cli-014,Spazio Materico S.r.l.,2025-07-08,303721,121488,182233,parziale
+ord-015,cli-015,Rovere Contract S.r.l.,2025-07-12,591554,236622,354932,parziale
+ord-016,cli-016,Architettura Viva S.r.l.,2025-07-16,368928,0,368928,aperto
+ord-017,cli-017,Borgo Nuovo Resort S.r.l.,2025-07-20,239520,0,239520,aperto
+ord-018,cli-018,Cantiere Blu S.r.l.,2025-07-24,363462,0,363462,aperto

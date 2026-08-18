@@ -55,3 +55,22 @@ esclusi dal versionamento.
 **Decisione:** il primo commit documenta chiaramente che Wiki, ChromaDB e pandas
 non sono ancora collegati alla chat. L'interfaccia è un prototipo interattivo e
 il router Node.js usa temporaneamente una strategia euristica.
+
+## D-011 — Fedeltà strutturale dei dati demo
+
+**Decisione:** il dataset usa le convenzioni del gestionale WoodRevive:
+centesimi, quantità in millesimi, testate e righe separate, articolo e lotto,
+movimenti derivati, pagamenti distinti dalle scadenze. La struttura è stata
+studiata in sola lettura; nessun dato sorgente è stato copiato.
+
+## D-012 — Parità informativa Wiki/RAG
+
+**Decisione:** le pagine Wiki sono canoniche e il corpus RAG completo viene
+generato automaticamente dalle stesse 13 pagine. Il confronto misura quindi il
+metodo di recupero, non una differenza artificiale di contenuti.
+
+## D-013 — Riproducibilità
+
+**Decisione:** dati, manifest e corpus sono generati deterministicamente. Il
+controllo `--check` fallisce se un file versionato non coincide con la sua
+rigenerazione o se una relazione fondamentale non è coerente.

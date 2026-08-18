@@ -25,8 +25,12 @@ confrontare RAG e navigazione strutturata per qualità, fonti, latenza e costo.
 - interfaccia React responsive con branding ufficiale WoodRevive e modalità
   Automatico, RAG, Wiki e Dati;
 - architettura e contratti API definiti;
-- prime pagine Wiki e corpus RAG;
-- tre dataset CSV sintetici e anonimi: vendite, magazzino e incassi;
+- 13 pagine Wiki operative e corpus RAG generato dalle stesse fonti canoniche;
+- archivio demo relazionale: 24 clienti aziendali, 10 fornitori, 24 articoli,
+  16 lotti e 190 eventi fra acquisti, preventivi, ordini, DDT, fatture,
+  pagamenti e scadenze;
+- 23 CSV con chiavi collegate, più viste compatibili per vendite, magazzino e
+  incassi;
 - orchestratore Node.js con endpoint di stato e router euristico provvisorio;
 - servizio Python/pandas con riepilogo vendite, margine per categoria e analisi
   dei lotti a lenta rotazione;
@@ -56,6 +60,8 @@ analytics-service/           servizio Python e pandas
 knowledge/wiki/              knowledge base strutturata
 knowledge/rag-source/        corpus destinato a ChromaDB
 datasets/demo/               CSV sintetici e anonimi
+scripts/                     generatori e controlli riproducibili
+outputs/                     workbook di audit del dataset
 docs/                        architettura, piano e decisioni
 ```
 
@@ -65,6 +71,7 @@ docs/                        architettura, piano e decisioni
 - [Piano di sviluppo](docs/PIANO.md)
 - [Decisioni](docs/DECISIONI.md)
 - [Dataset e KPI](docs/DATI-E-KPI.md)
+- [Schema dati demo](docs/SCHEMA-DATI-DEMO.md)
 - [Scenari di prova](docs/SCENARI-DEMO.md)
 - [Stato del progetto](docs/STATO-PROGETTO.md)
 
@@ -87,4 +94,20 @@ npm run build
 npm run lint
 npm test
 ./node_modules/.bin/tsc -p server/tsconfig.json --noEmit
+node scripts/generate_demo_data.mjs --check
+node scripts/build_rag_corpus.mjs --check
 ```
+
+## Rigenerazione dei dati demo
+
+Il generatore è deterministico: non legge il gestionale e non contiene dati
+esportati. Per ricreare i CSV e poi verificarli:
+
+```bash
+node scripts/generate_demo_data.mjs
+node scripts/generate_demo_data.mjs --check
+```
+
+Il file `datasets/demo/manifest.json` riporta conteggi, convenzioni e controlli
+superati. Il corpus RAG viene rigenerato dalle 13 pagine Wiki per mantenere
+equivalente la base informativa dei due percorsi documentali.

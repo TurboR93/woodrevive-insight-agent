@@ -1,0 +1,31 @@
+id,created_at,cliente_id,cliente_ragione_sociale,ordine_id,ordine_numero,tipo,data,importo_cents,mezzo,riferimento,note
+pag-001,1742288400000,cli-001,Atelier Arco S.r.l.,ord-001,ORD-2025-001,acconto,2025-03-18,57974,riba,DEMO-ACC-1,Incasso sintetico.
+pag-002,1747731600000,cli-001,Atelier Arco S.r.l.,ord-001,ORD-2025-001,saldo,2025-05-20,135274,bonifico,DEMO-SAL-1,Saldo sintetico.
+pag-003,1742634000000,cli-002,Cantieri Brenta S.p.A.,ord-002,ORD-2025-002,acconto,2025-03-22,91453,bonifico,DEMO-ACC-2,Incasso sintetico.
+pag-004,1748077200000,cli-002,Cantieri Brenta S.p.A.,ord-002,ORD-2025-002,saldo,2025-05-24,213391,bonifico,DEMO-SAL-2,Saldo sintetico.
+pag-005,1742979600000,cli-003,Dimora Lab S.r.l.,ord-003,ORD-2025-003,acconto,2025-03-26,177188,bonifico,DEMO-ACC-3,Incasso sintetico.
+pag-006,1748422800000,cli-003,Dimora Lab S.r.l.,ord-003,ORD-2025-003,saldo,2025-05-28,413438,bonifico,DEMO-SAL-3,Saldo sintetico.
+pag-007,1743325200000,cli-004,Forma Interni S.r.l.,ord-004,ORD-2025-004,acconto,2025-03-30,161120,bonifico,DEMO-ACC-4,Incasso sintetico.
+pag-008,1748768400000,cli-004,Forma Interni S.r.l.,ord-004,ORD-2025-004,saldo,2025-06-01,375948,bonifico,DEMO-SAL-4,Saldo sintetico.
+pag-009,1743670800000,cli-005,Officina Abitare S.r.l.,ord-005,ORD-2025-005,acconto,2025-04-03,206840,riba,DEMO-ACC-5,Incasso sintetico.
+pag-010,1749114000000,cli-005,Officina Abitare S.r.l.,ord-005,ORD-2025-005,saldo,2025-06-05,482626,bonifico,DEMO-SAL-5,Saldo sintetico.
+pag-011,1744016400000,cli-006,Studio Cedro Associati,ord-006,ORD-2025-006,acconto,2025-04-07,141642,bonifico,DEMO-ACC-6,Incasso sintetico.
+pag-012,1749459600000,cli-006,Studio Cedro Associati,ord-006,ORD-2025-006,saldo,2025-06-09,330498,bonifico,DEMO-SAL-6,Saldo sintetico.
+pag-013,1744362000000,cli-007,Edilnova Restauri S.r.l.,ord-007,ORD-2025-007,acconto,2025-04-11,58791,bonifico,DEMO-ACC-7,Incasso sintetico.
+pag-014,1749805200000,cli-007,Edilnova Restauri S.r.l.,ord-007,ORD-2025-007,saldo,2025-06-13,137180,bonifico,DEMO-SAL-7,Saldo sintetico.
+pag-015,1744707600000,cli-008,Materia Casa S.r.l.,ord-008,ORD-2025-008,acconto,2025-04-15,93462,bonifico,DEMO-ACC-8,Incasso sintetico.
+pag-016,1750150800000,cli-008,Materia Casa S.r.l.,ord-008,ORD-2025-008,saldo,2025-06-17,218077,bonifico,DEMO-SAL-8,Saldo sintetico.
+pag-017,1745053200000,cli-009,Nordic Habitat S.r.l.,ord-009,ORD-2025-009,acconto,2025-04-19,175566,riba,DEMO-ACC-9,Incasso sintetico.
+pag-018,1750496400000,cli-009,Nordic Habitat S.r.l.,ord-009,ORD-2025-009,saldo,2025-06-21,409653,bonifico,DEMO-SAL-9,Saldo sintetico.
+pag-019,1745398800000,cli-010,Casa Radice S.r.l.,ord-010,ORD-2025-010,acconto,2025-04-23,161555,bonifico,DEMO-ACC-10,Incasso sintetico.
+pag-020,1750842000000,cli-010,Casa Radice S.r.l.,ord-010,ORD-2025-010,saldo,2025-06-25,376963,bonifico,DEMO-SAL-10,Saldo sintetico.
+pag-021,1745744400000,cli-011,Progetto Quercia S.r.l.,ord-011,ORD-2025-011,acconto,2025-04-27,83009,bonifico,DEMO-ACC-11,Incasso sintetico.
+pag-022,1751187600000,cli-011,Progetto Quercia S.r.l.,ord-011,ORD-2025-011,saldo,2025-06-29,193687,bonifico,DEMO-SAL-11,Saldo sintetico.
+pag-023,1746090000000,cli-012,Corte Antica Hospitality S.r.l.,ord-012,ORD-2025-012,acconto,2025-05-01,146162,bonifico,DEMO-ACC-12,Incasso sintetico.
+pag-024,1751533200000,cli-012,Corte Antica Hospitality S.r.l.,ord-012,ORD-2025-012,saldo,2025-07-03,341044,bonifico,DEMO-SAL-12,Saldo sintetico.
+pag-025,1746435600000,cli-013,Linea Restauro S.r.l.,ord-013,ORD-2025-013,acconto,2025-05-05,61334,riba,DEMO-ACC-13,Incasso sintetico.
+pag-026,1752224400000,cli-013,Linea Restauro S.r.l.,ord-013,ORD-2025-013,acconto,2025-07-11,20445,bonifico,DEMO-PAR-13,Pagamento parziale sintetico.
+pag-027,1746781200000,cli-014,Spazio Materico S.r.l.,ord-014,ORD-2025-014,acconto,2025-05-09,91116,bonifico,DEMO-ACC-14,Incasso sintetico.
+pag-028,1752570000000,cli-014,Spazio Materico S.r.l.,ord-014,ORD-2025-014,acconto,2025-07-15,30372,bonifico,DEMO-PAR-14,Pagamento parziale sintetico.
+pag-029,1747126800000,cli-015,Rovere Contract S.r.l.,ord-015,ORD-2025-015,acconto,2025-05-13,177466,bonifico,DEMO-ACC-15,Incasso sintetico.
+pag-030,1752915600000,cli-015,Rovere Contract S.r.l.,ord-015,ORD-2025-015,acconto,2025-07-19,59156,bonifico,DEMO-PAR-15,Pagamento parziale sintetico.

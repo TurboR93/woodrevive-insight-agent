@@ -1,0 +1,17 @@
+id,created_at,updated_at,numero,data,fornitore_id,fornitore_ragione_sociale,ordine_acquisto_id,ordine_acquisto_numero,imponibile_cents,iva_cents,totale_cents,data_scadenza,stato,note
+fa-001,1737968400000,1738054800000,FA-DEMO-001,2025-01-27,for-001,Recuperi Alpini Demo S.r.l.,oa-001,OA-2025-001,622500,136950,759450,2025-02-26,registrata,Fattura acquisto sintetica.
+fa-002,1738486800000,1738573200000,FA-DEMO-002,2025-02-02,for-002,Demolizioni Laguna Demo S.r.l.,oa-002,OA-2025-002,951936,209426,1161362,2025-03-04,registrata,Fattura acquisto sintetica.
+fa-003,1739005200000,1739091600000,FA-DEMO-003,2025-02-08,for-003,Segheria Valverde Demo S.r.l.,oa-003,OA-2025-003,1819800,400356,2220156,2025-03-10,registrata,Fattura acquisto sintetica.
+fa-004,1739523600000,1739610000000,FA-DEMO-004,2025-02-14,for-004,Legni Storici Demo S.r.l.,oa-004,OA-2025-004,1579500,347490,1926990,2025-03-16,registrata,Fattura acquisto sintetica.
+fa-005,1740042000000,1740128400000,FA-DEMO-005,2025-02-20,for-005,Materiali di Corte Demo S.r.l.,oa-005,OA-2025-005,2019630,444319,2463949,2025-03-22,registrata,Fattura acquisto sintetica.
+fa-006,1740560400000,1740646800000,FA-DEMO-006,2025-02-26,for-006,Trasporti Bosco Demo S.r.l.,oa-006,OA-2025-006,1679500,369490,2048990,2025-03-28,registrata,Fattura acquisto sintetica.
+fa-007,1741078800000,1741165200000,FA-DEMO-007,2025-03-04,for-007,Ferramenta Restauro Demo S.r.l.,oa-007,OA-2025-007,590560,129923,720483,2025-04-03,registrata,Fattura acquisto sintetica.
+fa-008,1741597200000,1741683600000,FA-DEMO-008,2025-03-10,for-008,Recuperi Dolomia Demo S.r.l.,oa-008,OA-2025-008,948420,208652,1157072,2025-04-09,registrata,Fattura acquisto sintetica.
+fa-009,1742115600000,1742202000000,FA-DEMO-009,2025-03-16,for-009,Antiche Travi Demo S.r.l.,oa-009,OA-2025-009,1708800,375936,2084736,2025-04-15,registrata,Fattura acquisto sintetica.
+fa-010,1742634000000,1742720400000,FA-DEMO-010,2025-03-22,for-010,Segheria Circolare Demo S.r.l.,oa-010,OA-2025-010,1476540,324839,1801379,2025-04-21,registrata,Fattura acquisto sintetica.
+fa-011,1743152400000,1743238800000,FA-DEMO-011,2025-03-28,for-001,Recuperi Alpini Demo S.r.l.,oa-011,OA-2025-011,927200,203984,1131184,2025-04-27,registrata,Fattura acquisto sintetica.
+fa-012,1743670800000,1743757200000,FA-DEMO-012,2025-04-03,for-002,Demolizioni Laguna Demo S.r.l.,oa-012,OA-2025-012,1571300,345686,1916986,2025-05-03,registrata,Fattura acquisto sintetica.
+fa-013,1744189200000,1744275600000,FA-DEMO-013,2025-04-09,for-003,Segheria Valverde Demo S.r.l.,oa-013,OA-2025-013,540040,118809,658849,2025-05-09,registrata,Fattura acquisto sintetica.
+fa-014,1744707600000,1744794000000,FA-DEMO-014,2025-04-15,for-004,Legni Storici Demo S.r.l.,oa-014,OA-2025-014,850948,187209,1038157,2025-05-15,registrata,Fattura acquisto sintetica.
+fa-015,1745226000000,1745312400000,FA-DEMO-015,2025-04-21,for-005,Materiali di Corte Demo S.r.l.,oa-015,OA-2025-015,1748600,384692,2133292,2025-05-21,registrata,Fattura acquisto sintetica.
+fa-016,1745744400000,1745830800000,FA-DEMO-016,2025-04-27,for-006,Trasporti Bosco Demo S.r.l.,oa-016,OA-2025-016,1223250,269115,1492365,2025-05-27,registrata,Fattura acquisto sintetica.

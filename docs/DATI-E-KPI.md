@@ -2,19 +2,28 @@
 
 ## Dataset dimostrativi
 
+Il dataset completo comprende 23 CSV relazionali descritti in
+`SCHEMA-DATI-DEMO.md`. I tre file seguenti sono viste analitiche compatibili
+derivate dai documenti normalizzati.
+
 ### `vendite.csv`
 
-Una riga per riga d'ordine evasa: data, documento, cliente anonimo, canale,
+Una riga per riga di fattura di vendita: data, ordine, cliente anonimo, canale,
 articolo, categoria, essenza, quantità, unità di misura, ricavo e costo.
 
 ### `magazzino.csv`
 
-Fotografia per articolo e lotto: giacenza, impegnato, costo medio, prezzo di
-listino, data di carico, provenienza sintetica e ubicazione.
+Saldo per articolo e lotto: giacenza, costo medio, data di carico, ubicazione e
+stato lotto. Impegnato e listino restano in `articoli.csv`.
 
 ### `incassi.csv`
 
-Scadenze anonime: ordine, cliente, data scadenza, importo, incassato e stato.
+Vista delle fatture cliente con importo, incassato, residuo e stato.
+
+### `transazioni.csv`
+
+Timeline unificata di 190 eventi. È utile per conteggi e andamenti documentali;
+per margini, quantità e residui si usano sempre i file specialistici.
 
 ## Regole di qualità
 
@@ -40,5 +49,10 @@ Scadenze anonime: ordine, cliente, data scadenza, importo, incassato e stato.
 | Capitale fermo | valore dei lotti oltre la soglia giorni |
 | Scaduto | importo meno incassato per scadenze passate |
 | Conversione preventivi | preventivi convertiti / preventivi inviati |
+| Evasione ordine | quantità consegnata / quantità ordinata |
+| Esposizione cliente | fatturato lordo meno incassi attribuiti |
+| Concentrazione top 5 | fatturato top 5 clienti / fatturato totale |
+| Puntualità fornitore | ricezioni entro data prevista / ricezioni ricevute |
 
-Ogni risposta numerica deve riportare periodo, filtri, unità e formula.
+Ogni risposta numerica deve riportare periodo, filtri, unità, formula, file
+sorgente e limiti. Quantità espresse in unità diverse non vengono sommate.

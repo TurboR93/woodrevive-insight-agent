@@ -7,6 +7,14 @@ DATASETS = {
     "vendite": DATASET_ROOT / "vendite.csv",
     "magazzino": DATASET_ROOT / "magazzino.csv",
     "incassi": DATASET_ROOT / "incassi.csv",
+    "transazioni": DATASET_ROOT / "transazioni.csv",
+    "ordini": DATASET_ROOT / "ordini.csv",
+    "righe_ordini": DATASET_ROOT / "righe_ordini.csv",
+    "ddt": DATASET_ROOT / "ddt.csv",
+    "righe_ddt": DATASET_ROOT / "righe_ddt.csv",
+    "ordini_acquisto": DATASET_ROOT / "ordini_acquisto.csv",
+    "fatture_vendita": DATASET_ROOT / "fatture_vendita.csv",
+    "pagamenti": DATASET_ROOT / "pagamenti.csv",
 }
 
 

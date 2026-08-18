@@ -15,20 +15,22 @@
 
 **Uscita:** struttura comprensibile, avviabile e senza dipendenze da dati reali.
 
-## Fase 1 — Knowledge base Wiki (prossima)
+## Fase 1 — Knowledge base Wiki (contenuti completati, motore prossimo)
 
-- definire template e front matter delle pagine;
-- completare 10–15 pagine su dominio, prodotti e procedure;
-- generare indice di titoli, tag, sinonimi e collegamenti;
+- [x] definire template e front matter delle pagine;
+- [x] completare 13 pagine su dominio, prodotti, procedure ed eccezioni;
+- [x] generare indice di titoli, tag, sinonimi e collegamenti;
+- [x] generare un corpus RAG equivalente dalle stesse pagine;
 - implementare ricerca lessicale e selezione della sezione;
 - aggiungere citazioni verificabili.
 
 **Uscita:** domande documentali funzionanti senza ChromaDB.
 
-## Fase 2 — Data analyst
+## Fase 2 — Data analyst (base dati completata, integrazione in corso)
 
-- ampliare i CSV demo mantenendo coerenza referenziale;
-- aggiungere validazione e pulizia dati;
+- [x] ampliare i CSV demo mantenendo coerenza referenziale;
+- [x] aggiungere validazione deterministica e controlli dati;
+- [x] creare 24 clienti, 10 fornitori e 190 eventi commerciali/operativi;
 - implementare KPI, trend, ranking e anomalie;
 - generare grafici e tabelle;
 - collegare il servizio Python all'orchestratore.
@@ -81,6 +83,8 @@
 | Risposte documentali con citazione | 100% |
 | Correttezza KPI deterministici | 100% |
 | Domande demo supportate | almeno 20 |
+| Eventi transazionali demo | almeno 60; presenti 190 |
+| Aziende clienti demo | almeno 20; presenti 24 |
 | Dati personali o reali nel repository | 0 |
 | Tempo risposta Wiki | meno di 2 s, escluso LLM |
 | Tempo risposta analisi base | meno di 5 s |

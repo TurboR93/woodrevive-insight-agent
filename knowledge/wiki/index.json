@@ -1,26 +1,19 @@
 {
-  "version": 1,
+  "version": 2,
+  "updated": "2026-08-18",
   "pages": [
-    {
-      "slug": "dominio-legno-antico",
-      "title": "Dominio del legno antico",
-      "path": "dominio-legno-antico.md",
-      "tags": ["legno", "essenza", "patina", "lotto", "provenienza"],
-      "synonyms": ["partita", "prima patina", "materiale di recupero"]
-    },
-    {
-      "slug": "ciclo-commerciale",
-      "title": "Ciclo commerciale",
-      "path": "ciclo-commerciale.md",
-      "tags": ["preventivo", "ordine", "ddt", "incasso", "procedura"],
-      "synonyms": ["vendita", "consegna", "pagamento"]
-    },
-    {
-      "slug": "margini-e-prezzi",
-      "title": "Margini e prezzi",
-      "path": "margini-e-prezzi.md",
-      "tags": ["margine", "ricarico", "prezzo", "costo", "listino"],
-      "synonyms": ["marginalità", "redditività", "sconto"]
-    }
+    {"slug":"dominio-legno-antico","title":"Dominio del legno antico","path":"dominio-legno-antico.md","tags":["legno","essenza","patina","lotto","provenienza"],"synonyms":["partita","prima patina","materiale di recupero"]},
+    {"slug":"ruoli-e-responsabilita","title":"Ruoli e responsabilità","path":"ruoli-e-responsabilita.md","tags":["ruoli","approvazioni","responsabilità","audit"],"synonyms":["chi approva","RACI","separazione compiti"]},
+    {"slug":"acquisti-e-ricezione","title":"Acquisti e ricezione","path":"acquisti-e-ricezione.md","tags":["fornitore","ordine acquisto","ricezione","trasporto"],"synonyms":["approvvigionamento","merce in arrivo","costo trasporto"]},
+    {"slug":"lotti-e-tracciabilita","title":"Lotti e tracciabilità","path":"lotti-e-tracciabilita.md","tags":["lotto","provenienza","qualità","foto"],"synonyms":["partita","storia materiale","catena documentale"]},
+    {"slug":"catalogo-misure-unita","title":"Catalogo, misure e unità","path":"catalogo-misure-unita.md","tags":["articolo","categoria","misure","udm"],"synonyms":["unità di misura","mq","ml","pz","conversioni"]},
+    {"slug":"preventivi-e-sconti","title":"Preventivi e sconti","path":"preventivi-e-sconti.md","tags":["preventivo","validità","sconto","campione"],"synonyms":["offerta","quotazione","approvazione prezzo"]},
+    {"slug":"ciclo-commerciale","title":"Ciclo commerciale","path":"ciclo-commerciale.md","tags":["preventivo","ordine","ddt","incasso","procedura"],"synonyms":["vendita","consegna","pagamento"]},
+    {"slug":"ordini-ddt-consegne","title":"Ordini, DDT e consegne","path":"ordini-ddt-consegne.md","tags":["ordine","impegno","ddt","consegna","trasporto"],"synonyms":["evasione","scarico","consegna frazionata"]},
+    {"slug":"fatture-incassi-scadenze","title":"Fatture, incassi e scadenze","path":"fatture-incassi-scadenze.md","tags":["fattura","acconto","saldo","scadenza","credito"],"synonyms":["residuo","insoluto","tesoreria"]},
+    {"slug":"magazzino-e-qualita","title":"Magazzino e qualità","path":"magazzino-e-qualita.md","tags":["giacenza","quarantena","inventario","scarto"],"synonyms":["rettifica","non conformità","stock lento"]},
+    {"slug":"margini-e-prezzi","title":"Margini e prezzi","path":"margini-e-prezzi.md","tags":["margine","ricarico","prezzo","costo","listino"],"synonyms":["marginalità","redditività","sconto"]},
+    {"slug":"kpi-e-qualita-dati","title":"KPI e qualità dei dati","path":"kpi-e-qualita-dati.md","tags":["kpi","formula","qualità dati","periodo"],"synonyms":["metriche","controlli","definizioni"]},
+    {"slug":"casi-operativi","title":"Casi operativi di prova","path":"casi-operativi.md","tags":["scenari","eccezioni","test","ibrido"],"synonyms":["casi d'uso","domande demo","situazioni"]}
   ]
 }

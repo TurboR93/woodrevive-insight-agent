@@ -1,5 +1,3 @@
-from datetime import date
-
 import pandas as pd
 
 from .catalog import resolve_dataset
@@ -46,10 +44,10 @@ def margin_by_category() -> dict:
     }
 
 
-def slow_stock(minimum_days: int = 180) -> dict:
+def slow_stock(minimum_days: int = 180, as_of: str = "2025-08-31") -> dict:
     frame = pd.read_csv(resolve_dataset("magazzino"), parse_dates=["data_carico"])
-    today = pd.Timestamp(date.today())
-    frame["giorni_in_magazzino"] = (today - frame["data_carico"]).dt.days
+    reference_date = pd.Timestamp(as_of)
+    frame["giorni_in_magazzino"] = (reference_date - frame["data_carico"]).dt.days
     frame["valore_giacenza_cents"] = (
         frame["giacenza_milli"] * frame["costo_medio_cents"] / 1000
     ).round().astype(int)
@@ -63,6 +61,86 @@ def slow_stock(minimum_days: int = 180) -> dict:
     return {
         "summary": f"Lotti in giacenza da almeno {minimum_days} giorni.",
         "table": {"columns": columns, "rows": result[columns].to_dict(orient="records")},
-        "method": "Differenza tra data odierna e data di carico; valore = giacenza × costo medio.",
-        "warnings": ["La data odierna influenza il risultato."],
+        "method": f"Differenza tra {as_of} e data di carico; valore = giacenza × costo medio.",
+        "warnings": ["Data di analisi esplicita; dataset sintetico e anonimo."],
+    }
+
+
+def customer_exposure(as_of: str = "2025-08-31") -> dict:
+    frame = pd.read_csv(resolve_dataset("incassi"), parse_dates=["data_scadenza"])
+    frame["scaduto_cents"] = frame["residuo_cents"].where(
+        frame["data_scadenza"] < pd.Timestamp(as_of), 0
+    )
+    grouped = frame.groupby(["cliente_id", "cliente"], as_index=False).agg(
+        fatturato_lordo_cents=("importo_cents", "sum"),
+        incassato_cents=("incassato_cents", "sum"),
+        esposizione_cents=("residuo_cents", "sum"),
+        scaduto_cents=("scaduto_cents", "sum"),
+        documenti=("ordine_id", "nunique"),
+    ).sort_values(["scaduto_cents", "esposizione_cents"], ascending=False)
+    return {
+        "summary": f"Esposizione clienti alla data {as_of}.",
+        "metrics": [
+            {"label": "Esposizione totale", "value": int(grouped["esposizione_cents"].sum()), "unit": "cents"},
+            {"label": "Scaduto totale", "value": int(grouped["scaduto_cents"].sum()), "unit": "cents"},
+            {"label": "Clienti esposti", "value": int((grouped["esposizione_cents"] > 0).sum()), "unit": "count"},
+        ],
+        "table": {"columns": grouped.columns.tolist(), "rows": grouped.to_dict(orient="records")},
+        "chart": {"type": "bar", "x": "cliente", "y": "esposizione_cents", "top": 10},
+        "method": "Esposizione = importo fatture - pagamenti attribuiti; scaduto = residuo con data precedente alla data di analisi.",
+        "warnings": ["Il dataset è sintetico; le scadenze rappresentano attese e non movimenti di cassa."],
+    }
+
+
+def transaction_volume() -> dict:
+    frame = pd.read_csv(resolve_dataset("transazioni"), parse_dates=["data"])
+    frame["mese"] = frame["data"].dt.to_period("M").astype(str)
+    grouped = frame.groupby(["mese", "tipo"], as_index=False).agg(
+        eventi=("id", "count"), importo_cents=("importo_cents", "sum")
+    ).sort_values(["mese", "tipo"])
+    return {
+        "summary": "Volumi mensili per tipo di evento.",
+        "table": {"columns": grouped.columns.tolist(), "rows": grouped.to_dict(orient="records")},
+        "chart": {"type": "stacked_bar", "x": "mese", "y": "eventi", "series": "tipo"},
+        "method": "Conteggio degli eventi della timeline normalizzata per mese e tipo; gli importi non sono sommati fra direzioni opposte.",
+        "warnings": ["La timeline contiene documenti e scadenze: non equivale a fatturato o cassa."],
+    }
+
+
+def supplier_spend() -> dict:
+    frame = pd.read_csv(resolve_dataset("ordini_acquisto"), parse_dates=["data"])
+    grouped = frame.groupby(["fornitore_id", "fornitore_ragione_sociale"], as_index=False).agg(
+        ordini=("id", "nunique"), imponibile_cents=("imponibile_cents", "sum"),
+        trasporto_cents=("costo_trasporto_cents", "sum"), totale_cents=("totale_cents", "sum"),
+    ).sort_values("totale_cents", ascending=False)
+    total = grouped["totale_cents"].sum()
+    grouped["quota_percentuale"] = (grouped["totale_cents"] / total * 100).round(2)
+    return {
+        "summary": "Valore degli ordini di acquisto e concentrazione per fornitore.",
+        "table": {"columns": grouped.columns.tolist(), "rows": grouped.to_dict(orient="records")},
+        "chart": {"type": "bar", "x": "fornitore_ragione_sociale", "y": "totale_cents"},
+        "method": "Somma del totale lordo ordini di acquisto e quota sul totale del periodo.",
+        "warnings": ["Sono inclusi anche ordini in bozza o confermati; filtrare per stato per analizzare il ricevuto."],
+    }
+
+
+def order_fulfillment() -> dict:
+    rows = pd.read_csv(resolve_dataset("righe_ordini"))
+    rows["evasione_percentuale"] = (
+        rows["quantita_evasa_milli"] / rows["quantita_milli"] * 100
+    ).round(2)
+    result = rows[[
+        "ordine_id", "articolo_id", "lotto_id", "quantita_milli",
+        "quantita_evasa_milli", "unita_misura", "evasione_percentuale",
+    ]].sort_values("evasione_percentuale")
+    return {
+        "summary": "Evasione quantitativa delle righe ordine.",
+        "metrics": [
+            {"label": "Righe complete", "value": int((result["evasione_percentuale"] == 100).sum()), "unit": "count"},
+            {"label": "Righe parziali", "value": int(((result["evasione_percentuale"] > 0) & (result["evasione_percentuale"] < 100)).sum()), "unit": "count"},
+            {"label": "Righe non evase", "value": int((result["evasione_percentuale"] == 0).sum()), "unit": "count"},
+        ],
+        "table": {"columns": result.columns.tolist(), "rows": result.to_dict(orient="records")},
+        "method": "Quantità evasa / quantità ordinata × 100, calcolata per singola riga e unità.",
+        "warnings": ["Le percentuali di unità diverse non vanno aggregate per quantità assoluta."],
     }

@@ -1,0 +1,35 @@
+id,created_at,documento_tipo,documento_id,documento_numero,verso,cliente_id,fornitore_id,controparte,data_scadenza,data_pagamento,importo_cents,saldato,mezzo,tesoreria,rata_numero,rata_totale,etichetta,riferimento,note
+sca-v-001,1744966800000,fattura,fv-001,FV-2025-001,incasso,cli-001,,Atelier Arco S.r.l.,2025-05-17,2025-05-20,193248,true,bonifico,Banca demo,1,1,incassata,ORD-2025-001,Scadenza cliente demo.
+sca-v-002,1745312400000,fattura,fv-002,FV-2025-002,incasso,cli-002,,Cantieri Brenta S.p.A.,2025-05-21,2025-05-24,304844,true,bonifico,Banca demo,1,1,incassata,ORD-2025-002,Scadenza cliente demo.
+sca-v-003,1745658000000,fattura,fv-003,FV-2025-003,incasso,cli-003,,Dimora Lab S.r.l.,2025-05-25,2025-05-28,590626,true,bonifico,Banca demo,1,1,incassata,ORD-2025-003,Scadenza cliente demo.
+sca-v-004,1746003600000,fattura,fv-004,FV-2025-004,incasso,cli-004,,Forma Interni S.r.l.,2025-05-29,2025-06-01,537068,true,bonifico,Banca demo,1,1,incassata,ORD-2025-004,Scadenza cliente demo.
+sca-v-005,1746349200000,fattura,fv-005,FV-2025-005,incasso,cli-005,,Officina Abitare S.r.l.,2025-06-02,2025-06-05,689466,true,bonifico,Banca demo,1,1,incassata,ORD-2025-005,Scadenza cliente demo.
+sca-v-006,1746694800000,fattura,fv-006,FV-2025-006,incasso,cli-006,,Studio Cedro Associati,2025-06-06,2025-06-09,472140,true,bonifico,Banca demo,1,1,incassata,ORD-2025-006,Scadenza cliente demo.
+sca-v-007,1747040400000,fattura,fv-007,FV-2025-007,incasso,cli-007,,Edilnova Restauri S.r.l.,2025-06-10,2025-06-13,195971,true,bonifico,Banca demo,1,1,incassata,ORD-2025-007,Scadenza cliente demo.
+sca-v-008,1747386000000,fattura,fv-008,FV-2025-008,incasso,cli-008,,Materia Casa S.r.l.,2025-06-14,2025-06-17,311539,true,bonifico,Banca demo,1,1,incassata,ORD-2025-008,Scadenza cliente demo.
+sca-v-009,1747731600000,fattura,fv-009,FV-2025-009,incasso,cli-009,,Nordic Habitat S.r.l.,2025-06-18,2025-06-21,585219,true,bonifico,Banca demo,1,1,incassata,ORD-2025-009,Scadenza cliente demo.
+sca-v-010,1748077200000,fattura,fv-010,FV-2025-010,incasso,cli-010,,Casa Radice S.r.l.,2025-06-22,2025-06-25,538518,true,bonifico,Banca demo,1,1,incassata,ORD-2025-010,Scadenza cliente demo.
+sca-v-011,1748422800000,fattura,fv-011,FV-2025-011,incasso,cli-011,,Progetto Quercia S.r.l.,2025-06-26,2025-06-29,276696,true,bonifico,Banca demo,1,1,incassata,ORD-2025-011,Scadenza cliente demo.
+sca-v-012,1748768400000,fattura,fv-012,FV-2025-012,incasso,cli-012,,Corte Antica Hospitality S.r.l.,2025-06-30,2025-07-03,487206,true,bonifico,Banca demo,1,1,incassata,ORD-2025-012,Scadenza cliente demo.
+sca-v-013,1749114000000,fattura,fv-013,FV-2025-013,incasso,cli-013,,Linea Restauro S.r.l.,2025-07-04,,204448,false,bonifico,Banca demo,1,1,parziale,ORD-2025-013,Scadenza cliente demo.
+sca-v-014,1749459600000,fattura,fv-014,FV-2025-014,incasso,cli-014,,Spazio Materico S.r.l.,2025-07-08,,303721,false,bonifico,Banca demo,1,1,parziale,ORD-2025-014,Scadenza cliente demo.
+sca-v-015,1749805200000,fattura,fv-015,FV-2025-015,incasso,cli-015,,Rovere Contract S.r.l.,2025-07-12,,591554,false,bonifico,Banca demo,1,1,parziale,ORD-2025-015,Scadenza cliente demo.
+sca-v-016,1750150800000,fattura,fv-016,FV-2025-016,incasso,cli-016,,Architettura Viva S.r.l.,2025-07-16,,368928,false,,Banca demo,1,1,aperta,ORD-2025-016,Scadenza cliente demo.
+sca-v-017,1750496400000,fattura,fv-017,FV-2025-017,incasso,cli-017,,Borgo Nuovo Resort S.r.l.,2025-07-20,,239520,false,,Banca demo,1,1,aperta,ORD-2025-017,Scadenza cliente demo.
+sca-v-018,1750842000000,fattura,fv-018,FV-2025-018,incasso,cli-018,,Cantiere Blu S.r.l.,2025-07-24,,363462,false,,Banca demo,1,1,aperta,ORD-2025-018,Scadenza cliente demo.
+sca-a-001,1738054800000,fattura_acquisto,fa-001,FA-DEMO-001,pagamento,,for-001,Recuperi Alpini Demo S.r.l.,2025-02-26,2025-02-25,759450,true,bonifico,Banca demo,1,1,pagata,OA-2025-001,Scadenza fornitore demo.
+sca-a-002,1738573200000,fattura_acquisto,fa-002,FA-DEMO-002,pagamento,,for-002,Demolizioni Laguna Demo S.r.l.,2025-03-04,2025-03-03,1161362,true,bonifico,Banca demo,1,1,pagata,OA-2025-002,Scadenza fornitore demo.
+sca-a-003,1739091600000,fattura_acquisto,fa-003,FA-DEMO-003,pagamento,,for-003,Segheria Valverde Demo S.r.l.,2025-03-10,2025-03-09,2220156,true,bonifico,Banca demo,1,1,pagata,OA-2025-003,Scadenza fornitore demo.
+sca-a-004,1739610000000,fattura_acquisto,fa-004,FA-DEMO-004,pagamento,,for-004,Legni Storici Demo S.r.l.,2025-03-16,2025-03-15,1926990,true,bonifico,Banca demo,1,1,pagata,OA-2025-004,Scadenza fornitore demo.
+sca-a-005,1740128400000,fattura_acquisto,fa-005,FA-DEMO-005,pagamento,,for-005,Materiali di Corte Demo S.r.l.,2025-03-22,2025-03-21,2463949,true,bonifico,Banca demo,1,1,pagata,OA-2025-005,Scadenza fornitore demo.
+sca-a-006,1740646800000,fattura_acquisto,fa-006,FA-DEMO-006,pagamento,,for-006,Trasporti Bosco Demo S.r.l.,2025-03-28,2025-03-27,2048990,true,bonifico,Banca demo,1,1,pagata,OA-2025-006,Scadenza fornitore demo.
+sca-a-007,1741165200000,fattura_acquisto,fa-007,FA-DEMO-007,pagamento,,for-007,Ferramenta Restauro Demo S.r.l.,2025-04-03,2025-04-02,720483,true,bonifico,Banca demo,1,1,pagata,OA-2025-007,Scadenza fornitore demo.
+sca-a-008,1741683600000,fattura_acquisto,fa-008,FA-DEMO-008,pagamento,,for-008,Recuperi Dolomia Demo S.r.l.,2025-04-09,2025-04-08,1157072,true,bonifico,Banca demo,1,1,pagata,OA-2025-008,Scadenza fornitore demo.
+sca-a-009,1742202000000,fattura_acquisto,fa-009,FA-DEMO-009,pagamento,,for-009,Antiche Travi Demo S.r.l.,2025-04-15,2025-04-14,2084736,true,bonifico,Banca demo,1,1,pagata,OA-2025-009,Scadenza fornitore demo.
+sca-a-010,1742720400000,fattura_acquisto,fa-010,FA-DEMO-010,pagamento,,for-010,Segheria Circolare Demo S.r.l.,2025-04-21,2025-04-20,1801379,true,bonifico,Banca demo,1,1,pagata,OA-2025-010,Scadenza fornitore demo.
+sca-a-011,1743238800000,fattura_acquisto,fa-011,FA-DEMO-011,pagamento,,for-001,Recuperi Alpini Demo S.r.l.,2025-04-27,2025-04-26,1131184,true,bonifico,Banca demo,1,1,pagata,OA-2025-011,Scadenza fornitore demo.
+sca-a-012,1743757200000,fattura_acquisto,fa-012,FA-DEMO-012,pagamento,,for-002,Demolizioni Laguna Demo S.r.l.,2025-05-03,2025-05-02,1916986,true,bonifico,Banca demo,1,1,pagata,OA-2025-012,Scadenza fornitore demo.
+sca-a-013,1744275600000,fattura_acquisto,fa-013,FA-DEMO-013,pagamento,,for-003,Segheria Valverde Demo S.r.l.,2025-05-09,2025-05-08,658849,true,bonifico,Banca demo,1,1,pagata,OA-2025-013,Scadenza fornitore demo.
+sca-a-014,1744794000000,fattura_acquisto,fa-014,FA-DEMO-014,pagamento,,for-004,Legni Storici Demo S.r.l.,2025-05-15,,1038157,false,,Banca demo,1,1,aperta,OA-2025-014,Scadenza fornitore demo.
+sca-a-015,1745312400000,fattura_acquisto,fa-015,FA-DEMO-015,pagamento,,for-005,Materiali di Corte Demo S.r.l.,2025-05-21,,2133292,false,,Banca demo,1,1,aperta,OA-2025-015,Sospesa in attesa nota su difformità.
+sca-a-016,1745830800000,fattura_acquisto,fa-016,FA-DEMO-016,pagamento,,for-006,Trasporti Bosco Demo S.r.l.,2025-05-27,,1492365,false,,Banca demo,1,1,aperta,OA-2025-016,Scadenza fornitore demo.
